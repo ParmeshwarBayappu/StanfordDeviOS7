@@ -19,33 +19,43 @@
 
 - (PlayingCardDeck *)deck
 {
-    if(!_deck) _deck = [[PlayingCardDeck alloc] init];
+    if(!_deck) _deck = [self createDeck];
     return _deck;
 }
 
+- (PlayingCardDeck *)createDeck
+{
+    return [[PlayingCardDeck alloc] init];
+}
 - (IBAction)touchCardButton:(UIButton *)sender {
  
-    Card * card = [self.deck drawRandomCard];
-    NSLog(@"Drew card %@", card.contents);
 
-    //if (sender.currentTitle.length) {
-    if (!card) {
+    if (sender.currentTitle.length) {
         UIImage * cardImage = [UIImage imageNamed:@"cardback"];
         [sender setBackgroundImage:cardImage forState:UIControlStateNormal];
         [sender setTitle:@"" forState:UIControlStateNormal];
+        self.flipCount++;
+        self.flipLabel.text = [NSString stringWithFormat:@"Flips:%d", self.flipCount];
     }
     else {
-        UIImage * cardImage = [UIImage imageNamed:@"cardfront"];
-        [sender setBackgroundImage:cardImage forState:UIControlStateNormal];
-        
-        [sender setTitle:card.contents
-                forState:UIControlStateNormal];
-        
+        Card * card = [self.deck drawRandomCard];
+        NSLog(@"Drew card %@", card.contents);
+
+        if (card) {
+            UIImage * cardImage = [UIImage imageNamed:@"cardfront"];
+            [sender setBackgroundImage:cardImage forState:UIControlStateNormal];
+            
+            [sender setTitle:card.contents
+                    forState:UIControlStateNormal];
+            
+            self.flipCount++;
+            self.flipLabel.text = [NSString stringWithFormat:@"Flips:%d", self.flipCount];
+        } else {
+            [sender setEnabled:FALSE];
+        }
     }
-    self.flipCount++;
     NSLog(@"Flip Count %d", self.flipCount);
     
-    self.flipLabel.text = [NSString stringWithFormat:@"Flips:%d", self.flipCount];
 }
 
 @end
