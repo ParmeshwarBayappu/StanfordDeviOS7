@@ -36,6 +36,9 @@
         [sender setTitle:@"" forState:UIControlStateNormal];
         self.flipCount++;
         self.flipLabel.text = [NSString stringWithFormat:@"Flips:%d", self.flipCount];
+        if (!self.deck.cardCount) {
+            [sender setEnabled:FALSE];
+        }
     }
     else {
         Card * card = [self.deck drawRandomCard];
@@ -50,8 +53,6 @@
             
             self.flipCount++;
             self.flipLabel.text = [NSString stringWithFormat:@"Flips:%d", self.flipCount];
-        } else {
-            [sender setEnabled:FALSE];
         }
     }
     NSLog(@"Flip Count %d", self.flipCount);

@@ -11,6 +11,8 @@
 
 @interface Deck : NSObject
 
+@property (nonatomic, readonly) NSUInteger cardCount;
+
 - (void)addCard:(Card *)card atTop:(BOOL)atTop;
 - (void)addCard:(Card *)card;
 
