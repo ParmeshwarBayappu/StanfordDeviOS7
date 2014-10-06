@@ -14,7 +14,6 @@
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (nonatomic) int flipCount;
-@property (strong, nonatomic) PlayingCardDeck *deck;
 @property (strong, nonatomic) CardMatchingGame * game;
 @end
 
@@ -29,22 +28,18 @@
     return _game;
 }
 
-- (PlayingCardDeck *)deck
-{
-    if(!_deck) _deck = [self createDeck];
-    return _deck;
-}
-
 - (PlayingCardDeck *)createDeck
 {
     return [[PlayingCardDeck alloc] init];
 }
+
 - (IBAction)touchCardButton:(UIButton *)sender {
 
     int chosenButtonIndex = [self.cardButtons indexOfObject:sender];
     [self.game chooseCardAtIndex:chosenButtonIndex];
     [self updateUI];
 }
+
 - (void)updateUI
 {
     for (UIButton *cardButton in self.cardButtons) {
