@@ -11,8 +11,11 @@
 #import "CardMatchingGame.h"
 
 @interface CardGameViewController ()
+
+//UI property bindings
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
+
 @property (nonatomic) int flipCount;
 @property (strong, nonatomic) CardMatchingGame * game;
 @end
