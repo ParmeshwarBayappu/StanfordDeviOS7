@@ -65,4 +65,14 @@
     return [UIImage imageNamed:card.isChosen? @"cardfront" : @"cardback"];
 }
 
+- (IBAction)touchRedealButton:(UIButton *)sender {
+    
+    //reset game
+    //Question: Is a call to release necessary for memory management?
+    //CardMatchingGame * prevGame = self.game;
+    //[prevGame release];
+    self.game = nil;
+    [self updateUI];
+}
+
 @end
