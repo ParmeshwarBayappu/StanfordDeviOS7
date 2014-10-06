@@ -15,12 +15,23 @@
 //UI property bindings
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *matchModeSegmentedControl;
 
 @property (nonatomic) int flipCount;
 @property (strong, nonatomic) CardMatchingGame * game;
+@property (nonatomic, readonly) uint matchMode;
 @end
 
 @implementation CardGameViewController
+
+const int SEGMENT_INDEX_2CARDS = 0;
+const int SEGMENT_INDEX_4CARDS = 1;
+
+- (uint) matchMode
+{
+    NSLog(@"Selected Index: %d", self.matchModeSegmentedControl.selectedSegmentIndex);
+    return self.matchModeSegmentedControl.selectedSegmentIndex;
+}
 
 - (CardMatchingGame *)game
 {
@@ -38,6 +49,9 @@
 
 - (IBAction)touchCardButton:(UIButton *)sender {
 
+    //Game started - disable options not available after start such as match mode
+    self.matchModeSegmentedControl.enabled = NO;
+    
     int chosenButtonIndex = [self.cardButtons indexOfObject:sender];
     [self.game chooseCardAtIndex:chosenButtonIndex];
     [self updateUI];
@@ -72,6 +86,10 @@
     //CardMatchingGame * prevGame = self.game;
     //[prevGame release];
     self.game = nil;
+    
+    //Game reset - enable options available at start such as match mode
+    self.matchModeSegmentedControl.enabled = YES;
+    
     [self updateUI];
 }
 
