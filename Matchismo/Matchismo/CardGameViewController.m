@@ -25,12 +25,14 @@
 @implementation CardGameViewController
 
 const int SEGMENT_INDEX_2CARDS = 0;
-const int SEGMENT_INDEX_4CARDS = 1;
+const int SEGMENT_INDEX_3CARDS = 1;
 
 - (uint) matchMode
 {
     NSLog(@"Selected Index: %d", self.matchModeSegmentedControl.selectedSegmentIndex);
-    return self.matchModeSegmentedControl.selectedSegmentIndex;
+    if (self.matchModeSegmentedControl.selectedSegmentIndex == SEGMENT_INDEX_3CARDS)
+        return 3;
+    return 2; //default match mode - SEGMENT_INDEX_4CARDS
 }
 
 - (CardMatchingGame *)game
@@ -51,6 +53,7 @@ const int SEGMENT_INDEX_4CARDS = 1;
 
     //Game started - disable options not available after start such as match mode
     self.matchModeSegmentedControl.enabled = NO;
+    self.game.matchMode=self.matchMode; //TODO: improve timing
     
     int chosenButtonIndex = [self.cardButtons indexOfObject:sender];
     [self.game chooseCardAtIndex:chosenButtonIndex];
