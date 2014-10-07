@@ -183,6 +183,12 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Impact of last selection" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KSG-ng-gEe">
+                                <rect key="frame" x="16" y="479" width="568" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="0.25098040699958801" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -251,6 +257,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="lastSelStatusLabel" destination="KSG-ng-gEe" id="Ag9-We-zWa"/>
                         <outlet property="matchModeSegmentedControl" destination="Di3-0H-Moa" id="8ta-tl-9bw"/>
                         <outlet property="scoreLabel" destination="sFY-UZ-kAt" id="lJu-rs-mlO"/>
                         <outletCollection property="cardButtons" destination="U4I-E9-CHg" id="2rd-7g-r68"/>

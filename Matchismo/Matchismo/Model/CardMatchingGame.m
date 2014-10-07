@@ -11,7 +11,7 @@
 @interface CardMatchingGame ()
 @property (nonatomic, readwrite) NSInteger score;
 @property (nonatomic, strong) NSMutableArray * cards; // of Card
-//@property (nonatomic) NSInteger chosenCardsScore; //match score of currently chosen but not yet matched cards - intermediate score
+@property (nonatomic) NSInteger currChosenCardsScore; //match score of currently chosen but not yet matched cards - intermediate score
 @end
 
 @implementation CardMatchingGame
@@ -51,54 +51,56 @@ static const int MISMATCH_PENALTY = 1;//2;
 static const int MATCH_BONUS = 1;//4;
 static const int COST_TO_CHOOSE = 1;
 
-
 - (void)chooseCardAtIndex:(NSUInteger)index
+{
+    [self chooseCardAtIndex:index withNotification:nil];
+}
+
+- (void)chooseCardAtIndex:(NSUInteger)index withNotification:(id<CardGameNotifications>) requestor
 {
     Card * card = [self cardAtIndex:index];
     
     if (!card.isMatched) {
-        if (card.isChosen) {
-            //flip it back if previosuly chosen
+        if (card.isChosen) { // if previosuly chosen flip it back
             card.chosen = NO;
-            //update current choosen score
-//            NSArray *prevChosenCards = [self currentChosenCards];
-//            self.chosenCardsScore -= [card match:prevChosenCards];
-        } else {
-            //Identify chosen cards and match all chosen cards including current chosen.
+            //calculate impact, update selected score and notify
             NSArray *prevChosenCards = [self currentChosenCards];
+            int cardMatchImpact = -[card match:prevChosenCards];
+            self.currChosenCardsScore += cardMatchImpact;
+            [requestor selectionImpactOfCard:card chosen:NO otherChosenCards:prevChosenCards impact:cardMatchImpact];
+        } else { // if not previosuly chosen
             
-            //Prevent choosing more than current match mode cards
-            if (prevChosenCards.count < self.matchMode)
-            {
-                if ((int)(prevChosenCards.count) < ((int)(self.matchMode))) {
-                    card.chosen = YES;
-                    self.score -= COST_TO_CHOOSE; //for choosing to view a card
-                }
-                
-                //update current choosen score
-//                self.chosenCardsScore += [card match:prevChosenCards];
-                
-                if (prevChosenCards.count == (self.matchMode -1)) {
-                    //selection complete so update overall score with score of chosen cards
-//                    self.chosenCardsScore = [self currentChosenCardsScore];
-//                    int matchScore = self.chosenCardsScore;
-                    int matchScore = [self currentChosenCardsScore];
-                    if (matchScore) {
-                        // increase score and mark cards as matched
-                        self.score += matchScore * MATCH_BONUS * self.matchMode;
-                        card.matched = true;
-                        for (Card * chosenCard in prevChosenCards) {
-                            chosenCard.matched = true;
-                        }
-                    } else {
-                        // decrease score and mark cards (other than current card) as unchosen.
-                        self.score -= MISMATCH_PENALTY * self.matchMode; //for choosing mismatchng cards
-                        for (Card * chosenCard in prevChosenCards) {
-                            chosenCard.chosen = false;
-                        }
+            NSArray *prevChosenCards = [self currentChosenCards];
+            if (prevChosenCards.count >= self.matchMode) return; //Prevent choosing more than current match mode cards  - currently not feasible as prev sel cards are unselected automatically
+            
+            //calculate impact, update selected score
+            card.chosen = YES;
+            self.score -= COST_TO_CHOOSE; //for choosing to view a card
+            int cardMatchImpact = [card match:prevChosenCards];
+            self.currChosenCardsScore += cardMatchImpact;
+
+            if (prevChosenCards.count < (self.matchMode-1)) { // match mode requires more cards to be selected
+                //notify impact
+                [requestor selectionImpactOfCard:card chosen:YES otherChosenCards:prevChosenCards impact:cardMatchImpact];
+            } else { // match mode - all required cards selected
+                if (self.currChosenCardsScore) { //something matched
+                    // increase score with match score of chosen cards and mark cards as matched
+                    self.score += self.currChosenCardsScore;
+                    card.matched = true;
+                    for (Card * chosenCard in prevChosenCards) {
+                        chosenCard.matched = true;
                     }
-//                    self.chosenCardsScore = 0; //reset chosen cards score
+                } else { //no match at all
+                    // //apply penalty to score and mark cards (other than current card) as unchosen.
+                    cardMatchImpact = self.currChosenCardsScore = -MISMATCH_PENALTY * self.matchMode; //for choosing mismatchng cards
+                    self.score += self.currChosenCardsScore;
+                    for (Card * chosenCard in prevChosenCards) {
+                        chosenCard.chosen = false;
+                    }
                 }
+                //notify
+                [requestor selectionImpactOfCard:card chosen:YES otherChosenCards:prevChosenCards impact:cardMatchImpact];
+                self.currChosenCardsScore = 0; //reset chosen cards score
             }
         }
     }
@@ -133,6 +135,14 @@ static const int COST_TO_CHOOSE = 1;
     }
     
     return score;
+}
+
+//helper fucntion match a Card to previously chosen cards and return match score including weights
+- (int)matchCard:(Card *)card toOtherCards:(NSArray *)otherCards
+{
+    int matchScore = [card match:otherCards];
+    matchScore *=  MATCH_BONUS * self.matchMode;
+    return matchScore;
 }
 
 //Helper fucntion - mark cards as not chosen
