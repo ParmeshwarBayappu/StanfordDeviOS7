@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Deck.h"
+#import "CardGameNotifications.h"
 
 @interface CardMatchingGame : NSObject
 
@@ -15,8 +16,11 @@
 - (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *) deck;
 
 - (void)chooseCardAtIndex:(NSUInteger)index;
+- (void)chooseCardAtIndex:(NSUInteger)index withNotification:(id<CardGameNotifications>) requestor;
 - (Card *)cardAtIndex:(NSUInteger)index;
+- (NSArray *)currentChosenCards;
+- (int) currentChosenCardsScore;
 
 @property (nonatomic, readonly) NSInteger score;
-
+@property (nonatomic) NSUInteger matchMode;
 @end
