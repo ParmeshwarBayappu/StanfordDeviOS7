@@ -47,8 +47,8 @@
     return (index<self.cards.count) ? [self.cards objectAtIndex:index] : nil;
 }
 
-static const int MISMATCH_PENALTY = 1;//2;
-static const int MATCH_BONUS = 1;//4;
+static const int MISMATCH_PENALTY = 2;
+static const int MATCH_BONUS = 4;
 static const int COST_TO_CHOOSE = 1;
 
 - (void)chooseCardAtIndex:(NSUInteger)index
