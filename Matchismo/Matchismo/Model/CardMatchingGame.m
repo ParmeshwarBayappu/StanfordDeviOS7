@@ -65,7 +65,7 @@ static const int COST_TO_CHOOSE = 1;
             card.chosen = NO;
             //calculate impact, update selected score and notify
             NSArray *prevChosenCards = [self currentChosenCards];
-            int cardMatchImpact = -[card match:prevChosenCards];
+            int cardMatchImpact = -[self matchCard:card toOtherCards:prevChosenCards];
             self.currChosenCardsScore += cardMatchImpact;
             [requestor selectionImpactOfCard:card chosen:NO otherChosenCards:prevChosenCards impact:cardMatchImpact];
         } else { // if not previosuly chosen
@@ -76,7 +76,7 @@ static const int COST_TO_CHOOSE = 1;
             //calculate impact, update selected score
             card.chosen = YES;
             self.score -= COST_TO_CHOOSE; //for choosing to view a card
-            int cardMatchImpact = [card match:prevChosenCards];
+            int cardMatchImpact = [self matchCard:card toOtherCards:prevChosenCards];
             self.currChosenCardsScore += cardMatchImpact;
 
             if (prevChosenCards.count < (self.matchMode-1)) { // match mode requires more cards to be selected
