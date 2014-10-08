@@ -31,7 +31,7 @@ const int SEGMENT_INDEX_3CARDS = 1;
 
 - (uint) matchMode
 {
-    NSLog(@"Selected Index: %d", self.matchModeSegmentedControl.selectedSegmentIndex);
+    NSLog(@"Selected Index: %ld", (long)self.matchModeSegmentedControl.selectedSegmentIndex);
     if (self.matchModeSegmentedControl.selectedSegmentIndex == SEGMENT_INDEX_3CARDS)
         return 3;
     return 2; //default match mode - SEGMENT_INDEX_4CARDS
@@ -57,7 +57,7 @@ const int SEGMENT_INDEX_3CARDS = 1;
     self.matchModeSegmentedControl.enabled = NO;
     self.game.matchMode=self.matchMode; //TODO: improve timing
     
-    int chosenButtonIndex = [self.cardButtons indexOfObject:sender];
+    NSInteger chosenButtonIndex = [self.cardButtons indexOfObject:sender];
     [self.game chooseCardAtIndex:chosenButtonIndex withNotification:self];
     [self updateUI];
 }
@@ -65,13 +65,13 @@ const int SEGMENT_INDEX_3CARDS = 1;
 - (void)updateUI
 {
     for (UIButton *cardButton in self.cardButtons) {
-        int cardButtonIndex = [self.cardButtons indexOfObject:cardButton];
+        NSInteger cardButtonIndex = [self.cardButtons indexOfObject:cardButton];
         Card * card = [self.game cardAtIndex:cardButtonIndex];
         [cardButton setTitle:[self titleForCard:card] forState:UIControlStateNormal];
         [cardButton setBackgroundImage:[self backgroundImageForCard:card]forState:UIControlStateNormal];
         cardButton.enabled = !card.isMatched;
     }
-    self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", self.game.score];
+    self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
     self.lastSelStatusLabel.text = self.selectionImpactString;
 }
 
@@ -111,16 +111,16 @@ const int SEGMENT_INDEX_3CARDS = 1;
     return cardsString;
 }
 
-- (void)selectionImpactOfCard:(Card *)card chosen:(BOOL)isChosen otherChosenCards:(NSArray *)otherChosenCards impact:(int)chosenCardsScoreImpact
+- (void)selectionImpactOfCard:(Card *)card chosen:(BOOL)isChosen otherChosenCards:(NSArray *)otherChosenCards impact:(NSInteger)chosenCardsScoreImpact
 {
     NSString * otherChoseCardsStr = [self.class stringFromCardsArray:otherChosenCards];
     if (isChosen) {
         if (chosenCardsScoreImpact>0) { //card matched
-            self.selectionImpactString = [NSString stringWithFormat:@"%@ matched [%@] for %d points!",
-                                          card.contents, otherChoseCardsStr, chosenCardsScoreImpact];
+            self.selectionImpactString = [NSString stringWithFormat:@"%@ matched [%@] for %ld points!",
+                                          card.contents, otherChoseCardsStr, (long)chosenCardsScoreImpact];
         } else if (chosenCardsScoreImpact<0) { //card mismatch penatly
-            self.selectionImpactString = [NSString stringWithFormat:@"%@  did not match [%@]. %d points penalty!",
-                                          card.contents, otherChoseCardsStr, -chosenCardsScoreImpact];
+            self.selectionImpactString = [NSString stringWithFormat:@"%@  did not match [%@]. %ld points penalty!",
+                                          card.contents, otherChoseCardsStr, (long)-chosenCardsScoreImpact];
         } else { //card selected - no match yet
             if (otherChosenCards.count>0) { // other selected cards exist
                 self.selectionImpactString = [NSString stringWithFormat:@"%@  did not match [%@].",
@@ -132,8 +132,8 @@ const int SEGMENT_INDEX_3CARDS = 1;
         }
     } else { // card unselected
         if (chosenCardsScoreImpact<0) { //card was matching something
-            self.selectionImpactString = [NSString stringWithFormat:@"%@  unselected was matching [%@] for %d points!",
-                                          card.contents, otherChoseCardsStr, -chosenCardsScoreImpact];
+            self.selectionImpactString = [NSString stringWithFormat:@"%@  unselected was matching [%@] for %ld points!",
+                                          card.contents, otherChoseCardsStr, (long)chosenCardsScoreImpact];
         } else { //card was not matching anything
             self.selectionImpactString = [NSString stringWithFormat:@"%@ unselected.",
                                           card.contents];

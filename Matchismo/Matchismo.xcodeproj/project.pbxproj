@@ -16,8 +16,6 @@
 		5E44DDD519DCB25000D15D28 /* MatchismoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E44DDD419DCB25000D15D28 /* MatchismoTests.m */; };
 		5E44DDE219DCB47800D15D28 /* blank card hi-res.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E44DDDE19DCB47800D15D28 /* blank card hi-res.png */; };
 		5E44DDE319DCB47800D15D28 /* blank card rounded corner.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E44DDDF19DCB47800D15D28 /* blank card rounded corner.png */; };
-		5E44DDE419DCB47800D15D28 /* stanford-tree.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E44DDE019DCB47800D15D28 /* stanford-tree.png */; };
-		5E44DDE519DCB47800D15D28 /* stanford.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E44DDE119DCB47800D15D28 /* stanford.png */; };
 		5E44DDEC19DDAF6400D15D28 /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E44DDEB19DDAF6400D15D28 /* Card.m */; };
 		5E44DDF019DDB8A500D15D28 /* PlayingCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E44DDEF19DDB8A500D15D28 /* PlayingCard.m */; };
 		5E44DDF319DDCE1500D15D28 /* Deck.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E44DDF219DDCE1500D15D28 /* Deck.m */; };
@@ -52,8 +50,6 @@
 		5E44DDD419DCB25000D15D28 /* MatchismoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MatchismoTests.m; sourceTree = "<group>"; };
 		5E44DDDE19DCB47800D15D28 /* blank card hi-res.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blank card hi-res.png"; sourceTree = "<group>"; };
 		5E44DDDF19DCB47800D15D28 /* blank card rounded corner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blank card rounded corner.png"; sourceTree = "<group>"; };
-		5E44DDE019DCB47800D15D28 /* stanford-tree.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stanford-tree.png"; sourceTree = "<group>"; };
-		5E44DDE119DCB47800D15D28 /* stanford.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stanford.png; sourceTree = "<group>"; };
 		5E44DDEA19DDAF6400D15D28 /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Card.h; path = Model/Card.h; sourceTree = "<group>"; };
 		5E44DDEB19DDAF6400D15D28 /* Card.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Card.m; path = Model/Card.m; sourceTree = "<group>"; };
 		5E44DDEE19DDB8A500D15D28 /* PlayingCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayingCard.h; path = Model/PlayingCard.h; sourceTree = "<group>"; };
@@ -113,9 +109,7 @@
 				5E44DDC219DCB25000D15D28 /* Main.storyboard */,
 				5E44DDDE19DCB47800D15D28 /* blank card hi-res.png */,
 				5E44DDDF19DCB47800D15D28 /* blank card rounded corner.png */,
-				5E44DDE019DCB47800D15D28 /* stanford-tree.png */,
 				5E44DDC519DCB25000D15D28 /* Images.xcassets */,
-				5E44DDE119DCB47800D15D28 /* stanford.png */,
 				5E44DDC719DCB25000D15D28 /* LaunchScreen.xib */,
 				5E44DDB819DCB25000D15D28 /* Supporting Files */,
 			);
@@ -249,11 +243,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E44DDE419DCB47800D15D28 /* stanford-tree.png in Resources */,
 				5E44DDC419DCB25000D15D28 /* Main.storyboard in Resources */,
 				5E44DDE319DCB47800D15D28 /* blank card rounded corner.png in Resources */,
 				5E44DDC919DCB25000D15D28 /* LaunchScreen.xib in Resources */,
-				5E44DDE519DCB47800D15D28 /* stanford.png in Resources */,
 				5E44DDE219DCB47800D15D28 /* blank card hi-res.png in Resources */,
 				5E44DDC619DCB25000D15D28 /* Images.xcassets in Resources */,
 			);
