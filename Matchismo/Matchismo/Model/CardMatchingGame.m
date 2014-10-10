@@ -65,7 +65,7 @@ static const int COST_TO_CHOOSE = 1;
             card.chosen = NO;
             //calculate impact, update selected score and notify
             NSArray *prevChosenCards = [self currentChosenCards];
-            int cardMatchImpact = -[self matchCard:card toOtherCards:prevChosenCards];
+            int cardMatchImpact = -[self weightedMatchCard:card toOtherCards:prevChosenCards];
             self.currChosenCardsScore += cardMatchImpact;
             [requestor selectionImpactOfCard:card chosen:NO otherChosenCards:prevChosenCards impact:cardMatchImpact];
         } else { // if not previosuly chosen
@@ -76,7 +76,7 @@ static const int COST_TO_CHOOSE = 1;
             //calculate impact, update selected score
             card.chosen = YES;
             self.score -= COST_TO_CHOOSE; //for choosing to view a card
-            NSInteger cardMatchImpact = [self matchCard:card toOtherCards:prevChosenCards];
+            NSInteger cardMatchImpact = [self weightedMatchCard:card toOtherCards:prevChosenCards];
             self.currChosenCardsScore += cardMatchImpact;
 
             if (prevChosenCards.count < (self.matchMode-1)) { // match mode requires more cards to be selected
@@ -120,7 +120,7 @@ static const int COST_TO_CHOOSE = 1;
 }
 
 //helper function - current chosen cards score
-- (int) currentChosenCardsScore
+- (int) currentChosenCardsWeightedScore
 {
     int score = 0;
     NSArray * chosenCards = [self currentChosenCards];
@@ -130,7 +130,7 @@ static const int COST_TO_CHOOSE = 1;
         //NSArray * otherCards = [NSArray arrayWithObjects:[(const id[])chosenCards count:i];
         //score += [chosenCards[i] match:otherCards];
         for (NSInteger j=i-1; j>=0; j--) {
-            score += [chosenCards[i] match:@[chosenCards[j]]];
+            score += [self weightedMatchCard:chosenCards[i] toOtherCards:@[chosenCards[j]]];
         }
     }
     
@@ -138,7 +138,7 @@ static const int COST_TO_CHOOSE = 1;
 }
 
 //helper fucntion match a Card to previously chosen cards and return match score including weights
-- (int)matchCard:(Card *)card toOtherCards:(NSArray *)otherCards
+- (int)weightedMatchCard:(Card *)card toOtherCards:(NSArray *)otherCards
 {
     int matchScore = [card match:otherCards];
     matchScore *=  MATCH_BONUS * self.matchMode;
@@ -150,16 +150,6 @@ static const int COST_TO_CHOOSE = 1;
 {
     for (Card * card in cards) {
         card.chosen = NO;
-    }
-}
-
-
-// Helper function - mark a card as chosen and update score
-- (void)markCardAsChosenAnd:(Card *) card
-{
-    if (!card.isChosen) {
-        card.chosen = YES;
-        self.score -= COST_TO_CHOOSE; //for choosing to viewe a card
     }
 }
 
