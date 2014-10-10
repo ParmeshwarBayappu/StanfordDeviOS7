@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
-        <!--Card Game View Controller-->
+        <!--Playing Card Game View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="CardGameViewController" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" customClass="PlayingCardGameViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
@@ -16,17 +16,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dXb-xj-sgc">
-                                <rect key="frame" x="40" y="107" width="48" height="64"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" backgroundImage="cardback">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="touchCardButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="XDy-bA-gTq"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hpQ-KJ-lZQ">
                                 <rect key="frame" x="90" y="107" width="48" height="64"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -382,6 +371,17 @@
                                     <action selector="touchCardButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="r2W-8V-bAr"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dXb-xj-sgc">
+                                <rect key="frame" x="40" y="107" width="48" height="64"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" backgroundImage="cardback">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="touchCardButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="XDy-bA-gTq"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="0.25098040699958801" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -394,7 +394,6 @@
                         <outletCollection property="cardButtons" destination="dXb-xj-sgc" id="zaO-HQ-tp5"/>
                         <outletCollection property="cardButtons" destination="hpQ-KJ-lZQ" id="zOa-bD-PSE"/>
                         <outletCollection property="cardButtons" destination="PlG-be-v8o" id="JGk-hs-uW2"/>
-                        <outletCollection property="cardButtons" destination="PlG-be-v8o" id="DJv-I8-gpg"/>
                         <outletCollection property="cardButtons" destination="8gU-y5-fiM" id="YGO-Ro-khI"/>
                         <outletCollection property="cardButtons" destination="ryh-SG-2AC" id="DVC-Vh-HnG"/>
                         <outletCollection property="cardButtons" destination="Chl-FG-KH0" id="GXo-wf-qHJ"/>
@@ -404,13 +403,11 @@
                         <outletCollection property="cardButtons" destination="wzE-Aa-KSP" id="f2l-uL-xrT"/>
                         <outletCollection property="cardButtons" destination="2Z8-ID-uik" id="r0e-UY-rA9"/>
                         <outletCollection property="cardButtons" destination="ICC-0B-qaf" id="Why-JH-jbf"/>
-                        <outletCollection property="cardButtons" destination="ICC-0B-qaf" id="ApZ-VF-wLE"/>
                         <outletCollection property="cardButtons" destination="ler-0x-xvT" id="CnU-xW-AQX"/>
                         <outletCollection property="cardButtons" destination="TBB-VA-JsB" id="FVk-Jo-gY2"/>
                         <outletCollection property="cardButtons" destination="5U9-My-GAf" id="b3v-tF-lbq"/>
                         <outletCollection property="cardButtons" destination="EFW-iB-VK3" id="7u2-zg-QBI"/>
                         <outletCollection property="cardButtons" destination="EHv-Nx-bsF" id="5jo-V6-3Kn"/>
-                        <outletCollection property="cardButtons" destination="EFW-iB-VK3" id="BNN-Y1-O5z"/>
                         <outletCollection property="cardButtons" destination="y5h-QF-eht" id="p9l-jt-jYX"/>
                         <outletCollection property="cardButtons" destination="IzY-22-3hs" id="0cy-89-ruL"/>
                         <outletCollection property="cardButtons" destination="Hoi-dc-qis" id="bw4-FB-e60"/>

@@ -7,7 +7,6 @@
 //
 
 #import "CardGameViewController.h"
-#import "model/PlayingCardDeck.h"
 #import "CardMatchingGame.h"
 
 @interface CardGameViewController ()
@@ -46,9 +45,10 @@ const int SEGMENT_INDEX_3CARDS = 1;
     return _game;
 }
 
-- (PlayingCardDeck *)createDeck
+// abstract
+- (Deck *)createDeck
 {
-    return [[PlayingCardDeck alloc] init];
+    return nil;
 }
 
 - (IBAction)touchCardButton:(UIButton *)sender {

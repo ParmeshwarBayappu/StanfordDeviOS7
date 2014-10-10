@@ -8,9 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "CardGameNotifications.h"
+#import "Deck.h"
 
 @interface CardGameViewController : UIViewController <CardGameNotifications>
 
+// abstract
+// protected - for subclass to implement
+- (Deck *)createDeck;
 
 @end
 
