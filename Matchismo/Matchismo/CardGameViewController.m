@@ -14,7 +14,6 @@
 //UI property bindings
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *matchModeSegmentedControl;
 @property (weak, nonatomic) IBOutlet UILabel *lastSelStatusLabel;
 
 @property (nonatomic) int flipCount;
@@ -28,18 +27,18 @@
 const int SEGMENT_INDEX_2CARDS = 0;
 const int SEGMENT_INDEX_3CARDS = 1;
 
+//abstract implement in subclass
 - (uint) matchMode
 {
-    NSLog(@"Selected Index: %ld", (long)self.matchModeSegmentedControl.selectedSegmentIndex);
-    if (self.matchModeSegmentedControl.selectedSegmentIndex == SEGMENT_INDEX_3CARDS)
-        return 3;
-    return 2; //default match mode - SEGMENT_INDEX_4CARDS
+    //ASSERT FAILURE
+    return 0;
 }
 
 - (CardMatchingGame *)game
 {
     if (!_game) {
         _game = [[CardMatchingGame alloc] initWithCardCount:self.cardButtons.count usingDeck:[self createDeck]];
+        _game.matchMode = self.matchMode;
     }
     
     return _game;
@@ -52,10 +51,6 @@ const int SEGMENT_INDEX_3CARDS = 1;
 }
 
 - (IBAction)touchCardButton:(UIButton *)sender {
-
-    //Game started - disable options not available after start such as match mode
-    self.matchModeSegmentedControl.enabled = NO;
-    self.game.matchMode=self.matchMode; //TODO: improve timing
     
     NSInteger chosenButtonIndex = [self.cardButtons indexOfObject:sender];
     [self.game chooseCardAtIndex:chosenButtonIndex withNotification:self];
@@ -94,7 +89,6 @@ const int SEGMENT_INDEX_3CARDS = 1;
     self.game = nil;
     
     //Game reset - enable options available at start such as match mode
-    self.matchModeSegmentedControl.enabled = YES;
     self.selectionImpactString = @"";
     
     [self updateUI];

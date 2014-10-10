@@ -6,19 +6,25 @@
 //  Copyright (c) 2014 Parmesh Bayappu. All rights reserved.
 //
 
-#import "PlayingCardGame2ViewController.h"
-#import "PlayingCardDeck.h"
+#import "SetCardGameViewController.h"
+#import "SetCardDeck.h"
 
-@interface PlayingCardGame2ViewController ()
+@interface SetCardGameViewController ()
 
 @end
 
-@implementation PlayingCardGame2ViewController
+@implementation SetCardGameViewController
 
 // override base class abstract impl
 - (Deck *)createDeck
 {
-    return [[PlayingCardDeck alloc] init];
+    return [[SetCardDeck alloc] init];
+}
+
+// override base class abstract impl
+-(uint)matchMode
+{
+    return 3;
 }
 
 - (void)viewDidLoad {

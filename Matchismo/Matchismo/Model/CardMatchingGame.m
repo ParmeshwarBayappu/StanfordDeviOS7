@@ -24,7 +24,7 @@
     return _cards;
 }
 
-
+// consider adding match mode to this initializer
 - (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck
 {
     self = [super init];
@@ -33,6 +33,7 @@
             Card * card =[deck drawRandomCard];
             if (card) {
                 [self.cards addObject:card];
+                NSLog(@"Card at %d: %@", i, card.contents );
             } else {
                 self = nil;
                 break;

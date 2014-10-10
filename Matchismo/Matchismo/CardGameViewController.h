@@ -15,6 +15,7 @@
 // abstract
 // protected - for subclass to implement
 - (Deck *)createDeck;
+- (uint) matchMode;
 
 @end
 
