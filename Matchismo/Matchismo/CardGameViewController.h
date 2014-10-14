@@ -17,5 +17,8 @@
 - (Deck *)createDeck;
 - (uint) matchMode;
 
++ (NSAttributedString *)formatCardContentAttr:(Card *) card;
++ (NSAttributedString *)formatCardContentAttrWhenNotChosen:(Card *) card;
+
 @end
 

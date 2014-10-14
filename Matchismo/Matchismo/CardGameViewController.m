@@ -51,6 +51,11 @@
     return attrString;
 }
 
++ (NSAttributedString *)formatCardContentAttrWhenNotChosen:(Card *) card
+{
+    return nil;
+}
+
 //abstract implement in subclass
 - (uint) matchMode
 {
@@ -88,7 +93,7 @@
         Card * card = [self.game cardAtIndex:cardButtonIndex];
         //[cardButton setTitle:[self titleForCard:card] forState:UIControlStateNormal];
         
-        NSAttributedString * attrTitle = card.isChosen? [self.class formatCardContentAttr:card] : nil;
+        NSAttributedString * attrTitle = card.isChosen? [self.class formatCardContentAttr:card] : [self.class formatCardContentAttrWhenNotChosen:card];
         [cardButton setAttributedTitle:attrTitle forState:UIControlStateNormal];
         
         [cardButton setBackgroundImage:[self backgroundImageForCard:card]forState:UIControlStateNormal];
