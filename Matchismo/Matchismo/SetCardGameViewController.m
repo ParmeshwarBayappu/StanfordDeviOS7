@@ -9,6 +9,7 @@
 #import "SetCardGameViewController.h"
 #import "SetCardDeck.h"
 #import "SetCard.h"
+#import "SomeCommonUtils.h"
 
 NSArray * SHAPES_IN_SET ;
 NSArray * COLORS_IN_SET;
@@ -54,38 +55,45 @@ NSArray * SHADENAMES_IN_SET;
 }
 
 //not essential
-+ (NSString *)formatCardContent:(SetCard *) card
++ (NSString *)formatCardContent:(Card *) card
 {
+    SetCard * setCard = SAFE_CAST_TO_TYPE_OR_ASSERT(card, SetCard);
+    
     //number, symbol
     NSString * formattedCardContent = @"";
     
-    for (int i=0; i<card.number; i++) {
-        formattedCardContent = [formattedCardContent stringByAppendingString:[self shapesInSet][card.symbol-1]];
+    for (int i=0; i<setCard.number; i++) {
+        formattedCardContent = [formattedCardContent stringByAppendingString:[self shapesInSet][setCard.symbol-1]];
     }
     
     //color as text
-    formattedCardContent = [formattedCardContent stringByAppendingString:[self colorNamesInSet][card.color -1]];
+    formattedCardContent = [formattedCardContent stringByAppendingString:[self colorNamesInSet][setCard.color -1]];
     
     //shade as text
-    formattedCardContent = [formattedCardContent stringByAppendingString:[self shadeNamesInSet][card.shading -1]];
+    formattedCardContent = [formattedCardContent stringByAppendingString:[self shadeNamesInSet][setCard.shading -1]];
 
     return formattedCardContent;
 }
 
-+ (NSAttributedString *)formatCardContentAttr:(SetCard *) card
+
++ (NSAttributedString *)formatCardContentAttr:(Card *) card
 {
+    //SetCard setCard = (assert([card isKindOfClass:[SetCard class]]),((SetCard * ) card ));
+    SetCard * setCard = SAFE_CAST_TO_TYPE_OR_ASSERT(card, SetCard);
+
+
     //number, symbol
     NSString * cardContent = @"";
-    for (int i=0; i<card.number; i++) {
-        cardContent = [cardContent stringByAppendingString:[self shapesInSet][card.symbol-1]];
+    for (int i=0; i<setCard.number; i++) {
+        cardContent = [cardContent stringByAppendingString:[self shapesInSet][setCard.symbol-1]];
     }
     
     //color, shade
     NSDictionary *attribs = @{ NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline],
-                              NSForegroundColorAttributeName: [self.class shadesInSet][card.shading -1],
+                              NSForegroundColorAttributeName: [self.class shadesInSet][setCard.shading -1],
                             
                               NSStrokeWidthAttributeName:@-8,
-                              NSStrokeColorAttributeName:[self.class colorsInSet][card.color -1] };
+                              NSStrokeColorAttributeName:[self.class colorsInSet][setCard.color -1] };
     
     NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc] initWithString:cardContent];// attributes:<#(NSDictionary *)#>];
     [attrString setAttributes:attribs range:NSMakeRange(0, cardContent.length)];
@@ -94,6 +102,10 @@ NSArray * SHADENAMES_IN_SET;
     return attrString;
 }
 
++ (NSAttributedString *)formatCardContentAttrWhenNotChosen:(Card *)card
+{
+    return [self formatCardContentAttr:card];
+}
 
 // override base class abstract impl
 - (Deck *)createDeck

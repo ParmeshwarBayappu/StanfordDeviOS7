@@ -62,6 +62,7 @@
 		5E44DDF219DDCE1500D15D28 /* Deck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Deck.m; path = Model/Deck.m; sourceTree = "<group>"; };
 		5E44DDF419DDD4A300D15D28 /* PlayingCardDeck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayingCardDeck.h; path = Model/PlayingCardDeck.h; sourceTree = "<group>"; };
 		5E44DDF519DDD4A300D15D28 /* PlayingCardDeck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayingCardDeck.m; path = Model/PlayingCardDeck.m; sourceTree = "<group>"; };
+		5E8B5C8619EDD43C00D11B80 /* SomeCommonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SomeCommonUtils.h; sourceTree = "<group>"; };
 		5E9935AF19E461D9001E2C36 /* CardGameNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardGameNotifications.h; path = Model/CardGameNotifications.h; sourceTree = "<group>"; };
 		5E9935B019E461D9001E2C36 /* CardGameNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardGameNotifications.m; path = Model/CardGameNotifications.m; sourceTree = "<group>"; };
 		5EA58CEB19E84B7400D7E37C /* PlayingCardGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayingCardGameViewController.h; sourceTree = "<group>"; };
@@ -139,6 +140,7 @@
 				5E44DDBD19DCB25000D15D28 /* CardGameAppDelegate.m */,
 				5E44DDB919DCB25000D15D28 /* Info.plist */,
 				5E44DDBA19DCB25000D15D28 /* main.m */,
+				5E8B5C8619EDD43C00D11B80 /* SomeCommonUtils.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
