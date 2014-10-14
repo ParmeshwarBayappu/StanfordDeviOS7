@@ -20,5 +20,7 @@
 + (NSAttributedString *)formatCardContentAttr:(Card *) card;
 + (NSAttributedString *)formatCardContentAttrWhenNotChosen:(Card *) card;
 
+- (UIImage *)backgroundImageForCard:(Card *)card;
+
 @end
 

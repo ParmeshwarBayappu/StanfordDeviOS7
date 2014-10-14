@@ -23,6 +23,7 @@ NSArray * SHADENAMES_IN_SET;
 
 @implementation SetCardGameViewController
 
+
 + (NSArray *)shapesInSet
 {
     if(!SHAPES_IN_SET) SHAPES_IN_SET = @[@"▲", @"●", @"■"];
@@ -102,9 +103,21 @@ NSArray * SHADENAMES_IN_SET;
     return attrString;
 }
 
+BOOL isEasyModeEnabled = true;
 + (NSAttributedString *)formatCardContentAttrWhenNotChosen:(Card *)card
 {
-    return [self formatCardContentAttr:card];
+    if (isEasyModeEnabled && !card.isChosen)
+        return [self formatCardContentAttr:card];
+    else
+        return [super formatCardContentAttrWhenNotChosen:card];
+}
+
+- (UIImage *)backgroundImageForCard:(Card *)card
+{
+    if (isEasyModeEnabled && !card.isChosen)
+        return [UIImage imageNamed:@"cardsemi"];
+    else
+        return [super backgroundImageForCard:card];
 }
 
 // override base class abstract impl
