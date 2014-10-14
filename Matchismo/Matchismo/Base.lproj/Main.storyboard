@@ -377,7 +377,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="0.25098040699958801" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Playing Card" id="TWB-Dy-vPv"/>
+                    <tabBarItem key="tabBarItem" title="Playing Card" selectedImage="PlayingCardIcon" id="TWB-Dy-vPv"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
                         <outlet property="lastSelStatusLabel" destination="KSG-ng-gEe" id="Ag9-We-zWa"/>
@@ -897,6 +897,7 @@
             <objects>
                 <tabBarController id="6c8-Ts-9u3" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="6IV-sw-Y15">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -913,6 +914,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="PlayingCardIcon" width="87" height="87"/>
         <image name="cardback" width="64" height="96"/>
         <image name="cardfront" width="64" height="96"/>
     </resources>

@@ -24,8 +24,29 @@
 
 @implementation CardGameViewController
 
-const int SEGMENT_INDEX_2CARDS = 0;
-const int SEGMENT_INDEX_3CARDS = 1;
++ (NSString *)formatCardContent:(Card *) card
+{
+    NSString * formattedCardContent = card.contents;
+    
+    return formattedCardContent;
+}
+
++ (NSAttributedString *)formatCardContentAttr:(Card *) card
+{
+    NSString * cardContent = [self formatCardContent:card];
+    
+    NSDictionary *attribs = @{ NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline],
+                               NSForegroundColorAttributeName: [UIColor blackColor],
+                               NSStrokeWidthAttributeName:@-5,
+                               NSStrokeColorAttributeName:[UIColor redColor]
+                               };
+    
+    NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc] initWithString:cardContent];// attributes:<#(NSDictionary *)#>];
+    [attrString setAttributes:attribs range:NSMakeRange(0, cardContent.length)];
+    
+    
+    return attrString;
+}
 
 //abstract implement in subclass
 - (uint) matchMode
@@ -62,7 +83,11 @@ const int SEGMENT_INDEX_3CARDS = 1;
     for (UIButton *cardButton in self.cardButtons) {
         NSInteger cardButtonIndex = [self.cardButtons indexOfObject:cardButton];
         Card * card = [self.game cardAtIndex:cardButtonIndex];
-        [cardButton setTitle:[self titleForCard:card] forState:UIControlStateNormal];
+        //[cardButton setTitle:[self titleForCard:card] forState:UIControlStateNormal];
+        
+        NSAttributedString * attrTitle = card.isChosen? [self.class formatCardContentAttr:card] : nil;
+        [cardButton setAttributedTitle:attrTitle forState:UIControlStateNormal];
+        
         [cardButton setBackgroundImage:[self backgroundImageForCard:card]forState:UIControlStateNormal];
         cardButton.enabled = !card.isMatched;
     }
@@ -72,7 +97,8 @@ const int SEGMENT_INDEX_3CARDS = 1;
 
 - (NSString *)titleForCard:(Card *)card
 {
-    return card.isChosen? card.contents : @"";
+    //return card.isChosen? card.contents : @"";
+    return card.isChosen? [self.class formatCardContent:card] : @"";
 }
 
 - (UIImage *)backgroundImageForCard:(Card *)card
