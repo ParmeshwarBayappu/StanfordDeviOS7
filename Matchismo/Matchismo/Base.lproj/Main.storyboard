@@ -434,11 +434,11 @@
                         <viewControllerLayoutGuide type="bottom" id="017-7M-NVa"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="V7j-sO-qXZ">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="go6-F7-4DE">
-                                <rect key="frame" x="16" y="64" width="382" height="794"/>
+                                <rect key="frame" x="16" y="64" width="343" height="554"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <attributedString key="attributedText">
                                     <fragment>
@@ -454,13 +454,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="historyTextView" destination="go6-F7-4DE" id="Kn7-4Z-sdf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rTW-2e-wBc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1243" y="-568"/>
+            <point key="canvasLocation" x="1242.5" y="-552.5"/>
         </scene>
         <!--3 Card-->
         <scene sceneID="fbU-Ma-Yh8">
