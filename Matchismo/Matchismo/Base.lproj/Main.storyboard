@@ -380,6 +380,11 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <tabBarItem key="tabBarItem" title="Playing Card" selectedImage="PlayingCardIcon" id="TWB-Dy-vPv"/>
                     <navigationItem key="navigationItem" title="Playing Cards" id="SDa-EE-4qv">
+                        <barButtonItem key="leftBarButtonItem" title="Redeal" id="uGH-T4-MOh">
+                            <connections>
+                                <action selector="touchRedealButton:" destination="vXZ-lx-hvc" id="br6-iy-LBd"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="History" id="wMi-1k-5CK">
                             <connections>
                                 <segue destination="EFc-EI-Hym" kind="show" identifier="ShowHistory" id="4aD-sp-ESA"/>
@@ -895,6 +900,11 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <tabBarItem key="tabBarItem" title="Set Card" id="0GA-Yz-8Ts"/>
                     <navigationItem key="navigationItem" title="Set Cards" id="eSK-82-ljQ">
+                        <barButtonItem key="leftBarButtonItem" title="Redeal" id="Zt6-LW-zvv">
+                            <connections>
+                                <action selector="touchRedealButton:" destination="33H-lo-wKR" id="ldG-Ty-tia"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="History" id="DHh-S0-WbC">
                             <connections>
                                 <segue destination="EFc-EI-Hym" kind="show" identifier="ShowHistory" id="gTw-fa-pP2"/>

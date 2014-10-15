@@ -29,6 +29,7 @@
 
 @implementation CardGameViewController
 
+
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"ShowHistory"]) {
@@ -130,7 +131,7 @@
     return [UIImage imageNamed:card.isChosen? @"cardfront" : @"cardback"];
 }
 
-- (IBAction)touchRedealButton:(UIButton *)sender {
+- (IBAction)touchRedealButton:(id)sender {
     
     //reset game
     //Question: Is a call to release necessary for memory management?
