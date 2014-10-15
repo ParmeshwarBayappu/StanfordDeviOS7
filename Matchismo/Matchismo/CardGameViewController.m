@@ -22,10 +22,17 @@
 @property (strong, nonatomic) CardMatchingGame * game;
 @property (nonatomic, readonly) uint matchMode;
 @property (nonatomic, strong) NSAttributedString * selectionImpactStringAttr;
+@property (nonatomic, strong) NSMutableArray * selectionImpactHistory; //of NSAttributedString
 
 @end
 
 @implementation CardGameViewController
+
+- (NSMutableArray *)selectionImpactHistory
+{
+    if(!_selectionImpactHistory) _selectionImpactHistory = [[NSMutableArray alloc] init];
+    return _selectionImpactHistory;
+}
 
 + (NSString *)formatCardContent:(Card *) card
 {
@@ -124,6 +131,7 @@
     
     //Game reset - enable options available at start such as match mode
     self.selectionImpactStringAttr = nil;
+    self.selectionImpactHistory = nil;
     
     [self updateUI];
 }
@@ -202,6 +210,7 @@
     }
     
     self.selectionImpactStringAttr = strBuilder;
+    [self.selectionImpactHistory addObject:self.selectionImpactStringAttr];
     NSLog(@"%@", self.selectionImpactStringAttr.string);
 }
 
