@@ -378,7 +378,13 @@
                         <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="0.25098040699958801" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Playing Card" selectedImage="PlayingCardIcon" id="TWB-Dy-vPv"/>
-                    <navigationItem key="navigationItem" id="SDa-EE-4qv"/>
+                    <navigationItem key="navigationItem" title="Playing Cards" id="SDa-EE-4qv">
+                        <barButtonItem key="rightBarButtonItem" title="History" id="wMi-1k-5CK">
+                            <connections>
+                                <segue destination="EFc-EI-Hym" kind="show" identifier="ShowHistory" id="4aD-sp-ESA"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
                         <outlet property="lastSelStatusLabel" destination="KSG-ng-gEe" id="Ag9-We-zWa"/>
@@ -417,7 +423,44 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="720" y="-840"/>
+            <point key="canvasLocation" x="698" y="-836"/>
+        </scene>
+        <!--Selection History-->
+        <scene sceneID="4yA-27-9Ab">
+            <objects>
+                <viewController title="Selection History" id="EFc-EI-Hym" customClass="SelectionImpactHistoryViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2w0-dG-kHB"/>
+                        <viewControllerLayoutGuide type="bottom" id="017-7M-NVa"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="V7j-sO-qXZ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="go6-F7-4DE">
+                                <rect key="frame" x="16" y="64" width="382" height="794"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <attributedString key="attributedText">
+                                    <fragment>
+                                        <string key="content">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                        <attributes>
+                                            <font key="NSFont" size="14" name="HelveticaNeue"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="historyTextView" destination="go6-F7-4DE" id="Kn7-4Z-sdf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rTW-2e-wBc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1243" y="-568"/>
         </scene>
         <!--3 Card-->
         <scene sceneID="fbU-Ma-Yh8">
@@ -848,7 +891,13 @@
                         <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Set Card" id="0GA-Yz-8Ts"/>
-                    <navigationItem key="navigationItem" id="eSK-82-ljQ"/>
+                    <navigationItem key="navigationItem" title="Set Cards" id="eSK-82-ljQ">
+                        <barButtonItem key="rightBarButtonItem" title="History" id="DHh-S0-WbC">
+                            <connections>
+                                <segue destination="EFc-EI-Hym" kind="show" identifier="ShowHistory" id="gTw-fa-pP2"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
                         <outlet property="lastSelStatusLabel" destination="JcY-Nb-FP6" id="pNt-aR-Elx"/>
@@ -946,7 +995,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0M2-17-eMF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-26" y="8"/>
+            <point key="canvasLocation" x="2" y="182"/>
         </scene>
     </scenes>
     <resources>
@@ -954,4 +1003,7 @@
         <image name="cardback" width="64" height="96"/>
         <image name="cardfront" width="64" height="96"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="gTw-fa-pP2"/>
+    </inferredMetricsTieBreakers>
 </document>

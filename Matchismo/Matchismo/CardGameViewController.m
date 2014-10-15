@@ -9,7 +9,8 @@
 #import "CardGameViewController.h"
 #import "CardMatchingGame.h"
 @import Foundation;
-
+#import "SomeCommonUtils.h"
+#import "SelectionImpactHistoryViewController.h"
 
 @interface CardGameViewController ()
 
@@ -27,6 +28,14 @@
 @end
 
 @implementation CardGameViewController
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"ShowHistory"]) {
+        SelectionImpactHistoryViewController * historyVC = (SelectionImpactHistoryViewController *)segue.destinationViewController;
+        historyVC.attributedSelectionHistory = self.selectionImpactHistory;
+    }
+}
 
 - (NSMutableArray *)selectionImpactHistory
 {
