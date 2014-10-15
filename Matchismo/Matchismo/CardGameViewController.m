@@ -156,11 +156,24 @@
     return cardsString;
 }
 
+NSAttributedString * cardSeparatorInAttributedString = nil;
+
++ (NSAttributedString *)separatorForAttributedStringFromCardsArray
+{
+    if(!cardSeparatorInAttributedString) cardSeparatorInAttributedString = [[NSAttributedString alloc] initWithString:@", "];
+    return cardSeparatorInAttributedString;
+}
+
 + (NSAttributedString *)attributedStringFromCardsArray:(NSArray *)cards
 {
     NSMutableAttributedString * cardsAttrString = [[NSMutableAttributedString alloc] init];
+    BOOL firstTimeInLoop = true;
+
     for (Card *card in cards) {
-        //cardsAttrString =
+        // Add separator between cards
+        if (firstTimeInLoop) firstTimeInLoop = false;
+        else [cardsAttrString appendAttributedString:[self separatorForAttributedStringFromCardsArray]];
+        
         [cardsAttrString appendAttributedString: [self formatCardContentAttr:card]];
     }
     
