@@ -378,6 +378,7 @@
                         <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="0.25098040699958801" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Playing Card" selectedImage="PlayingCardIcon" id="TWB-Dy-vPv"/>
+                    <navigationItem key="navigationItem" id="SDa-EE-4qv"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
                         <outlet property="lastSelStatusLabel" destination="KSG-ng-gEe" id="Ag9-We-zWa"/>
@@ -847,6 +848,7 @@
                         <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Set Card" id="0GA-Yz-8Ts"/>
+                    <navigationItem key="navigationItem" id="eSK-82-ljQ"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
                         <outlet property="lastSelStatusLabel" destination="JcY-Nb-FP6" id="pNt-aR-Elx"/>
@@ -892,6 +894,23 @@
             </objects>
             <point key="canvasLocation" x="698" y="8"/>
         </scene>
+        <!--2 Playing Cards-->
+        <scene sceneID="W8R-5B-Pwu">
+            <objects>
+                <navigationController id="5yF-1p-fss" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="2 Playing Cards" id="rlZ-vh-kLC"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cwr-DH-J5I">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="ASh-F6-och"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4eF-io-cLg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-33" y="-689"/>
+        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Oy7-vJ-izR">
             <objects>
@@ -904,13 +923,30 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="viewControllers" id="o8Y-C4-EwP"/>
-                        <segue destination="33H-lo-wKR" kind="relationship" relationship="viewControllers" id="KKK-AS-Qja"/>
+                        <segue destination="5yF-1p-fss" kind="relationship" relationship="viewControllers" id="CQX-wP-YRd"/>
+                        <segue destination="80e-MJ-2rE" kind="relationship" relationship="viewControllers" id="4d3-18-0iX"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Eao-62-c1w" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8" y="-722"/>
+            <point key="canvasLocation" x="-664" y="-269"/>
+        </scene>
+        <!--Set Cards-->
+        <scene sceneID="OGA-ZS-6yu">
+            <objects>
+                <navigationController id="80e-MJ-2rE" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Set Cards" id="5Iz-4i-dKq"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="zJH-y3-4xs">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="33H-lo-wKR" kind="relationship" relationship="rootViewController" id="h30-IK-BLq"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0M2-17-eMF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-26" y="8"/>
         </scene>
     </scenes>
     <resources>
