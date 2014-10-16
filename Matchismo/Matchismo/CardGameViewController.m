@@ -7,34 +7,85 @@
 //
 
 #import "CardGameViewController.h"
-#import "model/PlayingCardDeck.h"
 #import "CardMatchingGame.h"
+//@import Foundation;
+#import "SomeCommonUtils.h"
+#import "SelectionImpactHistoryViewController.h"
 
 @interface CardGameViewController ()
 
 //UI property bindings
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *matchModeSegmentedControl;
 @property (weak, nonatomic) IBOutlet UILabel *lastSelStatusLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *matchModeLabel;
 
 @property (nonatomic) int flipCount;
 @property (strong, nonatomic) CardMatchingGame * game;
-@property (nonatomic, readonly) uint matchMode;
-@property (nonatomic, strong) NSString * selectionImpactString;
+//@property (nonatomic, readonly) uint matchMode;
+@property (nonatomic, strong) NSAttributedString * selectionImpactStringAttr;
+@property (nonatomic, strong) NSMutableArray * selectionImpactHistory; //of NSAttributedString
+
+@property (nonatomic, readwrite) BOOL matchStarted;
+
 @end
 
 @implementation CardGameViewController
 
-const int SEGMENT_INDEX_2CARDS = 0;
-const int SEGMENT_INDEX_3CARDS = 1;
-
-- (uint) matchMode
+- (uint)selectedMatchModeIndex
 {
-    NSLog(@"Selected Index: %ld", (long)self.matchModeSegmentedControl.selectedSegmentIndex);
-    if (self.matchModeSegmentedControl.selectedSegmentIndex == SEGMENT_INDEX_3CARDS)
-        return 3;
-    return 2; //default match mode - SEGMENT_INDEX_4CARDS
+    assert(self.matchModeLabel.selectedSegmentIndex>=0);
+    return (uint) self.matchModeLabel.selectedSegmentIndex;
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"ShowHistory"]) {
+        SelectionImpactHistoryViewController * historyVC = (SelectionImpactHistoryViewController *)segue.destinationViewController;
+        historyVC.attributedSelectionHistory = self.selectionImpactHistory;
+    }
+}
+
+- (NSMutableArray *)selectionImpactHistory
+{
+    if(!_selectionImpactHistory) _selectionImpactHistory = [[NSMutableArray alloc] init];
+    return _selectionImpactHistory;
+}
+
+- (NSString *)formatCardContent:(Card *) card
+{
+    NSString * formattedCardContent = card.contents;
+    
+    return formattedCardContent;
+}
+
+- (NSAttributedString *)formatCardContentAttr:(Card *) card
+{
+    NSString * cardContent = [self formatCardContent:card];
+    
+    NSDictionary *attribs = @{ NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline],
+                               NSForegroundColorAttributeName: [UIColor blackColor],
+                               NSStrokeWidthAttributeName:@-5,
+                               NSStrokeColorAttributeName:[UIColor redColor]
+                               };
+    
+    NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc] initWithString:cardContent];// attributes:attribs];// attributes:<#(NSDictionary *)#>];
+    [attrString setAttributes:attribs range:NSMakeRange(0, cardContent.length)];
+    
+    
+    return attrString;
+}
+
+- (NSAttributedString *)formatCardContentAttrWhenNotChosen:(Card *) card
+{
+    return nil;
+}
+
+//abstract implement in subclass
+- (uint) numberOfCardsToMatch
+{
+    //ASSERT FAILURE
+    return 0;
 }
 
 - (CardMatchingGame *)game
@@ -46,18 +97,21 @@ const int SEGMENT_INDEX_3CARDS = 1;
     return _game;
 }
 
-- (PlayingCardDeck *)createDeck
+// abstract
+- (Deck *)createDeck
 {
-    return [[PlayingCardDeck alloc] init];
+    return nil;
 }
 
 - (IBAction)touchCardButton:(UIButton *)sender {
-
-    //Game started - disable options not available after start such as match mode
-    self.matchModeSegmentedControl.enabled = NO;
-    self.game.matchMode=self.matchMode; //TODO: improve timing
+    if (!self.matchStarted) { //Once a card is selected - disable options available at start such as match mode
+        self.matchStarted = true;
+        self.matchModeLabel.enabled = false;
+        self.game.matchMode = self.numberOfCardsToMatch;
+    }
     
     NSInteger chosenButtonIndex = [self.cardButtons indexOfObject:sender];
+    NSLog(@"Chosen card button index: %ld", (long)chosenButtonIndex);
     [self.game chooseCardAtIndex:chosenButtonIndex withNotification:self];
     [self updateUI];
 }
@@ -67,17 +121,34 @@ const int SEGMENT_INDEX_3CARDS = 1;
     for (UIButton *cardButton in self.cardButtons) {
         NSInteger cardButtonIndex = [self.cardButtons indexOfObject:cardButton];
         Card * card = [self.game cardAtIndex:cardButtonIndex];
-        [cardButton setTitle:[self titleForCard:card] forState:UIControlStateNormal];
+        
+        NSAttributedString * attrTitle = card.isChosen? [self formatCardContentAttr:card] : [self formatCardContentAttrWhenNotChosen:card];
+        [cardButton setAttributedTitle:attrTitle forState:UIControlStateNormal];
+        
         [cardButton setBackgroundImage:[self backgroundImageForCard:card]forState:UIControlStateNormal];
         cardButton.enabled = !card.isMatched;
     }
-    self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
-    self.lastSelStatusLabel.text = self.selectionImpactString;
+    [self.scoreLabel setAttributedText:[self getScoreText]];
+    [self.lastSelStatusLabel setAttributedText:self.selectionImpactStringAttr];
+}
+
+- (NSAttributedString *)getScoreText
+{
+    NSDictionary *scoreAttribs = @{ NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline],
+                                    NSForegroundColorAttributeName: (self.game.score<0)? [UIColor redColor] : [UIColor blackColor]
+                                    };
+    NSString * score = [NSString stringWithFormat:@"%ld", (long)self.game.score];
+    NSMutableAttributedString * attrScore = [[NSMutableAttributedString alloc] initWithString:score];// attributes:scoreAttribs];
+    [attrScore setAttributes:scoreAttribs range:NSMakeRange(0, score.length)];
+
+    return attrScore;
+    
 }
 
 - (NSString *)titleForCard:(Card *)card
 {
-    return card.isChosen? card.contents : @"";
+    //return card.isChosen? card.contents : @"";
+    return card.isChosen? [self.class formatCardContent:card] : @"";
 }
 
 - (UIImage *)backgroundImageForCard:(Card *)card
@@ -85,19 +156,25 @@ const int SEGMENT_INDEX_3CARDS = 1;
     return [UIImage imageNamed:card.isChosen? @"cardfront" : @"cardback"];
 }
 
-- (IBAction)touchRedealButton:(UIButton *)sender {
+- (IBAction)touchRedealButton:(id)sender {
     
-    //reset game
-    //Question: Is a call to release necessary for memory management?
-    //CardMatchingGame * prevGame = self.game;
-    //[prevGame release];
-    self.game = nil;
-    
-    //Game reset - enable options available at start such as match mode
-    self.matchModeSegmentedControl.enabled = YES;
-    self.selectionImpactString = @"";
-    
-    [self updateUI];
+    if(self.matchStarted)
+    {
+        //reset game
+        self.matchStarted = false;
+
+        //Question: Is a call to release necessary for memory management?
+        //CardMatchingGame * prevGame = self.game;
+        //[prevGame release];
+        self.game = nil;
+        
+        //Game reset - enable options available at start such as match mode
+        self.selectionImpactStringAttr = nil;
+        self.selectionImpactHistory = nil;
+        self.matchModeLabel.enabled = true;
+        
+        [self updateUI];
+    }
 }
 
 
@@ -111,36 +188,87 @@ const int SEGMENT_INDEX_3CARDS = 1;
     return cardsString;
 }
 
+NSAttributedString * cardSeparatorInAttributedString = nil;
+
++ (NSAttributedString *)separatorForAttributedStringFromCardsArray
+{
+    if(!cardSeparatorInAttributedString) cardSeparatorInAttributedString = [[NSAttributedString alloc] initWithString:@", "];
+    return cardSeparatorInAttributedString;
+}
+
+- (NSAttributedString *)attributedStringFromCardsArray:(NSArray *)cards
+{
+    NSMutableAttributedString * cardsAttrString = [[NSMutableAttributedString alloc] init];
+    BOOL firstTimeInLoop = true;
+
+    for (Card *card in cards) {
+        // Add separator between cards
+        if (firstTimeInLoop) firstTimeInLoop = false;
+        else [cardsAttrString appendAttributedString:[self.class separatorForAttributedStringFromCardsArray]];
+        
+        [cardsAttrString appendAttributedString: [self formatCardContentAttr:card]];
+    }
+    
+    return cardsAttrString;
+}
+
 - (void)selectionImpactOfCard:(Card *)card chosen:(BOOL)isChosen otherChosenCards:(NSArray *)otherChosenCards impact:(NSInteger)chosenCardsScoreImpact
 {
-    NSString * otherChoseCardsStr = [self.class stringFromCardsArray:otherChosenCards];
+    //NSString * otherChoseCardsStr = [self.class stringFromCardsArray:otherChosenCards];
+    //NSString * cardContents = card.contents;
+    NSAttributedString *cardContentsAttr = [self formatCardContentAttr:card];
+    NSAttributedString * otherChoseCardsStrAttr = [self attributedStringFromCardsArray:otherChosenCards];
+    
+    NSMutableAttributedString * strBuilder = [[NSMutableAttributedString alloc] init];
+    
     if (isChosen) {
         if (chosenCardsScoreImpact>0) { //card matched
-            self.selectionImpactString = [NSString stringWithFormat:@"%@ matched [%@] for %ld points!",
-                                          card.contents, otherChoseCardsStr, (long)chosenCardsScoreImpact];
+            //@"%@ matched [%@] for %ld points!"
+            [strBuilder appendAttributedString:cardContentsAttr];
+            [strBuilder appendAttributedString:[[NSAttributedString alloc] initWithString:@" matched ["]];
+            [strBuilder appendAttributedString:otherChoseCardsStrAttr];
+            [strBuilder appendAttributedString:[[NSAttributedString alloc] initWithString:[[NSString alloc] initWithFormat:@"] for %ld points!", (long)chosenCardsScoreImpact]]];
+            
         } else if (chosenCardsScoreImpact<0) { //card mismatch penatly
-            self.selectionImpactString = [NSString stringWithFormat:@"%@  did not match [%@]. %ld points penalty!",
-                                          card.contents, otherChoseCardsStr, (long)-chosenCardsScoreImpact];
+            //@"%@  did not match [%@]. %ld points penalty!"
+            [strBuilder appendAttributedString:cardContentsAttr];
+            [strBuilder appendAttributedString:[[NSAttributedString alloc] initWithString:@" did not match ["]];
+            [strBuilder appendAttributedString:otherChoseCardsStrAttr];
+            [strBuilder appendAttributedString:[[NSAttributedString alloc] initWithString:[[NSString alloc] initWithFormat:@"]. %ld points penalty!", (long)chosenCardsScoreImpact]]];
+            
         } else { //card selected - no match yet
             if (otherChosenCards.count>0) { // other selected cards exist
-                self.selectionImpactString = [NSString stringWithFormat:@"%@  did not match [%@].",
-                                          card.contents, otherChoseCardsStr];
+                //@"%@  did not match [%@] yet." or @"%@  did not match [%@]."
+                [strBuilder appendAttributedString:cardContentsAttr];
+                [strBuilder appendAttributedString:[[NSAttributedString alloc] initWithString:@" did not match ["]];
+                [strBuilder appendAttributedString:otherChoseCardsStrAttr];
+                if(otherChosenCards.count < ([self numberOfCardsToMatch]-1))
+                    [strBuilder appendAttributedString:[[NSAttributedString alloc] initWithString:@"] yet."]];
+                else
+                    [strBuilder appendAttributedString:[[NSAttributedString alloc] initWithString:@"]."]];
             } else { //first card selected
-                self.selectionImpactString = [NSString stringWithFormat:@"%@ selected.",
-                                              card.contents];
+                //@"%@ selected."
+                [strBuilder appendAttributedString:cardContentsAttr];
+                [strBuilder appendAttributedString:[[NSAttributedString alloc] initWithString:@" selected."]];
             }
         }
     } else { // card unselected
         if (chosenCardsScoreImpact<0) { //card was matching something
-            self.selectionImpactString = [NSString stringWithFormat:@"%@  unselected was matching [%@] for %ld points!",
-                                          card.contents, otherChoseCardsStr, (long)chosenCardsScoreImpact];
+            //@"%@  unselected was matching [%@] for %ld points!"
+            [strBuilder appendAttributedString:cardContentsAttr];
+            [strBuilder appendAttributedString:[[NSAttributedString alloc] initWithString:@" unselected was matching ["]];
+            [strBuilder appendAttributedString:otherChoseCardsStrAttr];
+            [strBuilder appendAttributedString:[[NSAttributedString alloc] initWithString:[[NSString alloc] initWithFormat:@"] for %ld points!", (long)chosenCardsScoreImpact]]];
         } else { //card was not matching anything
-            self.selectionImpactString = [NSString stringWithFormat:@"%@ unselected.",
-                                          card.contents];
+            //@"%@ unselected."
+            [strBuilder appendAttributedString:cardContentsAttr];
+            [strBuilder appendAttributedString:[[NSAttributedString alloc] initWithString:@" unselected."]];
         }
     }
     
-    NSLog(@"%@", self.selectionImpactString);
+    self.selectionImpactStringAttr = strBuilder;
+    [self.selectionImpactHistory addObject:self.selectionImpactStringAttr];
+    NSLog(@"%@", self.selectionImpactStringAttr.string);
 }
 
 @end

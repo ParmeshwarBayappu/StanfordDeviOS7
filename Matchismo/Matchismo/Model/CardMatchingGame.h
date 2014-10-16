@@ -19,7 +19,7 @@
 - (void)chooseCardAtIndex:(NSUInteger)index withNotification:(id<CardGameNotifications>) requestor;
 - (Card *)cardAtIndex:(NSUInteger)index;
 - (NSArray *)currentChosenCards;
-- (int) currentChosenCardsScore;
+//- (int) currentChosenCardsScore;
 
 @property (nonatomic, readonly) NSInteger score;
 @property (nonatomic) NSUInteger matchMode;
