@@ -127,8 +127,36 @@
         [cardButton setBackgroundImage:[self backgroundImageForCard:card]forState:UIControlStateNormal];
         cardButton.enabled = !card.isMatched;
     }
-    self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
+    [self.scoreLabel setAttributedText:[self getScoreText]];
     [self.lastSelStatusLabel setAttributedText:self.selectionImpactStringAttr];
+}
+
+- (NSAttributedString *)getScoreText
+{
+    static NSAttributedString * attrTitle = nil;
+
+    if (!attrTitle)
+    {
+        NSDictionary *titleAttribs = @{ NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline],
+                                   NSForegroundColorAttributeName: [UIColor blackColor],
+                                   };
+        NSString * scoreTitle = @"Score: ";
+        NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc] initWithString:scoreTitle];// attributes:attribs];
+        [attrString setAttributes:titleAttribs range:NSMakeRange(0, scoreTitle.length)];
+        attrTitle = attrString;
+    }
+
+    NSDictionary *scoreAttribs = @{ NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline],
+                                    NSForegroundColorAttributeName: (self.game.score<0)? [UIColor redColor] : [UIColor blackColor]
+                                    };
+    NSString * score = [NSString stringWithFormat:@"%ld", (long)self.game.score];
+    NSMutableAttributedString * attrScore = [[NSMutableAttributedString alloc] initWithString:score];// attributes:scoreAttribs];
+    [attrScore setAttributes:scoreAttribs range:NSMakeRange(0, score.length)];
+
+    NSMutableAttributedString * attrTitleAndScoreString = [[NSMutableAttributedString alloc] initWithAttributedString:attrTitle];
+    [attrTitleAndScoreString appendAttributedString:attrScore];
+    return attrTitleAndScoreString;
+    
 }
 
 - (NSString *)titleForCard:(Card *)card
