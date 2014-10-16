@@ -127,7 +127,7 @@ BOOL isEasyModeEnabled = true;
 }
 
 // override base class abstract impl
--(uint)matchMode
+-(uint)numberOfCardsToMatch
 {
     return 3;
 }

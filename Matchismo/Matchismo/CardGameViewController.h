@@ -15,7 +15,7 @@
 // abstract
 // protected - for subclass to implement
 - (Deck *)createDeck;
-- (uint) matchMode;
+- (uint) numberOfCardsToMatch;
 
 + (NSAttributedString *)formatCardContentAttr:(Card *) card;
 + (NSAttributedString *)formatCardContentAttrWhenNotChosen:(Card *) card;

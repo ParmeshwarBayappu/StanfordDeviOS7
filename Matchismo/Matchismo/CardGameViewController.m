@@ -8,7 +8,7 @@
 
 #import "CardGameViewController.h"
 #import "CardMatchingGame.h"
-@import Foundation;
+//@import Foundation;
 #import "SomeCommonUtils.h"
 #import "SelectionImpactHistoryViewController.h"
 
@@ -18,10 +18,11 @@
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *lastSelStatusLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *matchModeLabel;
 
 @property (nonatomic) int flipCount;
 @property (strong, nonatomic) CardMatchingGame * game;
-@property (nonatomic, readonly) uint matchMode;
+//@property (nonatomic, readonly) uint matchMode;
 @property (nonatomic, strong) NSAttributedString * selectionImpactStringAttr;
 @property (nonatomic, strong) NSMutableArray * selectionImpactHistory; //of NSAttributedString
 
@@ -29,6 +30,11 @@
 
 @implementation CardGameViewController
 
+- (uint)selectedMatchModeIndex
+{
+    assert(self.matchModeLabel.selectedSegmentIndex>=0);
+    return (uint) self.matchModeLabel.selectedSegmentIndex;
+}
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -74,7 +80,7 @@
 }
 
 //abstract implement in subclass
-- (uint) matchMode
+- (uint) numberOfCardsToMatch
 {
     //ASSERT FAILURE
     return 0;

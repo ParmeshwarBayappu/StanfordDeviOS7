@@ -21,9 +21,9 @@
     return [[PlayingCardDeck alloc] init];
 }
 
--(uint) matchMode
+-(uint) numberOfCardsToMatch
 {
-    return 2;
+    return [self selectedMatchModeIndex]==0 ? 2 : 3;
 }
 
 - (void)viewDidLoad {

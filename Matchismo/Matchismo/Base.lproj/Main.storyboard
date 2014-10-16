@@ -358,6 +358,14 @@
                                     <action selector="touchCardButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="XDy-bA-gTq"/>
                                 </connections>
                             </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="crb-R0-XKW">
+                                <rect key="frame" x="236" y="5" width="123" height="29"/>
+                                <segments>
+                                    <segment title="2 Card"/>
+                                    <segment title="3 Card"/>
+                                </segments>
+                                <color key="tintColor" red="0.1215686275" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="0.25098040699958801" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -378,6 +386,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="lastSelStatusLabel" destination="KSG-ng-gEe" id="Ag9-We-zWa"/>
+                        <outlet property="matchModeLabel" destination="crb-R0-XKW" id="kPn-w2-OKA"/>
                         <outlet property="scoreLabel" destination="sFY-UZ-kAt" id="lJu-rs-mlO"/>
                         <outletCollection property="cardButtons" destination="U4I-E9-CHg" id="2rd-7g-r68"/>
                         <outletCollection property="cardButtons" destination="dXb-xj-sgc" id="zaO-HQ-tp5"/>
@@ -862,6 +871,14 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="spR-iG-Gd4">
+                                <rect key="frame" x="239" y="5" width="123" height="29"/>
+                                <segments>
+                                    <segment title="Std"/>
+                                    <segment title="Easy"/>
+                                </segments>
+                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -882,6 +899,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="lastSelStatusLabel" destination="JcY-Nb-FP6" id="pNt-aR-Elx"/>
+                        <outlet property="matchModeLabel" destination="spR-iG-Gd4" id="UR5-Tt-URJ"/>
                         <outlet property="scoreLabel" destination="kiY-yG-JUk" id="WpW-ba-XuE"/>
                         <outletCollection property="cardButtons" destination="Bma-OH-nnG" id="aV0-3A-3Sf"/>
                         <outletCollection property="cardButtons" destination="d0V-WJ-lPw" id="r6b-9d-vsb"/>
