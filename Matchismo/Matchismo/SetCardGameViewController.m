@@ -91,7 +91,7 @@ NSArray * SHADENAMES_IN_SET;
     
     //color, shade
     NSDictionary *attribs = @{ NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline],
-                              NSForegroundColorAttributeName: [self.class shadesInSet][setCard.shading -1],
+                              NSForegroundColorAttributeName: [self.class shadesInSet][setCard.shading -1], // TODO: Use Font's alpha value for shade, instead of ForegroundColor.
                             
                               NSStrokeWidthAttributeName:@-8,
                               NSStrokeColorAttributeName:[self.class colorsInSet][setCard.color -1] };
