@@ -56,7 +56,7 @@ NSArray * SHADENAMES_IN_SET;
 }
 
 //not essential
-+ (NSString *)formatCardContent:(Card *) card
+- (NSString *)formatCardContent:(Card *) card
 {
     SetCard * setCard = SAFE_CAST_TO_TYPE_OR_ASSERT(card, SetCard);
     
@@ -64,20 +64,20 @@ NSArray * SHADENAMES_IN_SET;
     NSString * formattedCardContent = @"";
     
     for (int i=0; i<setCard.number; i++) {
-        formattedCardContent = [formattedCardContent stringByAppendingString:[self shapesInSet][setCard.symbol-1]];
+        formattedCardContent = [formattedCardContent stringByAppendingString:[self.class shapesInSet][setCard.symbol-1]];
     }
     
     //color as text
-    formattedCardContent = [formattedCardContent stringByAppendingString:[self colorNamesInSet][setCard.color -1]];
+    formattedCardContent = [formattedCardContent stringByAppendingString:[self.class colorNamesInSet][setCard.color -1]];
     
     //shade as text
-    formattedCardContent = [formattedCardContent stringByAppendingString:[self shadeNamesInSet][setCard.shading -1]];
+    formattedCardContent = [formattedCardContent stringByAppendingString:[self.class shadeNamesInSet][setCard.shading -1]];
 
     return formattedCardContent;
 }
 
 
-+ (NSAttributedString *)formatCardContentAttr:(Card *) card
+- (NSAttributedString *)formatCardContentAttr:(Card *) card
 {
     //SetCard setCard = (assert([card isKindOfClass:[SetCard class]]),((SetCard * ) card ));
     SetCard * setCard = SAFE_CAST_TO_TYPE_OR_ASSERT(card, SetCard);
@@ -86,7 +86,7 @@ NSArray * SHADENAMES_IN_SET;
     //number, symbol
     NSString * cardContent = @"";
     for (int i=0; i<setCard.number; i++) {
-        cardContent = [cardContent stringByAppendingString:[self shapesInSet][setCard.symbol-1]];
+        cardContent = [cardContent stringByAppendingString:[self.class shapesInSet][setCard.symbol-1]];
     }
     
     //color, shade
@@ -103,10 +103,14 @@ NSArray * SHADENAMES_IN_SET;
     return attrString;
 }
 
-BOOL isEasyModeEnabled = true;
-+ (NSAttributedString *)formatCardContentAttrWhenNotChosen:(Card *)card
+-(BOOL)isEasyModeEnabled
 {
-    if (isEasyModeEnabled && !card.isChosen)
+    return [self selectedMatchModeIndex]==1;
+}
+
+- (NSAttributedString *)formatCardContentAttrWhenNotChosen:(Card *)card
+{
+    if (self.matchStarted && self.isEasyModeEnabled && !card.isChosen)
         return [self formatCardContentAttr:card];
     else
         return [super formatCardContentAttrWhenNotChosen:card];
@@ -114,7 +118,7 @@ BOOL isEasyModeEnabled = true;
 
 - (UIImage *)backgroundImageForCard:(Card *)card
 {
-    if (isEasyModeEnabled && !card.isChosen)
+    if (self.matchStarted && self.isEasyModeEnabled && !card.isChosen)
         return [UIImage imageNamed:@"cardsemi"];
     else
         return [super backgroundImageForCard:card];

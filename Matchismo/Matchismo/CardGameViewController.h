@@ -17,8 +17,11 @@
 - (Deck *)createDeck;
 - (uint) numberOfCardsToMatch;
 
-+ (NSAttributedString *)formatCardContentAttr:(Card *) card;
-+ (NSAttributedString *)formatCardContentAttrWhenNotChosen:(Card *) card;
+@property (nonatomic, readonly) BOOL matchStarted;
+- (uint)selectedMatchModeIndex;
+
+- (NSAttributedString *)formatCardContentAttr:(Card *) card;
+- (NSAttributedString *)formatCardContentAttrWhenNotChosen:(Card *) card;
 
 - (UIImage *)backgroundImageForCard:(Card *)card;
 
