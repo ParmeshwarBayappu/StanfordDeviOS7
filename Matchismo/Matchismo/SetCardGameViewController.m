@@ -36,6 +36,7 @@ NSArray * SHADENAMES_IN_SET;
     return COLORS_IN_SET;
 }
 
+//No longer used
 + (NSArray *)shadesInSet
 {
     if(!SHADES_IN_SET) SHADES_IN_SET = @[[UIColor yellowColor], [UIColor greenColor], [UIColor whiteColor]];
@@ -49,6 +50,7 @@ NSArray * SHADENAMES_IN_SET;
     return COLORNAMES_IN_SET;
 }
 
+//No longer used
 + (NSArray *)shadeNamesInSet
 {
     if(!SHADENAMES_IN_SET) SHADENAMES_IN_SET = @[ @"yellowColor", @"greenColor", @"whiteColor"];
@@ -90,15 +92,18 @@ NSArray * SHADENAMES_IN_SET;
     }
     
     //color, shade
-    NSDictionary *attribs = @{ NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline],
-                              NSForegroundColorAttributeName: [self.class shadesInSet][setCard.shading -1], // TODO: Use Font's alpha value for shade, instead of ForegroundColor.
+    NSDictionary *attribs = @{ NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline], // UIFontTextStyleSubheadline],
+                              NSForegroundColorAttributeName: [[self.class colorsInSet][setCard.color -1] colorWithAlphaComponent:(setCard.shading-1)*0.5], // TODO: Use Font's alpha value for shade, instead of ForegroundColor.
                             
-                              NSStrokeWidthAttributeName:@-8,
-                              NSStrokeColorAttributeName:[self.class colorsInSet][setCard.color -1] };
+                              NSStrokeWidthAttributeName:@-3
+                              ,NSStrokeColorAttributeName:[self.class colorsInSet][setCard.color -1]
+                               };
     
     NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc] initWithString:cardContent];// attributes:<#(NSDictionary *)#>];
     [attrString setAttributes:attribs range:NSMakeRange(0, cardContent.length)];
     
+    //NSAttributedString * shadingNumberAttr = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%d", setCard.shading]];
+    //[attrString appendAttributedString:shadingNumberAttr];
     
     return attrString;
 }

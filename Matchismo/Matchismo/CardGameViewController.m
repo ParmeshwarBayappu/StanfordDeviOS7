@@ -111,6 +111,7 @@
     }
     
     NSInteger chosenButtonIndex = [self.cardButtons indexOfObject:sender];
+    NSLog(@"Chosen card button index: %ld", (long)chosenButtonIndex);
     [self.game chooseCardAtIndex:chosenButtonIndex withNotification:self];
     [self updateUI];
 }
