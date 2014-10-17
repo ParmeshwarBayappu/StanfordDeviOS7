@@ -954,11 +954,11 @@
             </objects>
             <point key="canvasLocation" x="698" y="8"/>
         </scene>
-        <!--2 Playing Cards-->
+        <!--Playing Card-->
         <scene sceneID="W8R-5B-Pwu">
             <objects>
                 <navigationController id="5yF-1p-fss" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="2 Playing Cards" id="rlZ-vh-kLC"/>
+                    <tabBarItem key="tabBarItem" title="Playing Card" image="PlayingCardIcon" id="rlZ-vh-kLC"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="cwr-DH-J5I">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -991,11 +991,11 @@
             </objects>
             <point key="canvasLocation" x="-664" y="-269"/>
         </scene>
-        <!--Set Cards-->
+        <!--Set Card-->
         <scene sceneID="OGA-ZS-6yu">
             <objects>
                 <navigationController id="80e-MJ-2rE" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Set Cards" id="5Iz-4i-dKq"/>
+                    <tabBarItem key="tabBarItem" title="Set Card" image="SetGame" id="5Iz-4i-dKq"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="zJH-y3-4xs">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1010,10 +1010,11 @@
         </scene>
     </scenes>
     <resources>
-        <image name="PlayingCardIcon" width="87" height="87"/>
+        <image name="PlayingCardIcon" width="88" height="88"/>
+        <image name="SetGame" width="20" height="20"/>
         <image name="cardback" width="64" height="96"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="4aD-sp-ESA"/>
+        <segue reference="gTw-fa-pP2"/>
     </inferredMetricsTieBreakers>
 </document>
