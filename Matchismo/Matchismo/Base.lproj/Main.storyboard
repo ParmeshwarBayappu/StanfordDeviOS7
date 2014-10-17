@@ -954,6 +954,33 @@
             </objects>
             <point key="canvasLocation" x="698" y="8"/>
         </scene>
+        <!--High Scores-->
+        <scene sceneID="WLu-43-2yc">
+            <objects>
+                <viewController title="High Scores" id="py1-Cy-wB5" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="hcu-dG-7Kx"/>
+                        <viewControllerLayoutGuide type="bottom" id="ffV-Il-GpB"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="sZD-w7-FQf">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="TODO: High Scores Page, Sortable - Assignment 3 Extras" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dil-6r-KPC">
+                                <rect key="frame" x="16" y="270" width="350" height="88"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" systemItem="topRated" id="uke-mn-fO7"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KWj-wO-7O4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1085" y="290"/>
+        </scene>
         <!--Playing Card-->
         <scene sceneID="W8R-5B-Pwu">
             <objects>
@@ -985,6 +1012,7 @@
                     <connections>
                         <segue destination="5yF-1p-fss" kind="relationship" relationship="viewControllers" id="CQX-wP-YRd"/>
                         <segue destination="80e-MJ-2rE" kind="relationship" relationship="viewControllers" id="4d3-18-0iX"/>
+                        <segue destination="py1-Cy-wB5" kind="relationship" relationship="viewControllers" id="hRX-oy-ABl"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Eao-62-c1w" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1010,7 +1038,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="PlayingCardIcon" width="88" height="88"/>
+        <image name="PlayingCardIcon" width="25" height="25"/>
         <image name="SetGame" width="20" height="20"/>
         <image name="cardback" width="64" height="96"/>
     </resources>
