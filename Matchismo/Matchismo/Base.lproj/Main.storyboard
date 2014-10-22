@@ -957,29 +957,38 @@
         <!--High Scores-->
         <scene sceneID="WLu-43-2yc">
             <objects>
-                <viewController title="High Scores" id="py1-Cy-wB5" sceneMemberID="viewController">
+                <viewController title="High Scores" id="py1-Cy-wB5" customClass="HighScoresViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hcu-dG-7Kx"/>
                         <viewControllerLayoutGuide type="bottom" id="ffV-Il-GpB"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="sZD-w7-FQf">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="TODO: High Scores Page, Sortable - Assignment 3 Extras" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dil-6r-KPC">
-                                <rect key="frame" x="16" y="270" width="350" height="88"/>
+                                <rect key="frame" x="55" y="55" width="350" height="88"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uCS-Zb-H6E" customClass="PlayingCardView">
+                                <rect key="frame" x="98" y="180" width="143" height="238"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="0.25098040699958801" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <tabBarItem key="tabBarItem" systemItem="topRated" id="uke-mn-fO7"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="playingCardView" destination="uCS-Zb-H6E" id="v7g-Uh-IAZ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KWj-wO-7O4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1085" y="290"/>
+            <point key="canvasLocation" x="1084.5" y="241.5"/>
         </scene>
         <!--Playing Card-->
         <scene sceneID="W8R-5B-Pwu">

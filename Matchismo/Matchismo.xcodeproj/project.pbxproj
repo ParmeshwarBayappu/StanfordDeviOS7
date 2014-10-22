@@ -27,6 +27,8 @@
 		5EA58CF319E882C900D7E37C /* SetCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA58CF219E882C900D7E37C /* SetCard.m */; };
 		5EA58CF619E8956800D7E37C /* SetCardDeck.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA58CF519E8956800D7E37C /* SetCardDeck.m */; };
 		5EC05CC319DF19350099E0F6 /* CardMatchingGame.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC05CC219DF19350099E0F6 /* CardMatchingGame.m */; };
+		5ECB27DD19F6E5E600AC0497 /* PlayingCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ECB27DC19F6E5E600AC0497 /* PlayingCardView.m */; };
+		5ECB27E019F6F51800AC0497 /* HighScoresViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ECB27DF19F6F51800AC0497 /* HighScoresViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +80,10 @@
 		5EA58CF519E8956800D7E37C /* SetCardDeck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SetCardDeck.m; path = Model/SetCardDeck.m; sourceTree = "<group>"; };
 		5EC05CC119DF19350099E0F6 /* CardMatchingGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardMatchingGame.h; path = Model/CardMatchingGame.h; sourceTree = "<group>"; };
 		5EC05CC219DF19350099E0F6 /* CardMatchingGame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardMatchingGame.m; path = Model/CardMatchingGame.m; sourceTree = "<group>"; };
+		5ECB27DB19F6E5E600AC0497 /* PlayingCardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayingCardView.h; path = View/PlayingCardView.h; sourceTree = "<group>"; };
+		5ECB27DC19F6E5E600AC0497 /* PlayingCardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayingCardView.m; path = View/PlayingCardView.m; sourceTree = "<group>"; };
+		5ECB27DE19F6F51800AC0497 /* HighScoresViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighScoresViewController.h; sourceTree = "<group>"; };
+		5ECB27DF19F6F51800AC0497 /* HighScoresViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighScoresViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,12 +125,15 @@
 		5E44DDB719DCB25000D15D28 /* Matchismo */ = {
 			isa = PBXGroup;
 			children = (
+				5ECB27DA19F6E5C100AC0497 /* View */,
 				5E44DDED19DDAFAD00D15D28 /* Model */,
 				5E44DDBF19DCB25000D15D28 /* CardGameViewController.h */,
 				5EA58CEB19E84B7400D7E37C /* PlayingCardGameViewController.h */,
 				5EA58CEC19E84B7400D7E37C /* PlayingCardGameViewController.m */,
 				5E44DDC019DCB25000D15D28 /* CardGameViewController.m */,
 				5E44DDC219DCB25000D15D28 /* Main.storyboard */,
+				5ECB27DE19F6F51800AC0497 /* HighScoresViewController.h */,
+				5ECB27DF19F6F51800AC0497 /* HighScoresViewController.m */,
 				5E8B5C8719EDFAB800D11B80 /* SelectionImpactHistoryViewController.h */,
 				5E8B5C8819EDFAB800D11B80 /* SelectionImpactHistoryViewController.m */,
 				5EA58CEE19E85C1900D7E37C /* SetCardGameViewController.h */,
@@ -188,6 +197,15 @@
 				5E9935B019E461D9001E2C36 /* CardGameNotifications.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		5ECB27DA19F6E5C100AC0497 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5ECB27DB19F6E5E600AC0497 /* PlayingCardView.h */,
+				5ECB27DC19F6E5E600AC0497 /* PlayingCardView.m */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -293,9 +311,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				5EA58CF019E85C1900D7E37C /* SetCardGameViewController.m in Sources */,
+				5ECB27E019F6F51800AC0497 /* HighScoresViewController.m in Sources */,
 				5E44DDC119DCB25000D15D28 /* CardGameViewController.m in Sources */,
 				5EA58CF319E882C900D7E37C /* SetCard.m in Sources */,
 				5E44DDBE19DCB25000D15D28 /* CardGameAppDelegate.m in Sources */,
+				5ECB27DD19F6E5E600AC0497 /* PlayingCardView.m in Sources */,
 				5E44DDBB19DCB25000D15D28 /* main.m in Sources */,
 				5EA58CED19E84B7400D7E37C /* PlayingCardGameViewController.m in Sources */,
 				5E44DDF019DDB8A500D15D28 /* PlayingCard.m in Sources */,
