@@ -34,6 +34,15 @@
     [self setNeedsDisplay];
 }
 
+- (void)pinch:(UIPinchGestureRecognizer *)gesture
+{
+    if((gesture.state == UIGestureRecognizerStateChanged) || (gesture.state == UIGestureRecognizerStateEnded)) {
+        self.faceCardScaleFactor *= gesture.scale;
+        gesture.scale = 1.0;
+    }
+        
+}
+
 #pragma mark - Drawing
 
 #define CORNER_FONT_STANDARD_HEIGHT 180.0
@@ -66,23 +75,31 @@
     
     [roundedRect addClip];
     
-    [[UIColor whiteColor] setFill];
-    UIRectFill(self.bounds);
-    
-    [[UIColor blackColor] setStroke];
-    [roundedRect stroke];
-    
-    //UIImage *faceImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@%@", [self rankAsAString], self.suit]];
-    UIImage *faceImage = [UIImage imageNamed:@"cardback"];
-    
-    if (faceImage) {
-        CGRect imageRect = CGRectInset(self.bounds, self.bounds.size.width * (1.0-self.faceCardScaleFactor), self.bounds.size.height * (1.0-self.faceCardScaleFactor));
-        [faceImage drawInRect:imageRect];
-    } else {
-        [self drawPips];
+    if(self.faceUp) {
+        [[UIColor whiteColor] setFill];
+        UIRectFill(self.bounds);
+        
+        [[UIColor blackColor] setStroke];
+        [roundedRect stroke];
+        
+        //UIImage *faceImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@%@", [self rankAsAString], self.suit]];
+        UIImage *faceImage = [UIImage imageNamed:@"cardback"];
+        
+        if (faceImage) {
+            CGRect imageRect = CGRectInset(self.bounds, self.bounds.size.width * (1.0-self.faceCardScaleFactor), self.bounds.size.height * (1.0-self.faceCardScaleFactor));
+            [faceImage drawInRect:imageRect];
+        } else {
+            [self drawPips];
+        }
+        
+        [self drawCorners];
+        
     }
-    
-    [self drawCorners];
+    else {
+        UIImage *faceImage = [UIImage imageNamed:@"cardback"];
+        [faceImage drawInRect:self.bounds];
+        
+    }
 }
 
 + (NSArray *)rankStrings

@@ -16,12 +16,17 @@
 @end
 
 @implementation HighScoresViewController
+- (IBAction)swipe:(UISwipeGestureRecognizer *)sender {
+    self.playingCardView.faceUp = !self.playingCardView.faceUp;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.playingCardView.rank = 10;
     self.playingCardView.suit = @"♥︎";
+    UIPinchGestureRecognizer * pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self.playingCardView action:@selector(pinch:)];
+    [self.playingCardView addGestureRecognizer:pinchRecognizer];
 }
 
 - (void)didReceiveMemoryWarning {
