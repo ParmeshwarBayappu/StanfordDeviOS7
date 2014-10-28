@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6c8-Ts-9u3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6c8-Ts-9u3">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <scenes>
         <!--Playing Cards - 2-->
@@ -972,13 +972,28 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uCS-Zb-H6E" customClass="PlayingCardView">
-                                <rect key="frame" x="98" y="180" width="143" height="238"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="cov-xg-NBd" appends="YES" id="01z-BV-5WR"/>
-                                </connections>
+                            <view autoresizesSubviews="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E8L-uC-FM3">
+                                <rect key="frame" x="16" y="126" width="343" height="472"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uCS-Zb-H6E" customClass="PlayingCardView">
+                                        <rect key="frame" x="0.0" y="0.0" width="100" height="150"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <gestureRecognizers/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="PMF-Ub-0wT" appends="YES" id="kXI-w1-3ye"/>
+                                        </connections>
+                                    </view>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p4S-uM-S3l" customClass="SetCardView">
+                                        <rect key="frame" x="150" y="0.0" width="100" height="150"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <gestureRecognizers/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="CwR-at-baA" appends="YES" id="iFi-iO-vXq"/>
+                                            <outletCollection property="gestureRecognizers" destination="cov-xg-NBd" appends="YES" id="zsA-oG-4fk"/>
+                                        </connections>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="0.25098040699958801" alpha="1" colorSpace="calibratedRGB"/>
@@ -987,17 +1002,29 @@
                     <tabBarItem key="tabBarItem" systemItem="topRated" id="uke-mn-fO7"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="boundaryView" destination="E8L-uC-FM3" id="xi4-6Q-Hg1"/>
                         <outlet property="playingCardView" destination="uCS-Zb-H6E" id="v7g-Uh-IAZ"/>
+                        <outlet property="setCardView" destination="p4S-uM-S3l" id="1da-Ma-VQD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KWj-wO-7O4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="CwR-at-baA">
+                    <connections>
+                        <action selector="tapSetCard:" destination="py1-Cy-wB5" id="RQg-lh-dME"/>
+                    </connections>
+                </tapGestureRecognizer>
                 <swipeGestureRecognizer direction="right" id="cov-xg-NBd">
                     <connections>
                         <action selector="swipe:" destination="py1-Cy-wB5" id="1J6-Ii-Kqx"/>
                     </connections>
                 </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="right" id="PMF-Ub-0wT">
+                    <connections>
+                        <action selector="swipePlayingCard:" destination="py1-Cy-wB5" id="iBP-Ob-U9U"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1084.5" y="241.5"/>
+            <point key="canvasLocation" x="1124.5" y="367.5"/>
         </scene>
         <!--Playing Card-->
         <scene sceneID="W8R-5B-Pwu">

@@ -14,7 +14,7 @@
 
 @implementation PlayingCardView
 
-#pragma mark - Proerties
+#pragma mark - Properties
 
 - (void)setSuit:(NSString *)suit
 {
@@ -129,11 +129,23 @@
     //[[UIColor redColor] setStroke];
     [cornerText drawInRect:textBounds];
 
+    [self pushContextAndRotateUpsideDown];
+    [cornerText drawInRect:textBounds];
+    [self popContext];
+    
+}
+
+- (void)pushContextAndRotateUpsideDown
+{
     CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSaveGState(context);
     CGContextTranslateCTM(context, self.bounds.size.width, self.bounds.size.height);
     CGContextRotateCTM(context, M_PI);
-    
-    [cornerText drawInRect:textBounds];
+}
+
+-(void)popContext
+{
+    CGContextRestoreGState(UIGraphicsGetCurrentContext());
 }
 
 - (void)drawPips
