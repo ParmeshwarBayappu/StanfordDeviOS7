@@ -20,6 +20,7 @@
 		5E44DDF019DDB8A500D15D28 /* PlayingCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E44DDEF19DDB8A500D15D28 /* PlayingCard.m */; };
 		5E44DDF319DDCE1500D15D28 /* Deck.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E44DDF219DDCE1500D15D28 /* Deck.m */; };
 		5E44DDF619DDD4A300D15D28 /* PlayingCardDeck.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E44DDF519DDD4A300D15D28 /* PlayingCardDeck.m */; };
+		5E7BBEDB1A00588600F4EBF7 /* MyBezierPathView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E7BBEDA1A00588600F4EBF7 /* MyBezierPathView.m */; };
 		5E8B5C8919EDFAB800D11B80 /* SelectionImpactHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E8B5C8819EDFAB800D11B80 /* SelectionImpactHistoryViewController.m */; };
 		5E9935B119E461D9001E2C36 /* CardGameNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E9935B019E461D9001E2C36 /* CardGameNotifications.m */; };
 		5EA58CED19E84B7400D7E37C /* PlayingCardGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA58CEC19E84B7400D7E37C /* PlayingCardGameViewController.m */; };
@@ -66,6 +67,8 @@
 		5E44DDF219DDCE1500D15D28 /* Deck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Deck.m; path = Model/Deck.m; sourceTree = "<group>"; };
 		5E44DDF419DDD4A300D15D28 /* PlayingCardDeck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayingCardDeck.h; path = Model/PlayingCardDeck.h; sourceTree = "<group>"; };
 		5E44DDF519DDD4A300D15D28 /* PlayingCardDeck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayingCardDeck.m; path = Model/PlayingCardDeck.m; sourceTree = "<group>"; };
+		5E7BBED91A00588600F4EBF7 /* MyBezierPathView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyBezierPathView.h; path = View/MyBezierPathView.h; sourceTree = "<group>"; };
+		5E7BBEDA1A00588600F4EBF7 /* MyBezierPathView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyBezierPathView.m; path = View/MyBezierPathView.m; sourceTree = "<group>"; };
 		5E8B5C8619EDD43C00D11B80 /* SomeCommonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SomeCommonUtils.h; sourceTree = "<group>"; };
 		5E8B5C8719EDFAB800D11B80 /* SelectionImpactHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionImpactHistoryViewController.h; sourceTree = "<group>"; };
 		5E8B5C8819EDFAB800D11B80 /* SelectionImpactHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionImpactHistoryViewController.m; sourceTree = "<group>"; };
@@ -209,6 +212,8 @@
 				5ECB27E219F97BF600AC0497 /* SetCardView.m */,
 				5ECB27DB19F6E5E600AC0497 /* PlayingCardView.h */,
 				5ECB27DC19F6E5E600AC0497 /* PlayingCardView.m */,
+				5E7BBED91A00588600F4EBF7 /* MyBezierPathView.h */,
+				5E7BBEDA1A00588600F4EBF7 /* MyBezierPathView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -327,6 +332,7 @@
 				5EC05CC319DF19350099E0F6 /* CardMatchingGame.m in Sources */,
 				5EA58CF619E8956800D7E37C /* SetCardDeck.m in Sources */,
 				5E44DDF619DDD4A300D15D28 /* PlayingCardDeck.m in Sources */,
+				5E7BBEDB1A00588600F4EBF7 /* MyBezierPathView.m in Sources */,
 				5E8B5C8919EDFAB800D11B80 /* SelectionImpactHistoryViewController.m in Sources */,
 				5E9935B119E461D9001E2C36 /* CardGameNotifications.m in Sources */,
 				5ECB27E319F97BF600AC0497 /* SetCardView.m in Sources */,

@@ -9,17 +9,19 @@
 #import "HighScoresViewController.h"
 #import "PlayingCardView.h"
 #import "SetCardView.h"
-
+#import "MyBezierPathView.h"
 
 @interface HighScoresViewController () <UIDynamicAnimatorDelegate>
 
 @property (weak, nonatomic) IBOutlet PlayingCardView *playingCardView;
 @property (weak, nonatomic) IBOutlet SetCardView *setCardView;
-@property (weak, nonatomic) IBOutlet UIView *boundaryView;
+@property (weak, nonatomic) IBOutlet MyBezierPathView *boundaryView;
 
 @property (strong, nonatomic) UIDynamicAnimator *dynamicAnimator;
 @property (strong, nonatomic) UIGravityBehavior *gravityBehaviour;
 @property (strong, nonatomic) UICollisionBehavior *collisionBehaviour;
+@property (strong, nonatomic) UIDynamicItemBehavior *itemBehaviour;
+@property (strong, nonatomic) UIAttachmentBehavior *attachmentBehaviour;
 
 @property (nonatomic) float angle;
 @property (strong, nonatomic) UILabel * textlabel;
@@ -27,7 +29,6 @@
 @end
 
 @implementation HighScoresViewController
-
 
 - (void) dynamicAnimatorDidPause:(UIDynamicAnimator *)animator
 {
@@ -81,6 +82,7 @@
  
     [self.collisionBehaviour addItem:self.playingCardView];
     [self.gravityBehaviour addItem:self.playingCardView];
+    [self.itemBehaviour addItem:self.playingCardView];
     self.angle =0.0;
 }
 
@@ -121,6 +123,7 @@
     gravityBehaviour.angle = self.angle;
     [gravityBehaviour addItem:textlabel];
     [self.collisionBehaviour addItem:textlabel];
+    //[self.itemBehaviour addItem:textlabel];
     
     [self.dynamicAnimator updateItemUsingCurrentState:textlabel];
     
@@ -210,5 +213,49 @@
     return _dynamicAnimator;
 }
 
+
+- (UIDynamicItemBehavior *)itemBehaviour
+{
+    if (!_itemBehaviour) {
+        _itemBehaviour = [UIDynamicItemBehavior new];
+        _itemBehaviour.allowsRotation = false;
+        [self.dynamicAnimator addBehavior:_itemBehaviour];
+    }
+    return _itemBehaviour;
+}
+
+- (IBAction)pan:(UIPanGestureRecognizer *)sender {
+    CGPoint panPoint = [sender locationInView:self.boundaryView];
+    
+    if(sender.state == UIGestureRecognizerStateBegan){
+        [self attachLabelToPan:panPoint];
+    } else if (sender.state == UIGestureRecognizerStateChanged){
+        self.attachmentBehaviour.anchorPoint = panPoint;
+    } else if (sender.state == UIGestureRecognizerStateEnded){
+        [self removeLabelFromPan];
+        
+    }
+}
+
+- (void)removeLabelFromPan {
+    [self.dynamicAnimator removeBehavior:self.attachmentBehaviour];
+    self.boundaryView.bezierPath = nil;
+}
+
+- (void)attachLabelToPan:(CGPoint)anchorPoint
+{
+    __weak HighScoresViewController * weakSelf = self;
+    
+    if(self.textlabel) {
+        self.attachmentBehaviour = [[UIAttachmentBehavior alloc] initWithItem:self.textlabel attachedToAnchor:anchorPoint];
+        self.attachmentBehaviour.action = ^{
+            UIBezierPath * anchorPath = [UIBezierPath new];
+            [anchorPath moveToPoint:weakSelf.attachmentBehaviour.anchorPoint];
+            [anchorPath addLineToPoint:weakSelf.textlabel.center];
+            weakSelf.boundaryView.bezierPath = anchorPath;
+        };
+        [self.dynamicAnimator addBehavior:self.attachmentBehaviour];
+    }
+}
 
 @end
