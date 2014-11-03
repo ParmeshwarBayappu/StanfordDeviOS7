@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="oGZ-5X-fkO">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="ufC-wZ-h7g">
+            <objects>
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController" title="Original">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
+                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="TopLeft" id="kh9-bI-dsS">
+                        <rect key="frame" x="0" y="0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" alpha="1" colorSpace="calibratedRGB" red="0.188" green="0.294" blue="1"/>
+                        <rect key="contentStretch"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="AQT-P2-y50" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO">
+                                <rect key="frame" x="28" y="37" width="57" height="77"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" backgroundImage="stanford.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                    </view>
+                    <tabBarItem title="Playing Cards" id="fZe-Tm-iaK" key="tabBarItem"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="473" y="14"/>
+        </scene>
+        <scene sceneID="QGy-Tc-W3i">
+            <objects>
+                <tabBarController definesPresentationContext="YES" sceneMemberID="viewController" id="oGZ-5X-fkO">
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <tabBar contentMode="scaleToFill" id="Dmx-Uk-ND5" key="tabBar">
+                        <rect key="frame" x="0" y="519" width="320" height="49"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="selectedImageTintColor" colorSpace="calibratedRGB" red="0.992" green="1" blue="0.267" alpha="1"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="viewControllers" id="Tjj-Pa-43i"/>
+                        <segue destination="uL1-PT-Evf" kind="relationship" relationship="viewControllers" id="yFY-G3-u6k"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" userLabel="First Responder" sceneMemberID="firstResponder" id="oEl-Pq-2sE"/>
+            </objects>
+            <point key="canvasLocation" x="-44" y="215"/>
+        </scene>
+        <scene sceneID="PTn-KO-L37">
+            <objects>
+                <viewController sceneMemberID="viewController" id="uL1-PT-Evf" title="Prev Tab 2">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="OWZ-Tj-Ly0"/>
+                        <viewControllerLayoutGuide type="bottom" id="Xym-Mr-9Q5"/>
+                    </layoutGuides>
+                    <view contentMode="scaleToFill" id="jkB-lu-AFp" key="view">
+                        <rect key="frame" x="0" y="0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" alpha="1" colorSpace="calibratedRGB" red="1" green="0.18" blue="0.267"/>
+                    </view>
+                    <tabBarItem title="Set Cards" id="xjv-Fj-4Ji" key="tabBarItem"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" userLabel="First Responder" sceneMemberID="firstResponder" id="bdO-3c-lx5"/>
+            </objects>
+            <point key="canvasLocation" x="488" y="644"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="stanford.png" width="-1" height="-1"/>
+    </resources>
+</document>
