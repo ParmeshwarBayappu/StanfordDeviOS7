@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6c8-Ts-9u3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6c8-Ts-9u3">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Playing Cards - 2-->
@@ -957,7 +958,7 @@
         <!--High Scores-->
         <scene sceneID="WLu-43-2yc">
             <objects>
-                <viewController title="High Scores" id="py1-Cy-wB5" sceneMemberID="viewController">
+                <viewController title="High Scores" id="py1-Cy-wB5" customClass="HighScoresViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hcu-dG-7Kx"/>
                         <viewControllerLayoutGuide type="bottom" id="ffV-Il-GpB"/>
@@ -966,20 +967,50 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="TODO: High Scores Page, Sortable - Assignment 3 Extras" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dil-6r-KPC">
-                                <rect key="frame" x="16" y="270" width="350" height="88"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sort By:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Svs-Vr-AmL">
+                                <rect key="frame" x="16" y="57" width="62" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="bd2-D5-wWD"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="C9R-u4-MuA">
+                                <rect key="frame" x="107" y="50" width="200" height="29"/>
+                                <segments>
+                                    <segment title="Score"/>
+                                    <segment title="Duration"/>
+                                    <segment title="When"/>
+                                </segments>
+                                <connections>
+                                    <action selector="sortByChanged:" destination="py1-Cy-wB5" eventType="valueChanged" id="pFK-pj-rWR"/>
+                                </connections>
+                            </segmentedControl>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Game - Score - Duration - When" translatesAutoresizingMaskIntoConstraints="NO" id="O6C-Ai-9f7">
+                                <rect key="frame" x="16" y="86" width="382" height="593"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="C9R-u4-MuA" firstAttribute="centerX" secondItem="sZD-w7-FQf" secondAttribute="centerX" id="HE0-1X-171"/>
+                            <constraint firstItem="Svs-Vr-AmL" firstAttribute="leading" secondItem="sZD-w7-FQf" secondAttribute="leadingMargin" id="cHC-bS-3a2"/>
+                            <constraint firstItem="Svs-Vr-AmL" firstAttribute="top" secondItem="hcu-dG-7Kx" secondAttribute="bottom" constant="37" id="tCq-i8-tbY"/>
+                            <constraint firstItem="Svs-Vr-AmL" firstAttribute="bottom" secondItem="C9R-u4-MuA" secondAttribute="bottom" id="vjc-nK-3FR"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" systemItem="topRated" id="uke-mn-fO7"/>
+                    <connections>
+                        <outlet property="scoresTextView" destination="O6C-Ai-9f7" id="ZZr-t0-qqR"/>
+                        <outlet property="sortBySegmentedControl" destination="C9R-u4-MuA" id="Lyf-wk-3lb"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KWj-wO-7O4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1085" y="290"/>
+            <point key="canvasLocation" x="1183" y="214"/>
         </scene>
         <!--Playing Card-->
         <scene sceneID="W8R-5B-Pwu">

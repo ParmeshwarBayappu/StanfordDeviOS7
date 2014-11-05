@@ -20,6 +20,12 @@
 		5E44DDF019DDB8A500D15D28 /* PlayingCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E44DDEF19DDB8A500D15D28 /* PlayingCard.m */; };
 		5E44DDF319DDCE1500D15D28 /* Deck.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E44DDF219DDCE1500D15D28 /* Deck.m */; };
 		5E44DDF619DDD4A300D15D28 /* PlayingCardDeck.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E44DDF519DDD4A300D15D28 /* PlayingCardDeck.m */; };
+		5E48FEC81A0814A400FE4B9A /* HighScoresViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E48FEC71A0814A400FE4B9A /* HighScoresViewController.m */; };
+		5E48FECC1A08324F00FE4B9A /* FormatPlayingCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E48FECB1A08324F00FE4B9A /* FormatPlayingCard.m */; };
+		5E48FED01A08369C00FE4B9A /* FormatSetCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E48FECF1A08369C00FE4B9A /* FormatSetCard.m */; };
+		5E48FED31A08636A00FE4B9A /* HighScoresManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E48FED21A08636A00FE4B9A /* HighScoresManager.m */; };
+		5E48FED61A086D3E00FE4B9A /* ScoreEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E48FED51A086D3E00FE4B9A /* ScoreEntry.m */; };
+		5E48FED91A095D4800FE4B9A /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E48FED81A095D4800FE4B9A /* Constants.m */; };
 		5E8B5C8919EDFAB800D11B80 /* SelectionImpactHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E8B5C8819EDFAB800D11B80 /* SelectionImpactHistoryViewController.m */; };
 		5E9935B119E461D9001E2C36 /* CardGameNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E9935B019E461D9001E2C36 /* CardGameNotifications.m */; };
 		5EA58CED19E84B7400D7E37C /* PlayingCardGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA58CEC19E84B7400D7E37C /* PlayingCardGameViewController.m */; };
@@ -63,6 +69,19 @@
 		5E44DDF219DDCE1500D15D28 /* Deck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Deck.m; path = Model/Deck.m; sourceTree = "<group>"; };
 		5E44DDF419DDD4A300D15D28 /* PlayingCardDeck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayingCardDeck.h; path = Model/PlayingCardDeck.h; sourceTree = "<group>"; };
 		5E44DDF519DDD4A300D15D28 /* PlayingCardDeck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayingCardDeck.m; path = Model/PlayingCardDeck.m; sourceTree = "<group>"; };
+		5E48FEC61A0814A400FE4B9A /* HighScoresViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighScoresViewController.h; sourceTree = "<group>"; };
+		5E48FEC71A0814A400FE4B9A /* HighScoresViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighScoresViewController.m; sourceTree = "<group>"; };
+		5E48FECA1A08324F00FE4B9A /* FormatPlayingCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormatPlayingCard.h; sourceTree = "<group>"; };
+		5E48FECB1A08324F00FE4B9A /* FormatPlayingCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormatPlayingCard.m; sourceTree = "<group>"; };
+		5E48FECD1A08360000FE4B9A /* FormatCardContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormatCardContent.h; sourceTree = "<group>"; };
+		5E48FECE1A08369C00FE4B9A /* FormatSetCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormatSetCard.h; sourceTree = "<group>"; };
+		5E48FECF1A08369C00FE4B9A /* FormatSetCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormatSetCard.m; sourceTree = "<group>"; };
+		5E48FED11A08636A00FE4B9A /* HighScoresManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighScoresManager.h; sourceTree = "<group>"; };
+		5E48FED21A08636A00FE4B9A /* HighScoresManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighScoresManager.m; sourceTree = "<group>"; };
+		5E48FED41A086D3E00FE4B9A /* ScoreEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreEntry.h; sourceTree = "<group>"; };
+		5E48FED51A086D3E00FE4B9A /* ScoreEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreEntry.m; sourceTree = "<group>"; };
+		5E48FED71A095D4800FE4B9A /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		5E48FED81A095D4800FE4B9A /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		5E8B5C8619EDD43C00D11B80 /* SomeCommonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SomeCommonUtils.h; sourceTree = "<group>"; };
 		5E8B5C8719EDFAB800D11B80 /* SelectionImpactHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionImpactHistoryViewController.h; sourceTree = "<group>"; };
 		5E8B5C8819EDFAB800D11B80 /* SelectionImpactHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionImpactHistoryViewController.m; sourceTree = "<group>"; };
@@ -119,12 +138,23 @@
 		5E44DDB719DCB25000D15D28 /* Matchismo */ = {
 			isa = PBXGroup;
 			children = (
+				5E48FED71A095D4800FE4B9A /* Constants.h */,
+				5E48FED81A095D4800FE4B9A /* Constants.m */,
+				5E48FECA1A08324F00FE4B9A /* FormatPlayingCard.h */,
+				5E48FECB1A08324F00FE4B9A /* FormatPlayingCard.m */,
+				5E48FECE1A08369C00FE4B9A /* FormatSetCard.h */,
+				5E48FECF1A08369C00FE4B9A /* FormatSetCard.m */,
+				5E48FECD1A08360000FE4B9A /* FormatCardContent.h */,
 				5E44DDED19DDAFAD00D15D28 /* Model */,
 				5E44DDBF19DCB25000D15D28 /* CardGameViewController.h */,
 				5EA58CEB19E84B7400D7E37C /* PlayingCardGameViewController.h */,
 				5EA58CEC19E84B7400D7E37C /* PlayingCardGameViewController.m */,
 				5E44DDC019DCB25000D15D28 /* CardGameViewController.m */,
 				5E44DDC219DCB25000D15D28 /* Main.storyboard */,
+				5E48FEC61A0814A400FE4B9A /* HighScoresViewController.h */,
+				5E48FEC71A0814A400FE4B9A /* HighScoresViewController.m */,
+				5E48FED11A08636A00FE4B9A /* HighScoresManager.h */,
+				5E48FED21A08636A00FE4B9A /* HighScoresManager.m */,
 				5E8B5C8719EDFAB800D11B80 /* SelectionImpactHistoryViewController.h */,
 				5E8B5C8819EDFAB800D11B80 /* SelectionImpactHistoryViewController.m */,
 				5EA58CEE19E85C1900D7E37C /* SetCardGameViewController.h */,
@@ -170,6 +200,8 @@
 		5E44DDED19DDAFAD00D15D28 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5E48FED41A086D3E00FE4B9A /* ScoreEntry.h */,
+				5E48FED51A086D3E00FE4B9A /* ScoreEntry.m */,
 				5E44DDEA19DDAF6400D15D28 /* Card.h */,
 				5E44DDEE19DDB8A500D15D28 /* PlayingCard.h */,
 				5EA58CF119E882C900D7E37C /* SetCard.h */,
@@ -294,16 +326,22 @@
 			files = (
 				5EA58CF019E85C1900D7E37C /* SetCardGameViewController.m in Sources */,
 				5E44DDC119DCB25000D15D28 /* CardGameViewController.m in Sources */,
+				5E48FED01A08369C00FE4B9A /* FormatSetCard.m in Sources */,
 				5EA58CF319E882C900D7E37C /* SetCard.m in Sources */,
+				5E48FED61A086D3E00FE4B9A /* ScoreEntry.m in Sources */,
 				5E44DDBE19DCB25000D15D28 /* CardGameAppDelegate.m in Sources */,
 				5E44DDBB19DCB25000D15D28 /* main.m in Sources */,
+				5E48FECC1A08324F00FE4B9A /* FormatPlayingCard.m in Sources */,
 				5EA58CED19E84B7400D7E37C /* PlayingCardGameViewController.m in Sources */,
 				5E44DDF019DDB8A500D15D28 /* PlayingCard.m in Sources */,
 				5EC05CC319DF19350099E0F6 /* CardMatchingGame.m in Sources */,
+				5E48FED31A08636A00FE4B9A /* HighScoresManager.m in Sources */,
 				5EA58CF619E8956800D7E37C /* SetCardDeck.m in Sources */,
 				5E44DDF619DDD4A300D15D28 /* PlayingCardDeck.m in Sources */,
 				5E8B5C8919EDFAB800D11B80 /* SelectionImpactHistoryViewController.m in Sources */,
+				5E48FED91A095D4800FE4B9A /* Constants.m in Sources */,
 				5E9935B119E461D9001E2C36 /* CardGameNotifications.m in Sources */,
+				5E48FEC81A0814A400FE4B9A /* HighScoresViewController.m in Sources */,
 				5E44DDF319DDCE1500D15D28 /* Deck.m in Sources */,
 				5E44DDEC19DDAF6400D15D28 /* Card.m in Sources */,
 			);
