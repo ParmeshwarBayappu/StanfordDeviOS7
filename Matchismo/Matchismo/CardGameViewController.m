@@ -11,6 +11,10 @@
 //@import Foundation;
 #import "SomeCommonUtils.h"
 #import "SelectionImpactHistoryViewController.h"
+#import "HighScoresManager.h"
+#import "PlayingCardGameViewController.h"
+
+//TODO: Use FormatCardContent
 
 @interface CardGameViewController ()
 
@@ -27,6 +31,7 @@
 @property (nonatomic, strong) NSMutableArray * selectionImpactHistory; //of NSAttributedString
 
 @property (nonatomic, readwrite) BOOL matchStarted;
+@property (nonatomic, readonly) NSInteger score;
 
 @end
 
@@ -51,6 +56,11 @@
     if(!_selectionImpactHistory) _selectionImpactHistory = [[NSMutableArray alloc] init];
     return _selectionImpactHistory;
 }
+
+- (NSInteger)score {
+    return self.game.score;
+}
+
 
 - (NSString *)formatCardContent:(Card *) card
 {
@@ -135,15 +145,16 @@
 - (NSAttributedString *)getScoreText
 {
     NSDictionary *scoreAttribs = @{ NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline],
-                                    NSForegroundColorAttributeName: (self.game.score<0)? [UIColor redColor] : [UIColor blackColor]
+                                    NSForegroundColorAttributeName: (self.score<0)? [UIColor redColor] : [UIColor blackColor]
                                     };
-    NSString * score = [NSString stringWithFormat:@"%ld", (long)self.game.score];
+    NSString * score = [NSString stringWithFormat:@"%ld", (long)self.score];
     NSMutableAttributedString * attrScore = [[NSMutableAttributedString alloc] initWithString:score];// attributes:scoreAttribs];
     [attrScore setAttributes:scoreAttribs range:NSMakeRange(0, score.length)];
 
     return attrScore;
     
 }
+
 
 - (NSString *)titleForCard:(Card *)card
 {
@@ -157,9 +168,11 @@
 }
 
 - (IBAction)touchRedealButton:(id)sender {
-    
-    if(self.matchStarted)
-    {
+
+    if (self.matchStarted) {
+        //Any last minute activities on old game
+        [self updateHighScores];
+
         //reset game
         self.matchStarted = false;
 
@@ -167,16 +180,21 @@
         //CardMatchingGame * prevGame = self.game;
         //[prevGame release];
         self.game = nil;
-        
+
         //Game reset - enable options available at start such as match mode
         self.selectionImpactStringAttr = nil;
         self.selectionImpactHistory = nil;
         self.matchModeLabel.enabled = true;
-        
+
         [self updateUI];
     }
 }
 
+- (void)updateHighScores {
+    HighScoresManager *highScoresManager = [HighScoresManager instance];
+    ScoreEntry *scoreEntry = [[ScoreEntry alloc] initWithScore:(int)self.score duration:(arc4random_uniform(30)+1) when:[NSDate date] isPlayingCard:[self isKindOfClass:[PlayingCardGameViewController class]]];
+    [highScoresManager addScore:scoreEntry];
+}
 
 + (NSString *)stringFromCardsArray:(NSArray *)cards
 {
