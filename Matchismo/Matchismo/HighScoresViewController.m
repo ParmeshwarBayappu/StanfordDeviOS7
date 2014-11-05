@@ -20,6 +20,9 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sortBySegmentedControl;
 
 @property (nonatomic, strong) NSAttributedString *titleRow;
+@property ScoreEntry *highestScore;
+@property ScoreEntry *leastDuration;
+@property ScoreEntry *latestWhen;
 
 @end
 
@@ -61,7 +64,7 @@
         _stdSetCard.shading = 2;
         _stdSetCard.symbol = 2;
         _stdSetCard.color = 2;
-        
+
     }
     return _stdSetCard;
 }
@@ -77,11 +80,11 @@
 }
 
 -(void)updateScores {
-    
+
     NSMutableAttributedString * attrStr = [self.titleRow mutableCopy];
     [attrStr appendAttributedString:[self.class newLineAttr]];
-    [attrStr appendAttributedString:[self sampleScores]];
-    
+    [attrStr appendAttributedString:[self highScoresAsAttributedStr]];
+
     [self.scoresTextView setAttributedText:attrStr];
 }
 
@@ -92,7 +95,7 @@
     if(!_titleRow){
         NSDictionary *attribs = @{ NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleBody],//UIFontTextStyleSubheadline],
                                    NSForegroundColorAttributeName: [[UIColor blackColor] colorWithAlphaComponent:0.5],
-                                   
+
                                    NSStrokeWidthAttributeName:@-3
                                    ,NSStrokeColorAttributeName:[UIColor orangeColor]
                                    };
@@ -107,7 +110,7 @@
     if (!attribs) {
         attribs = @{ NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline],
                                NSForegroundColorAttributeName: [[UIColor blackColor] colorWithAlphaComponent:0.5],
-                               
+
                                NSStrokeWidthAttributeName:@-3
                                ,NSStrokeColorAttributeName:[UIColor orangeColor]
                                };
@@ -121,7 +124,7 @@
     if (!attribs) {
         attribs = @{ NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline],
                                    NSForegroundColorAttributeName: [[UIColor greenColor] colorWithAlphaComponent:1.0],
-                                   
+
                                    NSStrokeWidthAttributeName:@-3
                                    ,NSStrokeColorAttributeName:[UIColor greenColor]
                                    };
@@ -129,18 +132,22 @@
     return attribs;
 }
 
-- (NSMutableAttributedString *)formatScores:(NSArray *)iHighScores
-{
-    NSMutableAttributedString * attrStr = [NSMutableAttributedString new];
-    
-    for (ScoreEntry * item in iHighScores) {
+- (NSMutableAttributedString *)formatScores:(NSArray *)iHighScores {
+    NSMutableAttributedString *attrStr = [NSMutableAttributedString new];
+
+    HighScoresManager *highScoresManager = [HighScoresManager instance];
+    self.highestScore = [highScoresManager highestScore];
+    self.leastDuration = [highScoresManager leastDuration];
+    self.latestWhen = [highScoresManager latestWhen];
+
+    for (ScoreEntry *item in iHighScores) {
         [attrStr appendAttributedString:[self.class newLineAttr]];
-        [attrStr appendAttributedString:[self.class formatScoreLine:item.score duration:item.duration when:item.when isPlayingCard:item.isPlayingCard]];
+        [attrStr appendAttributedString:[self formatScoreLine:item.score duration:item.duration when:item.when isPlayingCard:item.isPlayingCard]];
     }
     return attrStr;
 }
 
-- (NSAttributedString *)sampleScores
+- (NSAttributedString *)highScoresAsAttributedStr
 {
     HighScoresManager * highScoresManager = [HighScoresManager instance];
     NSArray * sortedScoresArray;
@@ -159,17 +166,16 @@
     return attrStr;
 }
 
-+ (NSAttributedString *)formatScoreLine:(int)score duration:(int)duration when:(NSDate *)when isPlayingCard:(BOOL)isPlayingCard
+- (NSAttributedString *)formatScoreLine:(int)score duration:(int)duration when:(NSDate *)when isPlayingCard:(BOOL)isPlayingCard
 {
-    //TODO: Highlight highest score, least duration, latest play
     NSMutableAttributedString * attrStr = [NSMutableAttributedString new];
     [attrStr appendAttributedString:[self.class formatGameType:isPlayingCard]];
     [attrStr appendAttributedString:[self.class separatorForFields]];
-    [attrStr appendAttributedString:[self.class formatScore:score isHighScore:true]];
+    [attrStr appendAttributedString:[self.class formatScore:score isHighScore:(self.highestScore.score == score)]];
     [attrStr appendAttributedString:[self.class separatorForFields]];
-    [attrStr appendAttributedString:[self.class formatDuration:duration isLowestDuration:false]];
+    [attrStr appendAttributedString:[self.class formatDuration:duration isLowestDuration:(self.leastDuration.duration == duration)]];
     [attrStr appendAttributedString:[self.class separatorForFields]];
-    [attrStr appendAttributedString:[self.class formatDate:when isLatest:false]];
+    [attrStr appendAttributedString:[self.class formatDate:when isLatest:(self.latestWhen.when == when)]];
 
     return attrStr;
 }
