@@ -65,7 +65,7 @@
         [card addGestureRecognizer:[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeCard:)]];
     }
     _cardSubViewsAll = [cardViews copy];//returns immutable copy
-    self.cardsBoundaryView.cellAspectRatio = 9.0 / 16;
+    self.cardsBoundaryView.cellAspectRatio = 0;//9.0/16.0;
 }
 
 - (PlayingCardDeck *)playingCardDeck {

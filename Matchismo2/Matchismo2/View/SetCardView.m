@@ -141,15 +141,18 @@ static NSArray * COLORS_IN_SET = nil;
 
     int itemCount = self.number;
     const int ITEM_MAX_COUNT = 3;
-    //Vertical
-    bool orientationIsPotrait = true;
+
+    bool placeShapesVertical = imageRect.size.height > imageRect.size.width;
     if (itemCount >0)
     {
-        int itemsCountVertical =  (orientationIsPotrait? itemCount : 1);
-        int itemsCountVerticalMAX =  (orientationIsPotrait? ITEM_MAX_COUNT : 1);
+        //Note: Another option would be : Assume height is the larger dimension, draw and then rotate by 90 if width
+        // is the larger dimension.
 
-        int itemsCountHorizontal =  (!orientationIsPotrait? itemCount : 1);
-        int itemsCountHorizontalMAX =  (!orientationIsPotrait? ITEM_MAX_COUNT : 1);
+        int itemsCountVertical =  (placeShapesVertical ? itemCount : 1);
+        int itemsCountVerticalMAX =  (placeShapesVertical ? ITEM_MAX_COUNT : 1);
+
+        int itemsCountHorizontal =  (!placeShapesVertical ? itemCount : 1);
+        int itemsCountHorizontalMAX =  (!placeShapesVertical ? ITEM_MAX_COUNT : 1);
 
         int itemHeight = imageRect.size.height/ itemsCountVerticalMAX * 0.90;
         int itemWidth = imageRect.size.width/ itemsCountHorizontalMAX * 0.90;
@@ -158,8 +161,8 @@ static NSArray * COLORS_IN_SET = nil;
         int itemRectHeight = imageRect.size.height/ itemsCountVertical;
         int itemRectWidth = imageRect.size.width/ itemsCountHorizontal;
 
-        int itemRectXDelta = (orientationIsPotrait? 0 : itemRectWidth);
-        int itemRectYDelta = (!orientationIsPotrait? 0 : itemRectHeight);
+        int itemRectXDelta = (placeShapesVertical ? 0 : itemRectWidth);
+        int itemRectYDelta = (!placeShapesVertical ? 0 : itemRectHeight);
 
         for (int item =0 ; item < itemCount; item++) {
             CGRect rectForShape = CGRectMake(imageRect.origin.x + item*itemRectXDelta, imageRect.origin.y + item*itemRectYDelta, itemRectWidth, itemRectHeight);

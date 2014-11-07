@@ -26,6 +26,9 @@
     double overallWidth = ABS(self.size.width);
     double overallHeight = ABS(self.size.height);
     double aspectRatio = ABS(self.cellAspectRatio);
+    if(aspectRatio <= FLT_MIN) { // when equal to zero, use the aspect ratio of the overall grid
+        aspectRatio = overallWidth/overallHeight;
+    }
 
     if (!self.minimumNumberOfCells || !aspectRatio || !overallWidth || !overallHeight) {
         self.unresolvable = YES;
