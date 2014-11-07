@@ -14,94 +14,135 @@
 #import "PlayingCardDeck.h"
 #import "SetCard.h"
 #import "SetCardDeck.h"
+#import "CardMatchingGame.h"
 
 @interface CardGameViewController ()
 
+//UI Properties
+@property (weak, nonatomic) IBOutlet UISegmentedControl *matchModeSegControl;
+@property (weak, nonatomic) IBOutlet UIButton *redealButton;
+@property(weak, nonatomic) IBOutlet GridView *cardsBoundaryView;
+
+@property (strong, nonatomic) CardMatchingGame * game;
+//@property (nonatomic, readonly) uint matchMode;
+
+@property (nonatomic, readwrite) BOOL matchStarted;
+@property (nonatomic, readonly) NSInteger score;
+
+//TODO: Can we rely on self.cardsBoundaryView.subviews? Probably keep independent - ex
+//  - iterating and removing subviews
+//  - gridview enhanced to have other sub views (decorations)
 @property(strong, nonatomic) NSMutableArray *cardSubViewsActive;
 @property (strong, nonatomic) PlayingCardDeck *playingCardDeck;
 @property (strong, nonatomic) SetCardDeck *setCardDeck;
 
-@property(weak, nonatomic) IBOutlet GridView *cardsBoundaryView;
-
 @end
 
 @implementation CardGameViewController {
-    NSArray *_cardSubViewsAll;
+}
+
+#pragma mark -- Properties
+
+- (uint)numberOfCardsToDeal {
+    assert(false); //Subclass must implement
+    return 0;
+}
+
+- (CGFloat)cellAspectRatio {
+    //assert(false); //Subclass must implement
+    return 0;
+}
+- (CardMatchingGame *)game
+{
+    if (!_game) {
+        _game = [[CardMatchingGame alloc] initWithCardCount:self.numberOfCardsToDeal usingDeck:[self createDeck]];
+    }
+    return _game;
+}
+
+- (uint)selectedMatchModeIndex{
+    assert(self.matchModeSegControl.selectedSegmentIndex>=0);
+    return (uint) self.matchModeSegControl.selectedSegmentIndex;
+}
+
+- (NSMutableArray *)cardSubViewsActive {
+    if(!_cardSubViewsActive) {
+        _cardSubViewsActive = [NSMutableArray new];
+    }
+    return _cardSubViewsActive;
+}
+
+#pragma mark -- Abstract
+
+- (Deck *)createDeck {
+    assert(false); //Subclass must implement
+    return nil;
+}
+
+- (uint)numberOfCardsToMatch {
+    assert(false); //Subclass must implement
+    return 0;
+}
+
+- (UIView *)createCardViewWith: (Card *)card {
+    assert(false); //Subclass must implement
+    return nil;
+}
+
+#pragma mark -- Others
+
+- (void)redeal {
+
+    if (self.matchStarted) {
+        //Any last minute activities on old game - like save high scores, releasing existing
+    }
+
+    [self.cardSubViewsActive makeObjectsPerformSelector:@selector(removeFromSuperview)];
+//        for(UIView *cardView in self.cardSubViewsActive) {
+//            [cardView removeFromSuperview];
+//        }
+    [self.cardSubViewsActive removeAllObjects];
+
+    //reset game
+    self.matchStarted = false;
+
+    //Question: Is a call to release necessary for memory management?
+    //CardMatchingGame * prevGame = self.game;
+    //[prevGame release];
+    self.game = nil;
+
+    //Game reset - enable options available at start such as match mode
+    self.matchModeSegControl.enabled = true;
+
+    //Deal the cards
+    for (int cardIndex = 0; cardIndex < self.numberOfCardsToDeal; ++cardIndex) {
+       Card * card = [self.game cardAtIndex:cardIndex];
+       UIView * cardView = [self createCardViewWith:card];
+        cardView.tag = cardIndex;
+        [self.cardSubViewsActive addObject:cardView];
+        [self.cardsBoundaryView addSubview:cardView];
+
+        //TODO: Could this result in a self -reference? or does the implementation use a weak ref?
+        [cardView addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:cardView action:@selector(pinch:)]];
+        [cardView addGestureRecognizer:[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeCard:)]];
+    }
 }
 
 - (IBAction)onTouchRedeal:(UIButton *)sender {
-    if (self.cardSubViewsActive.count) {
-        UIView *viewToRemove = self.cardSubViewsActive[arc4random_uniform((uint) self.cardSubViewsActive.count)];
-        //[self.cardsBoundaryView removeCardSubView:viewToRemove];
-        [viewToRemove removeFromSuperview];
-        [self.cardSubViewsActive removeObject:viewToRemove];
-    } else {
-        self.cardSubViewsActive = [_cardSubViewsAll mutableCopy];
-        //[self.cardsBoundaryView setCellSubViews:self.cardSubViewsActive];
-        for (UIView *cardView in self.cardSubViewsActive) {
-            [self.cardsBoundaryView addSubview:cardView];
-        }
-    }
+    [self redeal];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 
+    [self redeal];
+
 }
 
 - (void)loadView {
     [super loadView];
-
-    uint numberOfCells = 9;
-    NSMutableArray *cardViews = [[NSMutableArray alloc] initWithCapacity:numberOfCells];
-    for (uint viewIndex = 0; viewIndex < numberOfCells; viewIndex++) {
-        //UIView *card = [self createRandomPlayingCard];
-        UIView *card = [self createRandomSetCard];
-        [cardViews addObject:card];
-
-        //TODO: Could this result in a self -reference? or does the implementation use a weak ref?
-        [card addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:card action:@selector(pinch:)]];
-        [card addGestureRecognizer:[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeCard:)]];
-    }
-    _cardSubViewsAll = [cardViews copy];//returns immutable copy
-    self.cardsBoundaryView.cellAspectRatio = 0;//9.0/16.0;
-}
-
-- (PlayingCardDeck *)playingCardDeck {
-    if(!_playingCardDeck) {
-        _playingCardDeck = [PlayingCardDeck new];
-    }
-    return _playingCardDeck;
-}
-- (UIView *)createRandomPlayingCard {
-    PlayingCard *card = [self.playingCardDeck drawRandomCard];
-
-    PlayingCardView *cardView = [[PlayingCardView alloc] init];  //initWithFrame?
-    cardView.rank = card.rank;
-    cardView.suit = card.suit;
-    cardView.faceUp = true;
-    return cardView;
-}
-
-- (SetCardDeck *)setCardDeck {
-    if(!_setCardDeck) {
-        _setCardDeck = [SetCardDeck new];
-    }
-    return _setCardDeck;
-}
-
-- (UIView *)createRandomSetCard {
-    SetCard *card = [self.setCardDeck drawRandomCard];
-    SetCardView *cardView = [[SetCardView alloc] init];  //initWithFrame?
-    cardView.color = card.color;
-    cardView.number = card.number;
-    cardView.shading = card.shading;
-    cardView.shape = card.symbol;
-
-    cardView.faceUp = true;
-    return cardView;
-
+    self.cardsBoundaryView.cellAspectRatio = self.cellAspectRatio;
 }
 
 - (void)swipeCard:(UISwipeGestureRecognizer *)gestureRecognizer {
