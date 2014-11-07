@@ -5,29 +5,10 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Set Card-->
-        <scene sceneID="KVR-nm-c2b">
-            <objects>
-                <viewController id="qiS-zP-uWr" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="TO5-y0-a7X"/>
-                        <viewControllerLayoutGuide type="bottom" id="x0l-BN-IdH"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="amx-kI-ry6">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Set Card" id="LEk-lw-Ngx"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="60o-TI-1Ad" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1208" y="-76"/>
-        </scene>
-        <!--Playing Card-->
+        <!--Playing Card Game-->
         <scene sceneID="8b9-kn-jes">
             <objects>
-                <viewController id="eHv-Eg-qtH" customClass="CardGameViewController" sceneMemberID="viewController">
+                <viewController title="Playing Card Game" id="eHv-Eg-qtH" customClass="PlayingCardGameViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="vUL-ML-SGP"/>
                         <viewControllerLayoutGuide type="bottom" id="JfD-IW-Cx4"/>
@@ -84,6 +65,8 @@
                     <tabBarItem key="tabBarItem" title="Playing Card" id="kF2-G5-b5O"/>
                     <connections>
                         <outlet property="cardsBoundaryView" destination="Hk9-hW-4yc" id="073-ky-rxZ"/>
+                        <outlet property="matchModeSegControl" destination="NSX-kl-IQ9" id="qhq-JN-kQY"/>
+                        <outlet property="redealButton" destination="uDQ-B8-HJ2" id="bb4-xH-H9r"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ONc-49-LNR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -102,12 +85,80 @@
                     </tabBar>
                     <connections>
                         <segue destination="eHv-Eg-qtH" kind="relationship" relationship="viewControllers" id="Yum-nJ-V2L"/>
-                        <segue destination="qiS-zP-uWr" kind="relationship" relationship="viewControllers" id="5ta-vP-3Mn"/>
+                        <segue destination="DWb-vg-W38" kind="relationship" relationship="viewControllers" id="OTi-GS-mFB"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JRI-nc-mES" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="409" y="-522"/>
+        </scene>
+        <!--Set Card Game-->
+        <scene sceneID="b4T-eJ-RTa">
+            <objects>
+                <viewController title="Set Card Game" id="DWb-vg-W38" customClass="SetCardGameViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Za8-36-Jc2"/>
+                        <viewControllerLayoutGuide type="bottom" id="Qqc-Wd-TYF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Y03-a1-Gh6">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQm-kp-b01">
+                                <rect key="frame" x="16" y="26" width="54" height="30"/>
+                                <accessibility key="accessibilityConfiguration" hint="Restart the game"/>
+                                <state key="normal" title="Re-deal">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onTouchRedeal:" destination="DWb-vg-W38" eventType="touchUpInside" id="cpO-qr-ajs"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: 123" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jca-J5-Dpg">
+                                <rect key="frame" x="239" y="30" width="83" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="500" verticalCompressionResistancePriority="500" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="VgT-T9-G7l">
+                                <rect key="frame" x="461" y="23" width="123" height="29"/>
+                                <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <segments>
+                                    <segment title="First"/>
+                                    <segment title="Second"/>
+                                </segments>
+                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </segmentedControl>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I5g-aa-Vfl" customClass="GridView">
+                                <rect key="frame" x="16" y="64" width="568" height="479"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="I5g-aa-Vfl" firstAttribute="top" secondItem="sQm-kp-b01" secondAttribute="bottom" constant="8" symbolic="YES" id="8GU-am-AoY"/>
+                            <constraint firstItem="jca-J5-Dpg" firstAttribute="baseline" secondItem="sQm-kp-b01" secondAttribute="baseline" id="QWh-2a-gsm"/>
+                            <constraint firstItem="sQm-kp-b01" firstAttribute="leading" secondItem="Y03-a1-Gh6" secondAttribute="leadingMargin" id="QvL-Yp-ROo"/>
+                            <constraint firstAttribute="centerX" secondItem="jca-J5-Dpg" secondAttribute="centerX" constant="20" id="a4W-BD-2Mm"/>
+                            <constraint firstItem="I5g-aa-Vfl" firstAttribute="leading" secondItem="sQm-kp-b01" secondAttribute="leading" id="gNa-iB-vBJ"/>
+                            <constraint firstItem="sQm-kp-b01" firstAttribute="top" secondItem="Za8-36-Jc2" secondAttribute="bottom" constant="6" id="olF-m5-cfI"/>
+                            <constraint firstItem="VgT-T9-G7l" firstAttribute="trailing" secondItem="I5g-aa-Vfl" secondAttribute="trailing" id="oyL-cK-qrR"/>
+                            <constraint firstItem="Qqc-Wd-TYF" firstAttribute="top" secondItem="I5g-aa-Vfl" secondAttribute="bottom" constant="8" symbolic="YES" id="qtk-Ec-RjW"/>
+                            <constraint firstItem="VgT-T9-G7l" firstAttribute="bottom" secondItem="jca-J5-Dpg" secondAttribute="bottom" id="yZE-sb-GFE"/>
+                            <constraint firstItem="VgT-T9-G7l" firstAttribute="trailing" secondItem="Y03-a1-Gh6" secondAttribute="trailingMargin" id="yrh-xT-J7r"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Set Card" id="gMV-10-7Oz"/>
+                    <connections>
+                        <outlet property="cardsBoundaryView" destination="I5g-aa-Vfl" id="bUR-ug-Cus"/>
+                        <outlet property="matchModeSegControl" destination="VgT-T9-G7l" id="5Lh-yP-mTH"/>
+                        <outlet property="redealButton" destination="sQm-kp-b01" id="XaR-VO-VwF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yDm-79-efp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1219" y="-62"/>
         </scene>
     </scenes>
 </document>
