@@ -24,6 +24,7 @@
 		5E940DAF1A0B0BFD00F37473 /* PlayingCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E940DAE1A0B0BFD00F37473 /* PlayingCardView.m */; };
 		5E940DB21A0B0FA300F37473 /* Grid.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E940DB11A0B0FA300F37473 /* Grid.m */; };
 		5E940DB51A0B3ABC00F37473 /* GridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E940DB41A0B3ABC00F37473 /* GridView.m */; };
+		5F034E3A733E6FD9AAFBD9D5 /* SetCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0345F1A669C9E7DB25C9CB /* SetCardView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,8 @@
 		5E940DB11A0B0FA300F37473 /* Grid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Grid.m; sourceTree = "<group>"; };
 		5E940DB31A0B3ABC00F37473 /* GridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GridView.h; path = View/GridView.h; sourceTree = "<group>"; };
 		5E940DB41A0B3ABC00F37473 /* GridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GridView.m; path = View/GridView.m; sourceTree = "<group>"; };
+		5F0340A254464B4C9245937A /* SetCardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetCardView.h; path = View/SetCardView.h; sourceTree = "<group>"; };
+		5F0345F1A669C9E7DB25C9CB /* SetCardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SetCardView.m; path = View/SetCardView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +185,8 @@
 				5E940DB41A0B3ABC00F37473 /* GridView.m */,
 				5E940DAD1A0B0BFD00F37473 /* PlayingCardView.h */,
 				5E940DAE1A0B0BFD00F37473 /* PlayingCardView.m */,
+				5F0345F1A669C9E7DB25C9CB /* SetCardView.m */,
+				5F0340A254464B4C9245937A /* SetCardView.h */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -308,6 +313,7 @@
 				5E03026C1A0AE07D00932EEE /* SetCardDeck.m in Sources */,
 				5E0302341A0AD47D00932EEE /* main.m in Sources */,
 				5E03026E1A0AE07D00932EEE /* SetCard.m in Sources */,
+				5F034E3A733E6FD9AAFBD9D5 /* SetCardView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
