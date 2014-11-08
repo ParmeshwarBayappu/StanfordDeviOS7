@@ -7,8 +7,6 @@
 
 @interface SetCardView ()
 
-@property (nonatomic) CGFloat faceCardScaleFactor;
-
 @end
 
 @implementation SetCardView
@@ -39,17 +37,18 @@
     [self setNeedsDisplay];
 }
 
-- (void)setFaceUp:(BOOL)faceUp
-{
-    _faceUp = faceUp;
-    [self setNeedsDisplay];
-}
-
 static NSArray * COLORS_IN_SET = nil;
 + (NSArray *)colorsInSet
 {
     if(!COLORS_IN_SET) COLORS_IN_SET = @[[UIColor greenColor], [UIColor redColor], [UIColor purpleColor]];
     return COLORS_IN_SET;
+}
+
+static NSArray * ALPHAS_IN_SET = nil;
++ (NSArray *)alphasInSet
+{
+    if(!ALPHAS_IN_SET) ALPHAS_IN_SET = @[@(0.0), @(0.2), @(1.0)];
+    return ALPHAS_IN_SET;
 }
 
 #pragma mark - Initialization
@@ -78,59 +77,21 @@ static NSArray * COLORS_IN_SET = nil;
 
 #pragma mark - Drawing
 
-#define CORNER_FONT_STANDARD_HEIGHT 180.0
-#define CORNER_RADIUS_STANDARD 12.0
-
-- (CGFloat)cornerScaleFactor { return self.bounds.size.height / CORNER_FONT_STANDARD_HEIGHT; }
-- (CGFloat)cornerRadius { return CORNER_RADIUS_STANDARD * [self cornerScaleFactor]; }
-- (CGFloat)cornerOffset { return [self cornerRadius] / 3.0; } //not sure of this calc
-
-//@synthesize faceCardScaleFactor = _faceCardScaleFactor;
-
-#define DEFAULT_FACE_CARD_SCALE_FACTOR 0.90
-- (CGFloat)faceCardScaleFactor
-{
-    if (!_faceCardScaleFactor) _faceCardScaleFactor = DEFAULT_FACE_CARD_SCALE_FACTOR;
-    return _faceCardScaleFactor;
-}
-
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    //Drawing code
-    UIBezierPath * roundedRect = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:[self cornerRadius]];
-
-    [roundedRect addClip];
-
-    if(self.faceUp) {
-        [[UIColor whiteColor] setFill];
-        UIRectFill(self.bounds);
-
-        [[UIColor blackColor] setStroke];
-        [roundedRect stroke];
-
-        CGRect imageRect = CGRectInset(self.bounds, self.bounds.size.width * (1.0-self.faceCardScaleFactor), self.bounds.size.height * (1.0-self.faceCardScaleFactor));
-
-        [self drawPips: imageRect];
-    }
-    else {
-        UIImage *faceImage = [UIImage imageNamed:@"cardback"];
-        [faceImage drawInRect:self.bounds];
-    }
-}
-
 - (UIColor *)colorOfCard {
     return [self.class colorsInSet][self.color-1];
 }
 
 - (CGFloat)alphaOfCard {
-    return (self.shading - 1)*0.5;
+    return [(NSNumber *) [self.class alphasInSet][self.shading - 1] floatValue];
 }
 
-- (void)drawPips:(CGRect) imageRect
+- (void)drawCardContents:(CGRect) Rect
 {
     CGContextSaveGState (UIGraphicsGetCurrentContext());
 
+    CGRect imageRect = [self scaledCardContentsRect];
+
+    //TODO: Later use CG Patterns to draw stripes when shading is 2 - instead of current use of color alpha component
     [[[self colorOfCard] colorWithAlphaComponent:[self alphaOfCard]] setFill];
     [[self colorOfCard] setStroke];
 

@@ -4,15 +4,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CardView.h"
 
 
-@interface SetCardView : UIView
+@interface SetCardView : CardView
 
 @property (nonatomic) uint number;
 @property (nonatomic) uint shape;
 @property (nonatomic) uint shading;
 @property (nonatomic) uint color;
-
-@property (nonatomic) BOOL faceUp;
 
 @end
