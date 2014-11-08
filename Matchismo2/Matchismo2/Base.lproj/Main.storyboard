@@ -67,6 +67,7 @@
                         <outlet property="cardsBoundaryView" destination="Hk9-hW-4yc" id="073-ky-rxZ"/>
                         <outlet property="matchModeSegControl" destination="NSX-kl-IQ9" id="qhq-JN-kQY"/>
                         <outlet property="redealButton" destination="uDQ-B8-HJ2" id="bb4-xH-H9r"/>
+                        <outlet property="scoreLabel" destination="aBh-nk-Diw" id="hvl-KR-4kL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ONc-49-LNR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -154,6 +155,7 @@
                         <outlet property="cardsBoundaryView" destination="I5g-aa-Vfl" id="bUR-ug-Cus"/>
                         <outlet property="matchModeSegControl" destination="VgT-T9-G7l" id="5Lh-yP-mTH"/>
                         <outlet property="redealButton" destination="sQm-kp-b01" id="XaR-VO-VwF"/>
+                        <outlet property="scoreLabel" destination="jca-J5-Dpg" id="CVh-wk-CCg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yDm-79-efp" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *matchModeSegControl;
 @property (weak, nonatomic) IBOutlet UIButton *redealButton;
 @property(weak, nonatomic) IBOutlet GridView *cardsBoundaryView;
+@property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 
 @property (strong, nonatomic) CardMatchingGame * game;
 //@property (nonatomic, readonly) uint matchMode;
@@ -110,6 +111,7 @@
     //CardMatchingGame * prevGame = self.game;
     //[prevGame release];
     self.game = nil;
+    [self updateScore];
 
     //Game reset - enable options available at start such as match mode
     self.matchModeSegControl.enabled = true;
@@ -125,6 +127,8 @@
         //TODO: Could this result in a self -reference? or does the implementation use a weak ref?
         [cardView addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:cardView action:@selector(pinch:)]];
         [cardView addGestureRecognizer:[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeCard:)]];
+
+        [cardView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapCard:)]];
     }
 }
 
@@ -137,7 +141,6 @@
     // Do any additional setup after loading the view, typically from a nib.
 
     [self redeal];
-
 }
 
 - (void)loadView {
@@ -150,6 +153,38 @@
     cardSwiped.faceUp = !cardSwiped.faceUp;
 }
 
+- (void)tapCard:(UITapGestureRecognizer *)gestureRecognizer {
+    SetCardView *cardSwiped = (SetCardView *) gestureRecognizer.view;
+    cardSwiped.faceUp = !cardSwiped.faceUp;
+
+    if (!self.matchStarted) { //Once a card is selected - disable options available at start such as match mode
+        self.matchStarted = true;
+        self.matchModeSegControl.enabled = false;
+        self.game.matchMode = self.numberOfCardsToMatch;
+    }
+
+    NSInteger chosenButtonIndex = cardSwiped.tag;
+    NSLog(@"Chosen card button index: %ld", (long)chosenButtonIndex);
+    [self.game chooseCardAtIndex:chosenButtonIndex] ;
+    [self updateScore];
+}
+
+- (void)updateScore {
+    [self.scoreLabel setAttributedText:[self getScoreText]];
+}
+
+- (NSAttributedString *)getScoreText {
+    NSMutableAttributedString * attrScoreText = [[NSMutableAttributedString alloc] initWithString:@"Score: "];
+    NSDictionary *scoreAttribs = @{ NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline],
+            NSForegroundColorAttributeName: (self.game.score<0)? [UIColor redColor] : [UIColor blackColor]
+    };
+    NSString * score = [NSString stringWithFormat:@"%ld", (long)self.game.score];
+    NSAttributedString * attrScore = [[NSMutableAttributedString alloc] initWithString:score attributes:scoreAttribs];
+    [attrScoreText appendAttributedString:attrScore];
+
+    return attrScoreText;
+
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

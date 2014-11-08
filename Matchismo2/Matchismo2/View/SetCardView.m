@@ -110,8 +110,8 @@ static NSArray * ALPHAS_IN_SET = nil;
         int itemsCountHorizontal =  (!placeShapesVertical ? itemCount : 1);
         int itemsCountHorizontalMAX =  (!placeShapesVertical ? ITEM_MAX_COUNT : 1);
 
-        int itemHeight = imageRect.size.height/ itemsCountVerticalMAX * 0.90;
-        int itemWidth = imageRect.size.width/ itemsCountHorizontalMAX * 0.90;
+        int itemHeight = imageRect.size.height/ itemsCountVerticalMAX * 0.80;
+        int itemWidth = imageRect.size.width/ itemsCountHorizontalMAX * 0.80;
         CGSize itemSize = CGSizeMake(itemWidth, itemHeight);
 
         int itemRectHeight = imageRect.size.height/ itemsCountVertical;
