@@ -109,19 +109,9 @@ static NSArray * COLORS_IN_SET = nil;
         [[UIColor blackColor] setStroke];
         [roundedRect stroke];
 
-        //UIImage *faceImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@%@", [self rankAsAString], self.suit]];
-        UIImage *faceImage = [UIImage imageNamed:@"cardback"];
-
         CGRect imageRect = CGRectInset(self.bounds, self.bounds.size.width * (1.0-self.faceCardScaleFactor), self.bounds.size.height * (1.0-self.faceCardScaleFactor));
 
-        if (!faceImage) {
-            [faceImage drawInRect:imageRect];
-        } else {
-            [self drawPips: imageRect];
-        }
-
-        //[self drawCorners];
-
+        [self drawPips: imageRect];
     }
     else {
         UIImage *faceImage = [UIImage imageNamed:@"cardback"];
@@ -133,11 +123,16 @@ static NSArray * COLORS_IN_SET = nil;
     return [self.class colorsInSet][self.color-1];
 }
 
+- (CGFloat)alphaOfCard {
+    return (self.shading - 1)*0.5;
+}
+
 - (void)drawPips:(CGRect) imageRect
 {
     CGContextSaveGState (UIGraphicsGetCurrentContext());
 
-    [[self colorOfCard] setFill];
+    [[[self colorOfCard] colorWithAlphaComponent:[self alphaOfCard]] setFill];
+    [[self colorOfCard] setStroke];
 
     int itemCount = self.number;
     const int ITEM_MAX_COUNT = 3;
@@ -176,8 +171,8 @@ static NSArray * COLORS_IN_SET = nil;
 - (void)drawShapeIn:(CGRect) imageRect ofSize:(CGSize) size
 {
     //Make width and height equal for shapes
-    CGFloat widhtAndHeightEqual = MIN(size.width, size.height);
-    size.height = widhtAndHeightEqual; size.width = widhtAndHeightEqual;
+    CGFloat widthAndHeightEqual = MIN(size.width, size.height);
+    size.height = widthAndHeightEqual; size.width = widthAndHeightEqual;
 
     int xDiff = (imageRect.size.width - size.width)/2;
     int yDiff = (imageRect.size.height - size.height)/2;
@@ -197,5 +192,6 @@ static NSArray * COLORS_IN_SET = nil;
         [shape closePath];
     }
     [shape fill];
+    [shape stroke];
 }
 @end
