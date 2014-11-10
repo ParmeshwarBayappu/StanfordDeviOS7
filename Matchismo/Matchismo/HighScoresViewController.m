@@ -140,9 +140,9 @@
     //[self.setCardView setFrame:CGRectMake(50, 100, self.setCardView.bounds.size.width*1.2, self.setCardView.bounds.size.height*1.2)];
     //[self.setCardView setBounds:CGRectMake(50, 100, self.setCardView.bounds.size.width*1.2, self.setCardView.bounds.size.height*1.2)]; //- Not working. Why?
     //CGRect currBounds = self.setCardView.bounds;
-    //[self animateViewByScaling:self.setCardView animations:^{
-    //    self.setCardView.number = (self.setCardView.number%3) +1;
-    //}];
+    [self animateViewByScaling:self.setCardView animations:^{
+        self.setCardView.number = (self.setCardView.number%3) +1;
+    }];
 }
 
 #pragma mark -- Animation
