@@ -53,6 +53,9 @@
     return cardView;
 }
 
++ (NSArray *)matchModeTitles {
+    return @[@"Std", @"Easy"];
+}
 // In easy mode display the card (Face Up) always
 - (CardStateType) getCardViewState: (Card *)card {
     CardStateType cardStateType = [super getCardViewState:card];

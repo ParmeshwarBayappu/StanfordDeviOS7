@@ -18,6 +18,8 @@
 @property (nonatomic, readonly) BOOL matchStarted;
 @property (nonatomic, readonly) uint selectedMatchModeIndex;
 
++ (NSArray *)matchModeTitles;
+
 - (CardStateType)getCardViewState:(Card *)card;
 
 // abstract

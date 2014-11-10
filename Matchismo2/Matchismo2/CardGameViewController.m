@@ -90,6 +90,9 @@
     return nil;
 }
 
++ (NSArray *)matchModeTitles {
+    return @[@"Mode 1", @"Mode 2"];
+}
 #pragma mark -- Others
 
 - (void)redeal {
@@ -139,7 +142,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-
+    NSArray * matchModeTitles = [self.class matchModeTitles];
+    for (int titleIndex = 0; titleIndex < matchModeTitles.count; ++titleIndex) {
+        [self.matchModeSegControl setTitle:matchModeTitles[titleIndex] forSegmentAtIndex:titleIndex];
+    }
     [self redeal];
 }
 

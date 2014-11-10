@@ -48,4 +48,7 @@
     return cardView;
 }
 
++ (NSArray *)matchModeTitles {
+    return @[@"2 Card", @"3 Card"];
+}
 @end
