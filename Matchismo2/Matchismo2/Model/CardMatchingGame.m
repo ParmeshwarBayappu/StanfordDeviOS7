@@ -57,6 +57,10 @@ static const int COST_TO_CHOOSE = 1;
     [self chooseCardAtIndex:index withNotification:nil];
 }
 
+- (int)indexOfCard:(Card *)card {
+    return [self.cards indexOfObject:card];
+}
+
 - (void)chooseCardAtIndex:(NSUInteger)index withNotification:(id<CardGameNotifications>) requestor
 {
     Card * card = [self cardAtIndex:index];

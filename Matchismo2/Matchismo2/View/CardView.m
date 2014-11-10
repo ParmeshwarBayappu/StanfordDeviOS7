@@ -96,6 +96,7 @@ static NSString *BACKGROUND_IMAGE_NAME = nil;
     UIRectFill(self.bounds);
 
     [[self backgroundColorForStroke] setStroke];
+    CGContextSetLineWidth(UIGraphicsGetCurrentContext(), 10);
     [roundedRect stroke];
 }
 
@@ -128,7 +129,7 @@ static NSString *BACKGROUND_IMAGE_NAME = nil;
             backgroundColorForStroke = nil;
             break;
         case CardStateHighlighted:
-            backgroundColorForStroke = [UIColor orangeColor];
+            backgroundColorForStroke = [[UIColor orangeColor] colorWithAlphaComponent:0.4];
     }
     return backgroundColorForStroke;
 }
@@ -141,10 +142,10 @@ static NSString *BACKGROUND_IMAGE_NAME = nil;
         case CardStateNormal:
             break;
         case CardStateHighlighted:
-            colorForOverlay = [[UIColor redColor] colorWithAlphaComponent:0.2];
+            //colorForOverlay = [[UIColor redColor] colorWithAlphaComponent:0.2];
             break;
         case CardStateDisabled:
-            colorForOverlay = [[UIColor blackColor] colorWithAlphaComponent:0.7];
+            colorForOverlay = [[UIColor redColor] colorWithAlphaComponent:0.2];
             break;
     }
     return colorForOverlay;
@@ -164,13 +165,25 @@ static NSString *BACKGROUND_IMAGE_NAME = nil;
         if(colorForOverlay ) {
             CGContextRef cgRef = UIGraphicsGetCurrentContext();
             CGContextSaveGState (cgRef);
-            CGContextBeginTransparencyLayer(cgRef, nil);
-            //CGContextSetBlendMode(UIGraphicsGetCurrentContext(), kCGBlendModeMultiply);
+            CGContextBeginTransparencyLayer(cgRef, nil); //Using a color with alpha was not seem sufficient
             [[self colorForOverlay] setFill];
             UIRectFill(self.bounds);
             CGContextEndTransparencyLayer(cgRef);
             CGContextRestoreGState(cgRef);
+            //UIRectFillUsingBlendMode(self.bounds, kCGBlendModeMultiply)  ;     //Was not able to figure out how this works exactly
         }
+        UIColor *colorForOverlayStroke = [self backgroundColorForStroke];
+        if (colorForOverlayStroke) {
+            CGRect boundaryRect = CGRectInset(self.bounds, 4, 4);
+            UIBezierPath * roundedRect = [UIBezierPath bezierPathWithRoundedRect:boundaryRect cornerRadius:[self cornerRadius]];
+            [roundedRect setLineWidth:-8.0];
+
+            [[self backgroundColorForStroke] setStroke];
+            [roundedRect stroke];
+
+        }
+
+
     } else {
         [[UIImage imageNamed:[self.class backgroundImageName]] drawInRect:self.bounds];
     }

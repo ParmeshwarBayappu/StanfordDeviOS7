@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "Deck.h"
 #import "CardView.h"
+#import "CardGameNotifications.h"
 
-@interface CardGameViewController : UIViewController
+@interface CardGameViewController : UIViewController <CardGameNotifications>
 
 @property (nonatomic, readonly) uint numberOfCardsToDeal; //abstract to be implemented by subclasses
 @property (nonatomic, readonly) CGFloat cellAspectRatio; //abstract to be implemented by subclasses

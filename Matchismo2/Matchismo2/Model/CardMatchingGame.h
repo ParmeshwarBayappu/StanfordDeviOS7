@@ -19,6 +19,7 @@
 - (Card *)cardAtIndex:(NSUInteger)index;
 - (NSArray *)currentChosenCards;
 //- (int) currentChosenCardsScore;
+- (int)indexOfCard:(Card *)card;
 
 @property (nonatomic, readonly) NSInteger score;
 @property (nonatomic) NSUInteger matchMode;

@@ -172,8 +172,9 @@
 
     NSInteger chosenButtonIndex = cardSwiped.tag;
     NSLog(@"Chosen card button index: %ld", (long)chosenButtonIndex);
-    [self.game chooseCardAtIndex:chosenButtonIndex] ;
+    [self.game chooseCardAtIndex:chosenButtonIndex withNotification:self] ;
     [self updateUI];
+    //[self animateViewTransitionByFlip:cardSwiped animations:nil];
 }
 
 - (void) updateUI {
@@ -214,6 +215,73 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark -- Animation
+
+- (void)animateViewTransitionByFlip:(UIView *)view animations:(void (^)()) animations
+{
+    [UIView transitionWithView:view duration:1.0 options: (UIViewAnimationOptionCurveLinear | UIViewAnimationOptionTransitionFlipFromLeft) animations:^{
+        if (animations) animations();
+    } completion:^(BOOL finished) {
+        //
+    }];
+}
+
+- (void)animateViewByScaling:(UIView *)iView animations:(void (^)()) animations
+{
+    //scale up and down
+    CGRect currBounds = iView.bounds;
+    CGRect newBounds = currBounds;
+    newBounds.size.width *= 1.20;
+    newBounds.size.height *= 1.20;
+
+    //newBounds.origin = CGPointMake(50, 100);
+
+    [iView setBackgroundColor:[UIColor orangeColor]];
+    [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionAutoreverse animations:^{
+        if (animations)
+            animations();
+        [iView setBounds:newBounds];
+    } completion:^(BOOL finished) {
+        //        [UIView animateWithDuration:1.0 delay:1.0 options:UIViewAnimationOptionAutoreverse animations:^{
+        [iView setBounds:currBounds];
+        //[self updateUI];
+        //        } completion:^(BOOL finished) {
+        [iView setBackgroundColor:nil];
+        //        }];
+    }];
+}
+
+- (void)selectionImpactOfCard:(Card *)card chosen:(BOOL)isChosen otherChosenCards:(NSArray *)otherChosenCards impact:(NSInteger)chosenCardsScoreImpact {
+
+    if(isChosen && chosenCardsScoreImpact > 0 )
+    {
+       NSMutableArray *selectedCardViews = [NSMutableArray new];
+        [selectedCardViews addObject:self.cardSubViewsActive[[self.game indexOfCard:card]]];
+        //[self.game indexOfCard:card]];
+        for(Card * otherChosenCard in otherChosenCards){
+            [selectedCardViews addObject:self.cardSubViewsActive[[self.game indexOfCard:otherChosenCard]]];
+        }
+        for(CardView * cardView in selectedCardViews) {
+            [self animateViewByScaling:cardView animations:nil];
+        }
+    } else {
+        [self animateViewTransitionByFlip:self.cardSubViewsActive[[self.game indexOfCard:card]] animations:nil];
+    }
+
+
+    //NSString * otherChoseCardsStr = [self.class stringFromCardsArray:otherChosenCards];
+    //NSString * cardContents = card.contents;
+    //NSAttributedString *cardContentsAttr = [self formatCardContentAttr:card];
+    //NSAttributedString *otherChoseCardsStrAttr = [self attributedStringFromCardsArray:otherChosenCards];
+
+    //NSMutableAttributedString *strBuilder = [[NSMutableAttributedString alloc] init];
+
+//    [strBuilder appendAttributedString:cardContentsAttr];
+//    [strBuilder appendAttributedString:[[NSAttributedString alloc] initWithString:@" matched ["]];
+//    [strBuilder appendAttributedString:otherChoseCardsStrAttr];
+//    [strBuilder appendAttributedString:[[NSAttributedString alloc] initWithString:[[NSString alloc] initWithFormat:@"] for %ld points!", (long) chosenCardsScoreImpact]]];
 }
 
 @end
