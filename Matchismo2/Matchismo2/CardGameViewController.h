@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Deck.h"
+#import "CardView.h"
 
 @interface CardGameViewController : UIViewController
 
@@ -16,6 +17,8 @@
 
 @property (nonatomic, readonly) BOOL matchStarted;
 @property (nonatomic, readonly) uint selectedMatchModeIndex;
+
+- (CardStateType)getCardViewState:(Card *)card;
 
 // abstract
 // protected - for subclass to implement

@@ -120,7 +120,7 @@
     for (int cardIndex = 0; cardIndex < self.numberOfCardsToDeal; ++cardIndex) {
        Card * card = [self.game cardAtIndex:cardIndex];
        UIView * cardView = [self createCardViewWith:card];
-        cardView.tag = cardIndex;
+        cardView.tag = cardIndex; //TODO: Store (address of) the Card object itself
         [self.cardSubViewsActive addObject:cardView];
         [self.cardsBoundaryView addSubview:cardView];
 
@@ -150,12 +150,13 @@
 
 - (void)swipeCard:(UISwipeGestureRecognizer *)gestureRecognizer {
     SetCardView *cardSwiped = (SetCardView *) gestureRecognizer.view;
-    cardSwiped.faceUp = !cardSwiped.faceUp;
+    [cardSwiped resetFaceCardScaleFactor];
+
+    cardSwiped.contentScaleFactor = 3.5; //TODO: Experimenting  - what impact this has?
 }
 
 - (void)tapCard:(UITapGestureRecognizer *)gestureRecognizer {
     SetCardView *cardSwiped = (SetCardView *) gestureRecognizer.view;
-    cardSwiped.faceUp = !cardSwiped.faceUp;
 
     if (!self.matchStarted) { //Once a card is selected - disable options available at start such as match mode
         self.matchStarted = true;
@@ -166,9 +167,30 @@
     NSInteger chosenButtonIndex = cardSwiped.tag;
     NSLog(@"Chosen card button index: %ld", (long)chosenButtonIndex);
     [self.game chooseCardAtIndex:chosenButtonIndex] ;
+    [self updateUI];
+}
+
+- (void) updateUI {
+    [self updateCardViewsState];
     [self updateScore];
 }
 
+- (CardStateType) getCardViewState: (Card *)card {
+    CardStateType cardState;
+    if (card.isMatched) cardState = CardStateDisabled;
+    else if (card.isChosen) cardState = CardStateHighlighted;
+    else cardState = CardStateFaceDown;
+    return cardState;
+}
+
+- (void) updateCardViewsState {
+    for(CardView *cardView in self.cardSubViewsActive) {
+        Card * card = [self.game cardAtIndex:cardView.tag];
+        if (card.isMatched) cardView.cardState = CardStateDisabled;
+        else if (card.isChosen) cardView.cardState = CardStateHighlighted;
+        else cardView.cardState = CardStateNormal;
+    }
+}
 - (void)updateScore {
     [self.scoreLabel setAttributedText:[self getScoreText]];
 }

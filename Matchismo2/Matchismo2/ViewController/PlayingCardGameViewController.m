@@ -45,7 +45,6 @@
     PlayingCardView * cardView = [[PlayingCardView alloc] initWithFrame:CGRectZero];
     cardView.rank = playingCard.rank;
     cardView.suit = playingCard.suit;
-    cardView.faceUp = true;
     return cardView;
 }
 

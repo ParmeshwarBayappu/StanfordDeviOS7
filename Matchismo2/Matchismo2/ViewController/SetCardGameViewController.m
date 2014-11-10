@@ -9,10 +9,21 @@
 #import "SomeCommonUtils.h"
 #import "SetCardView.h"
 
+@interface SetCardGameViewController ()
+@property (nonatomic, readonly) BOOL easyModeEnabled;
+@end
 
 @implementation SetCardGameViewController {
 
 }
+
+#pragma mark -- Properties
+
+- (BOOL)easyModeEnabled {
+    return (self.selectedMatchModeIndex==1);
+}
+
+
 
 #pragma mark -- Overrides
 
@@ -39,8 +50,14 @@
     cardView.number = setCard.number;
     cardView.shading = setCard.shading;
     cardView.shape = setCard.symbol;
-    cardView.faceUp = true;
     return cardView;
+}
+
+// In easy mode display the card (Face Up) always
+- (CardStateType) getCardViewState: (Card *)card {
+    CardStateType cardStateType = [super getCardViewState:card];
+    if (self.easyModeEnabled && cardStateType == CardStateFaceDown) cardStateType = CardStateNormal;
+    return cardStateType;
 }
 
 @end

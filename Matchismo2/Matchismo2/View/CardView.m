@@ -16,10 +16,15 @@
 
 #pragma mark - Properties
 
-- (void)setFaceUp:(BOOL)faceUp
-{
-    _faceUp = faceUp;
-    [self setNeedsDisplay];
+- (BOOL)faceUp {
+    return (self.cardState != CardStateFaceDown);
+}
+
+- (void)setCardState:(CardStateType)cardState {
+    if (_cardState != cardState) {
+        _cardState = cardState;
+        [self setNeedsDisplay];
+    }
 }
 
 @synthesize faceCardScaleFactor = _faceCardScaleFactor;
@@ -37,6 +42,10 @@
     [self setNeedsDisplay];
 }
 
+- (void) resetFaceCardScaleFactor {
+    _faceCardScaleFactor =0;
+}
+
 #define CORNER_FONT_STANDARD_HEIGHT 180.0
 #define CORNER_RADIUS 12.0
 
@@ -47,6 +56,7 @@
 - (CGFloat)cornerOffset { return (CGFloat)([self cornerRadius] / 3.0); }
 
 static NSString *BACKGROUND_IMAGE_NAME = nil;
+
 + (NSString *)backgroundImageName {
     if(!BACKGROUND_IMAGE_NAME) {
         BACKGROUND_IMAGE_NAME = @"cardback";
@@ -82,12 +92,64 @@ static NSString *BACKGROUND_IMAGE_NAME = nil;
     UIBezierPath *roundedRect = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:[self cornerRadius]];
     [roundedRect addClip];
 
-    [[UIColor whiteColor] setFill];
+    [[self backgroundColorForFill] setFill];
     UIRectFill(self.bounds);
 
-    [[UIColor blackColor] setStroke];
+    [[self backgroundColorForStroke] setStroke];
     [roundedRect stroke];
 }
+
+ - (UIColor *)backgroundColorForFill {
+     UIColor *backgroundColorForFill = nil;
+     return [UIColor whiteColor];
+     switch (self.cardState)
+     {
+         case CardStateFaceDown:
+             break;
+         case CardStateNormal:
+             backgroundColorForFill = [[UIColor yellowColor] colorWithAlphaComponent:1.0];
+             break;
+         case CardStateHighlighted:
+             backgroundColorForFill = [[UIColor redColor] colorWithAlphaComponent:1.0];
+             break;
+         case CardStateDisabled:
+             backgroundColorForFill = [[UIColor whiteColor] colorWithAlphaComponent:1.0];
+     }
+     return backgroundColorForFill;
+ }
+
+- (UIColor *)backgroundColorForStroke {
+    UIColor *backgroundColorForStroke = nil;
+    switch (self.cardState)
+    {
+        case CardStateFaceDown:
+        case CardStateNormal:
+        case CardStateDisabled:
+            backgroundColorForStroke = nil;
+            break;
+        case CardStateHighlighted:
+            backgroundColorForStroke = [UIColor orangeColor];
+    }
+    return backgroundColorForStroke;
+}
+
+- (UIColor *)colorForOverlay {
+    UIColor *colorForOverlay = nil;
+    switch (self.cardState)
+    {
+        case CardStateFaceDown:
+        case CardStateNormal:
+            break;
+        case CardStateHighlighted:
+            colorForOverlay = [[UIColor redColor] colorWithAlphaComponent:0.2];
+            break;
+        case CardStateDisabled:
+            colorForOverlay = [[UIColor blackColor] colorWithAlphaComponent:0.7];
+            break;
+    }
+    return colorForOverlay;
+}
+
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -97,6 +159,18 @@ static NSString *BACKGROUND_IMAGE_NAME = nil;
 
     if (self.faceUp) {
         [self drawCardContents:rect];
+
+        UIColor *colorForOverlay = [self colorForOverlay];
+        if(colorForOverlay ) {
+            CGContextRef cgRef = UIGraphicsGetCurrentContext();
+            CGContextSaveGState (cgRef);
+            CGContextBeginTransparencyLayer(cgRef, nil);
+            //CGContextSetBlendMode(UIGraphicsGetCurrentContext(), kCGBlendModeMultiply);
+            [[self colorForOverlay] setFill];
+            UIRectFill(self.bounds);
+            CGContextEndTransparencyLayer(cgRef);
+            CGContextRestoreGState(cgRef);
+        }
     } else {
         [[UIImage imageNamed:[self.class backgroundImageName]] drawInRect:self.bounds];
     }
