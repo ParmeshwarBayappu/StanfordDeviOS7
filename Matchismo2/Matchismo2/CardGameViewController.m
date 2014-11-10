@@ -152,7 +152,7 @@
     SetCardView *cardSwiped = (SetCardView *) gestureRecognizer.view;
     [cardSwiped resetFaceCardScaleFactor];
 
-    cardSwiped.contentScaleFactor = 3.5; //TODO: Experimenting  - what impact this has?
+    //cardSwiped.contentScaleFactor = 3.5; //TODO: Experimenting  - what impact this has?
 }
 
 - (void)tapCard:(UITapGestureRecognizer *)gestureRecognizer {
@@ -186,9 +186,7 @@
 - (void) updateCardViewsState {
     for(CardView *cardView in self.cardSubViewsActive) {
         Card * card = [self.game cardAtIndex:cardView.tag];
-        if (card.isMatched) cardView.cardState = CardStateDisabled;
-        else if (card.isChosen) cardView.cardState = CardStateHighlighted;
-        else cardView.cardState = CardStateNormal;
+        cardView.cardState = [self getCardViewState:card];
     }
 }
 - (void)updateScore {
