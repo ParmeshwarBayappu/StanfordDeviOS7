@@ -27,7 +27,7 @@
 // protected - for subclass to implement
 - (Deck *)createDeck;
 - (uint) numberOfCardsToMatch;
-- (UIView *)createCardViewWith:(Card *)card;
+- (CardView *)createCardViewWith:(Card *)card;
 
 @end
 

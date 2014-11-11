@@ -43,7 +43,7 @@
 }
 
 // override base class abstract impl
-- (UIView *)createCardViewWith: (Card *)card {
+- (CardView *)createCardViewWith: (Card *)card {
     SetCard * setCard = SAFE_CAST_TO_TYPE_OR_ASSERT(card, SetCard );
     SetCardView * cardView = [[SetCardView alloc] initWithFrame:CGRectZero];
     cardView.color = setCard.color;

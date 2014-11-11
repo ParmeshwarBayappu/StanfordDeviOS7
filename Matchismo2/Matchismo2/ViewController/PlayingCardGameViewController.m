@@ -40,7 +40,7 @@
 }
 
 // override base class abstract impl
-- (UIView *)createCardViewWith: (Card *)card {
+- (CardView *)createCardViewWith: (Card *)card {
     PlayingCard * playingCard = SAFE_CAST_TO_TYPE_OR_ASSERT(card, PlayingCard );
     PlayingCardView * cardView = [[PlayingCardView alloc] initWithFrame:CGRectZero];
     cardView.rank = playingCard.rank;

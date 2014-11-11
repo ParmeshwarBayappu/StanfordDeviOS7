@@ -33,7 +33,8 @@
 //TODO: Can we rely on self.cardsBoundaryView.subviews? Probably keep independent - ex
 //  - iterating and removing subviews
 //  - gridview enhanced to have other sub views (decorations)
-@property(strong, nonatomic) NSMutableArray *cardSubViewsActive;
+@property(strong, nonatomic) NSMutableArray *cardSubViewsActive; //TODO: Remove
+@property (nonatomic) NSMutableDictionary *dictionaryOfCardsWithAddressAsKey;
 @property (strong, nonatomic) PlayingCardDeck *playingCardDeck;
 @property (strong, nonatomic) SetCardDeck *setCardDeck;
 
@@ -61,6 +62,13 @@
     return _game;
 }
 
+- (NSMutableDictionary *)dictionaryOfCardsWithAddressAsKey {
+    if(!_dictionaryOfCardsWithAddressAsKey) {
+        _dictionaryOfCardsWithAddressAsKey = [NSMutableDictionary new];
+    }
+    return _dictionaryOfCardsWithAddressAsKey;
+}
+
 - (uint)selectedMatchModeIndex{
     assert(self.matchModeSegControl.selectedSegmentIndex>=0);
     return (uint) self.matchModeSegControl.selectedSegmentIndex;
@@ -85,7 +93,7 @@
     return 0;
 }
 
-- (UIView *)createCardViewWith: (Card *)card {
+- (CardView *)createCardViewWith: (Card *)card {
     assert(false); //Subclass must implement
     return nil;
 }
@@ -122,9 +130,10 @@
     //Deal the cards
     for (int cardIndex = 0; cardIndex < self.numberOfCardsToDeal; ++cardIndex) {
        Card * card = [self.game cardAtIndex:cardIndex];
-       UIView * cardView = [self createCardViewWith:card];
-        cardView.tag = (NSInteger) card;//cardIndex; //TODO: Store (address of) the Card object itself
-        [self.cardSubViewsActive addObject:cardView];
+       CardView * cardView = [self createCardViewWith:card];
+        [self linkCard:card toCardView:cardView];
+
+        [self.cardSubViewsActive addObject:cardView];   //Remove later
         [self.cardsBoundaryView addSubview:cardView];
 
         //TODO: Could this result in a self -reference? or does the implementation use a weak ref?
@@ -133,6 +142,32 @@
 
         [cardView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapCard:)]];
     }
+}
+
+#pragma  mark -- Dictionary Card<-->CardView
+- (void)addCardToDictionary: (Card *)card {
+    NSInteger cardAddressAsInteger = (NSInteger) card;
+    [self.dictionaryOfCardsWithAddressAsKey setObject:card forKey:@(cardAddressAsInteger)];
+}
+
+- (void)removeCardFromDictionary: (Card *)card {
+    NSInteger cardAddressAsInteger = (NSInteger) card;
+    [self.dictionaryOfCardsWithAddressAsKey removeObjectForKey:@(cardAddressAsInteger)];
+}
+
+- (CardView *)viewForCard: (Card *)card {
+    NSInteger cardAddressAsInteger = (NSInteger) card;
+    return (CardView *) [self.cardsBoundaryView viewWithTag:cardAddressAsInteger];
+}
+
+- (Card *)cardForView: (CardView *)cardView {
+    NSNumber *cardAddressAsNumber = @(cardView.tag);
+    return [self.dictionaryOfCardsWithAddressAsKey objectForKey:cardAddressAsNumber];
+}
+
+- (void) linkCard:(Card *)card toCardView:(CardView *)cardView {
+    cardView.tag = (NSInteger) card;
+    [self addCardToDictionary:card];
 }
 
 - (IBAction)onTouchRedeal:(UIButton *)sender {
@@ -170,22 +205,25 @@
         self.game.matchMode = self.numberOfCardsToMatch;
     }
 
-    Card * card = [self cardFromTag:cardSwiped.tag];
-    //Card * card = (id ) (void*)cardSwiped.tag;
+    Card * card = [self cardForView:cardSwiped];
 
+    //Debug code - begin
     NSInteger chosenButtonIndex = [self.game indexOfCard:card];//cardSwiped.tag;
     NSLog(@"Chosen card button index: %ld", (long)chosenButtonIndex);
+    //Debug code - end
+
     //[self.game chooseCardAtIndex:chosenButtonIndex withNotification:self] ;
     [self.game chooseCard:card withNotification:self] ;
     [self updateUI];
     //[self animateViewTransitionByFlip:cardSwiped animations:nil];
 }
 
-- (Card *)cardFromTag: (NSInteger)tag {
-    void *card1 =  (void*)tag;
-    __unsafe_unretained Card * card = (__bridge id) card1;
-    return card;
-}
+////No longer used - experimental stuff. Works but not recommended approach due to un-managed pointers
+//- (Card *)cardFromTag: (NSInteger)tag {
+//    void *card1 =  (void*)tag;
+//    __unsafe_unretained Card * card = (__bridge id) card1;
+//    return card;
+//}
 
 - (void) updateUI {
     [self updateCardViewsState];
@@ -201,11 +239,17 @@
 }
 
 - (void) updateCardViewsState {
-    for(CardView *cardView in self.cardSubViewsActive) {
-        //Card * card = [self.game cardAtIndex:cardView.tag];
-        Card * card = [self cardFromTag: cardView.tag];
+//    for(CardView *cardView in self.cardSubViewsActive) {
+//        //Card * card = [self.game cardAtIndex:cardView.tag];
+//        Card * card = [self cardForView:cardView];
+//        cardView.cardState = [self getCardViewState:card];
+//    }
+
+    for(Card *card in [self.dictionaryOfCardsWithAddressAsKey allValues]) {
+        CardView * cardView = [self viewForCard:card];
         cardView.cardState = [self getCardViewState:card];
     }
+
 }
 - (void)updateScore {
     [self.scoreLabel setAttributedText:[self getScoreText]];
@@ -305,7 +349,7 @@
     NSMutableArray *cardViewsForMatchedCards = [NSMutableArray arrayWithCapacity:matchedCards.count];
     for (Card *card in matchedCards) {
         //[cardViewsForMatchedCards addObject:self.cardSubViewsActive[[self.game indexOfCard:card]]];
-        CardView * cardView = [self.cardsBoundaryView viewWithTag:(NSInteger)card];
+        CardView * cardView = (CardView *)[self.cardsBoundaryView viewWithTag:(NSInteger)card];
         [cardViewsForMatchedCards addObject:cardView];
     }
     [self animateViewByScaling:cardViewsForMatchedCards animations:^{
