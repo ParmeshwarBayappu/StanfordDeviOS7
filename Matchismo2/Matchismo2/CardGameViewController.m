@@ -123,7 +123,7 @@
     for (int cardIndex = 0; cardIndex < self.numberOfCardsToDeal; ++cardIndex) {
        Card * card = [self.game cardAtIndex:cardIndex];
        UIView * cardView = [self createCardViewWith:card];
-        cardView.tag = cardIndex; //TODO: Store (address of) the Card object itself
+        cardView.tag = (NSInteger) card;//cardIndex; //TODO: Store (address of) the Card object itself
         [self.cardSubViewsActive addObject:cardView];
         [self.cardsBoundaryView addSubview:cardView];
 
@@ -170,11 +170,21 @@
         self.game.matchMode = self.numberOfCardsToMatch;
     }
 
-    NSInteger chosenButtonIndex = cardSwiped.tag;
+    Card * card = [self cardFromTag:cardSwiped.tag];
+    //Card * card = (id ) (void*)cardSwiped.tag;
+
+    NSInteger chosenButtonIndex = [self.game indexOfCard:card];//cardSwiped.tag;
     NSLog(@"Chosen card button index: %ld", (long)chosenButtonIndex);
-    [self.game chooseCardAtIndex:chosenButtonIndex withNotification:self] ;
+    //[self.game chooseCardAtIndex:chosenButtonIndex withNotification:self] ;
+    [self.game chooseCard:card withNotification:self] ;
     [self updateUI];
     //[self animateViewTransitionByFlip:cardSwiped animations:nil];
+}
+
+- (Card *)cardFromTag: (NSInteger)tag {
+    void *card1 =  (void*)tag;
+    __unsafe_unretained Card * card = (__bridge id) card1;
+    return card;
 }
 
 - (void) updateUI {
@@ -192,7 +202,8 @@
 
 - (void) updateCardViewsState {
     for(CardView *cardView in self.cardSubViewsActive) {
-        Card * card = [self.game cardAtIndex:cardView.tag];
+        //Card * card = [self.game cardAtIndex:cardView.tag];
+        Card * card = [self cardFromTag: cardView.tag];
         cardView.cardState = [self getCardViewState:card];
     }
 }
@@ -262,38 +273,25 @@
 
 - (void)selectionImpactOfCard:(Card *)card chosen:(BOOL)isChosen otherChosenCards:(NSArray *)otherChosenCards impact:(NSInteger)chosenCardsScoreImpact {
 
-    if(isChosen && chosenCardsScoreImpact > 0 )
-    {
-       NSMutableArray *selectedCardViews = [NSMutableArray new];
-        [selectedCardViews addObject:self.cardSubViewsActive[[self.game indexOfCard:card]]];
-        //[self.game indexOfCard:card]];
-        for(Card * otherChosenCard in otherChosenCards){
-            [selectedCardViews addObject:self.cardSubViewsActive[[self.game indexOfCard:otherChosenCard]]];
+    if (!card.isMatched) {
+        if (isChosen && chosenCardsScoreImpact > 0) {
+            NSMutableArray *selectedCardViews = [NSMutableArray new];
+            [selectedCardViews addObject:self.cardSubViewsActive[[self.game indexOfCard:card]]];
+            //[self.game indexOfCard:card]];
+            for (Card *otherChosenCard in otherChosenCards) {
+                [selectedCardViews addObject:self.cardSubViewsActive[[self.game indexOfCard:otherChosenCard]]];
+            }
+            [self animateViewByScaling:selectedCardViews animations:^{[self updateUI];} onCompletion:nil];
+        } else {
+            [self animateViewTransitionByFlip:self.cardSubViewsActive[[self.game indexOfCard:card]] animations:^{[self updateUI];} onCompletion:nil];
         }
-        [self animateViewByScaling:selectedCardViews animations:nil onCompletion:^{ [self animateRemovingCards:selectedCardViews];}];
-    } else {
-        [self animateViewTransitionByFlip:self.cardSubViewsActive[[self.game indexOfCard:card]] animations:nil onCompletion:nil];
     }
-
-
-    //NSString * otherChoseCardsStr = [self.class stringFromCardsArray:otherChosenCards];
-    //NSString * cardContents = card.contents;
-    //NSAttributedString *cardContentsAttr = [self formatCardContentAttr:card];
-    //NSAttributedString *otherChoseCardsStrAttr = [self attributedStringFromCardsArray:otherChosenCards];
-
-    //NSMutableAttributedString *strBuilder = [[NSMutableAttributedString alloc] init];
-
-//    [strBuilder appendAttributedString:cardContentsAttr];
-//    [strBuilder appendAttributedString:[[NSAttributedString alloc] initWithString:@" matched ["]];
-//    [strBuilder appendAttributedString:otherChoseCardsStrAttr];
-//    [strBuilder appendAttributedString:[[NSAttributedString alloc] initWithString:[[NSString alloc] initWithFormat:@"] for %ld points!", (long) chosenCardsScoreImpact]]];
 }
 
-- (void)animateRemovingCards:(NSArray *)cardViewsToRemove
-{
+- (void)animateRemovingCards:(NSArray *)cardViewsToRemove {
     [UIView animateWithDuration:1.0 animations:^{
                 for (UIView *aView in cardViewsToRemove) {
-                    int x = (arc4random()%(int)(self.view.bounds.size.width*5)) - (int)self.view.bounds.size.width*2;
+                    int x = (arc4random() % (int) (self.view.bounds.size.width * 5)) - (int) self.view.bounds.size.width * 2;
                     int y = self.view.bounds.size.height;
                     aView.center = CGPointMake(x, -y);
                 }
@@ -301,6 +299,18 @@
                      completion:^(BOOL finished) {
                          [cardViewsToRemove makeObjectsPerformSelector:@selector(removeFromSuperview)];
                      }];
+}
+
+- (void)cardsMatched:(NSArray *)matchedCards {
+    NSMutableArray *cardViewsForMatchedCards = [NSMutableArray arrayWithCapacity:matchedCards.count];
+    for (Card *card in matchedCards) {
+        //[cardViewsForMatchedCards addObject:self.cardSubViewsActive[[self.game indexOfCard:card]]];
+        CardView * cardView = [self.cardsBoundaryView viewWithTag:(NSInteger)card];
+        [cardViewsForMatchedCards addObject:cardView];
+    }
+    [self animateViewByScaling:cardViewsForMatchedCards animations:^{
+        [self updateUI];
+    }             onCompletion:^{[self animateRemovingCards:cardViewsForMatchedCards];}];
 }
 
 @end

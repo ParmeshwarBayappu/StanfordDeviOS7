@@ -12,6 +12,7 @@
 @property (nonatomic, readwrite) NSInteger score;
 @property (nonatomic, strong) NSMutableArray * cards; // of Card
 @property (nonatomic) NSInteger currChosenCardsScore; //match score of currently chosen but not yet matched cards - intermediate score
+@property (nonatomic, readonly) BOOL persistLastChosenCard;
 @end
 
 @implementation CardMatchingGame
@@ -23,6 +24,10 @@
     }
     return _cards;
 }
+
+ -(BOOL)persistLastChosenCard {
+     return true;
+ }
 
 // consider adding match mode to this initializer
 - (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck
@@ -61,19 +66,22 @@ static const int COST_TO_CHOOSE = 1;
     return [self.cards indexOfObject:card];
 }
 
-- (void)chooseCardAtIndex:(NSUInteger)index withNotification:(id<CardGameNotifications>) requestor
-{
+- (void)chooseCardAtIndex:(NSUInteger)index withNotification:(id<CardGameNotifications>) requestor {
     Card * card = [self cardAtIndex:index];
-    
+    [self chooseCard:card withNotification:requestor];
+}
+
+- (void)chooseCard:(Card *)card withNotification:(id<CardGameNotifications>) requestor
+{
     if (!card.isMatched) {
-        if (card.isChosen) { // if previosuly chosen flip it back
+        if (card.isChosen) { // if previously chosen flip it back
             card.chosen = NO;
             //calculate impact, update selected score and notify
             NSArray *prevChosenCards = [self currentChosenCards];
             int cardMatchImpact = -[self weightedMatchCard:card toOtherCards:prevChosenCards];
             self.currChosenCardsScore += cardMatchImpact;
             [requestor selectionImpactOfCard:card chosen:NO otherChosenCards:prevChosenCards impact:cardMatchImpact];
-        } else { // if not previosuly chosen
+        } else { // if not previously chosen
             
             NSArray *prevChosenCards = [self currentChosenCards];
             if (prevChosenCards.count >= self.matchMode) return; //Prevent choosing more than current match mode cards  - currently not feasible as prev sel cards are unselected automatically
@@ -99,6 +107,7 @@ static const int COST_TO_CHOOSE = 1;
                     // //apply penalty to score and mark cards (other than current card) as unchosen.
                     cardMatchImpact = self.currChosenCardsScore = -MISMATCH_PENALTY * self.matchMode; //for choosing mismatchng cards
                     self.score += self.currChosenCardsScore;
+                    if(!self.persistLastChosenCard)card.chosen = false;
                     for (Card * chosenCard in prevChosenCards) {
                         chosenCard.chosen = false;
                     }
@@ -106,6 +115,8 @@ static const int COST_TO_CHOOSE = 1;
                 //notify
                 [requestor selectionImpactOfCard:card chosen:YES otherChosenCards:prevChosenCards impact:cardMatchImpact];
                 self.currChosenCardsScore = 0; //reset chosen cards score
+
+                if(card.matched) [requestor cardsMatched:[prevChosenCards arrayByAddingObject:card]];
             }
         }
     }
@@ -115,7 +126,6 @@ static const int COST_TO_CHOOSE = 1;
 - (NSArray *)currentChosenCards
 {
     NSMutableArray *chosenCards = [[NSMutableArray alloc] init];
-    
     for (Card * otherCard in self.cards) {
         if (!otherCard.isMatched && otherCard.isChosen) {
             [chosenCards addObject:otherCard];

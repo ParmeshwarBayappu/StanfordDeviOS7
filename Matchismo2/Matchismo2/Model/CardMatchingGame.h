@@ -16,6 +16,8 @@
 
 - (void)chooseCardAtIndex:(NSUInteger)index;
 - (void)chooseCardAtIndex:(NSUInteger)index withNotification:(id<CardGameNotifications>) requestor;
+- (void)chooseCard:(Card *)card withNotification:(id <CardGameNotifications>)requestor;
+
 - (Card *)cardAtIndex:(NSUInteger)index;
 - (NSArray *)currentChosenCards;
 //- (int) currentChosenCardsScore;

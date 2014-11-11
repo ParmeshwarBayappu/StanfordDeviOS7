@@ -12,5 +12,6 @@
 @protocol CardGameNotifications <NSObject>
 
 -(void)selectionImpactOfCard:(Card *)card chosen:(BOOL)isChosen otherChosenCards:(NSArray *)otherChosenCards impact:(NSInteger)chosenCardsScoreImpact;
+-(void)cardsMatched:(NSArray *)matchedCards;
 
 @end
