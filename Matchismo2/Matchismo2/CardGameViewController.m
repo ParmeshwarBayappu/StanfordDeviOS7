@@ -219,37 +219,44 @@
 
 #pragma mark -- Animation
 
-- (void)animateViewTransitionByFlip:(UIView *)view animations:(void (^)()) animations
+- (void)animateViewTransitionByFlip:(UIView *)view animations:(void (^)()) animations onCompletion:(void (^)())completionBlock
 {
     [UIView transitionWithView:view duration:1.0 options: (UIViewAnimationOptionCurveLinear | UIViewAnimationOptionTransitionFlipFromLeft) animations:^{
         if (animations) animations();
     } completion:^(BOOL finished) {
-        //
+        if(completionBlock) completionBlock();
     }];
 }
 
-- (void)animateViewByScaling:(UIView *)iView animations:(void (^)()) animations
+- (void)animateViewByScaling:(NSArray *)iViews animations:(void (^)()) animations onCompletion:(void (^)())completionBlock
 {
     //scale up and down
-    CGRect currBounds = iView.bounds;
-    CGRect newBounds = currBounds;
-    newBounds.size.width *= 1.20;
-    newBounds.size.height *= 1.20;
+    UIView * firstView = [iViews firstObject];
+    CGSize currBoundsSize = firstView.bounds.size;
+    CGSize newBoundsSize = currBoundsSize;
+    newBoundsSize.width *= 0.8;//1.20;
+    newBoundsSize.height *= 0.8;//1.20;
 
-    //newBounds.origin = CGPointMake(50, 100);
-
-    [iView setBackgroundColor:[UIColor orangeColor]];
-    [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionAutoreverse animations:^{
+    [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveLinear /*UIViewAnimationOptionAutoreverse*/ animations:^{
         if (animations)
             animations();
-        [iView setBounds:newBounds];
+        for(UIView * aView in iViews) {
+            CGRect newBounds = aView.bounds;
+            newBounds.size = newBoundsSize;
+            [aView setBounds:newBounds];
+        }
     } completion:^(BOOL finished) {
-        //        [UIView animateWithDuration:1.0 delay:1.0 options:UIViewAnimationOptionAutoreverse animations:^{
-        [iView setBounds:currBounds];
+          //        [UIView animateWithDuration:1.0 delay:1.0 options:UIViewAnimationOptionAutoreverse animations:^{
+//        for(UIView * aView in iViews) {
+//            CGRect oldBounds = aView.bounds;
+//            oldBounds.size = currBoundsSize;
+//            [aView setBounds:oldBounds];
+//        }
         //[self updateUI];
         //        } completion:^(BOOL finished) {
-        [iView setBackgroundColor:nil];
         //        }];
+        if(completionBlock)
+            completionBlock();
     }];
 }
 
@@ -263,11 +270,9 @@
         for(Card * otherChosenCard in otherChosenCards){
             [selectedCardViews addObject:self.cardSubViewsActive[[self.game indexOfCard:otherChosenCard]]];
         }
-        for(CardView * cardView in selectedCardViews) {
-            [self animateViewByScaling:cardView animations:nil];
-        }
+        [self animateViewByScaling:selectedCardViews animations:nil onCompletion:^{ [self animateRemovingCards:selectedCardViews];}];
     } else {
-        [self animateViewTransitionByFlip:self.cardSubViewsActive[[self.game indexOfCard:card]] animations:nil];
+        [self animateViewTransitionByFlip:self.cardSubViewsActive[[self.game indexOfCard:card]] animations:nil onCompletion:nil];
     }
 
 
@@ -282,6 +287,20 @@
 //    [strBuilder appendAttributedString:[[NSAttributedString alloc] initWithString:@" matched ["]];
 //    [strBuilder appendAttributedString:otherChoseCardsStrAttr];
 //    [strBuilder appendAttributedString:[[NSAttributedString alloc] initWithString:[[NSString alloc] initWithFormat:@"] for %ld points!", (long) chosenCardsScoreImpact]]];
+}
+
+- (void)animateRemovingCards:(NSArray *)cardViewsToRemove
+{
+    [UIView animateWithDuration:1.0 animations:^{
+                for (UIView *aView in cardViewsToRemove) {
+                    int x = (arc4random()%(int)(self.view.bounds.size.width*5)) - (int)self.view.bounds.size.width*2;
+                    int y = self.view.bounds.size.height;
+                    aView.center = CGPointMake(x, -y);
+                }
+            }
+                     completion:^(BOOL finished) {
+                         [cardViewsToRemove makeObjectsPerformSelector:@selector(removeFromSuperview)];
+                     }];
 }
 
 @end
