@@ -10,19 +10,24 @@
 
 @interface CardMatchingGame ()
 @property (nonatomic, readwrite) NSInteger score;
-@property (nonatomic, strong) NSMutableArray * cards; // of Card
+@property (nonatomic, strong) NSMutableArray *internalCards; // of Card
 @property (nonatomic) NSInteger currChosenCardsScore; //match score of currently chosen but not yet matched cards - intermediate score
 @property (nonatomic, readonly) BOOL persistLastChosenCard;
+@property (nonatomic,strong) Deck *deck;
 @end
 
 @implementation CardMatchingGame
 
-- (NSMutableArray *)cards
+- (NSMutableArray *)internalCards
 {
-    if (!_cards) {
-        _cards = [[NSMutableArray alloc] init];
+    if (!_internalCards) {
+        _internalCards = [[NSMutableArray alloc] init];
     }
-    return _cards;
+    return _internalCards;
+}
+
+- (NSArray *)cards {
+    return [self.internalCards copy];
 }
 
  -(BOOL)persistLastChosenCard {
@@ -34,10 +39,11 @@
 {
     self = [super init];
     if (self) {
+        self.deck = deck;
         for (int i=0; i<count; i++) {
             Card * card =[deck drawRandomCard];
             if (card) {
-                [self.cards addObject:card];
+                [self.internalCards addObject:card];
                 NSLog(@"Card at %d: %@", i, card.contents );
             } else {
                 self = nil;
@@ -50,7 +56,7 @@
 
 - (Card *)cardAtIndex:(NSUInteger)index
 {
-    return (index<self.cards.count) ? [self.cards objectAtIndex:index] : nil;
+    return (index<self.internalCards.count) ? [self.internalCards objectAtIndex:index] : nil;
 }
 
 static const int MISMATCH_PENALTY = 2;
@@ -63,7 +69,7 @@ static const int COST_TO_CHOOSE = 1;
 }
 
 - (int)indexOfCard:(Card *)card {
-    return [self.cards indexOfObject:card];
+    return [self.internalCards indexOfObject:card];
 }
 
 - (void)chooseCardAtIndex:(NSUInteger)index withNotification:(id<CardGameNotifications>) requestor {
@@ -103,6 +109,9 @@ static const int COST_TO_CHOOSE = 1;
                     for (Card * chosenCard in prevChosenCards) {
                         chosenCard.matched = true;
                     }
+                    NSArray *matchedCards = [prevChosenCards arrayByAddingObject:card];
+                    [requestor cardsMatched:matchedCards];
+                    [self removeCards:matchedCards];
                 } else { //no match at all
                     // //apply penalty to score and mark cards (other than current card) as unchosen.
                     cardMatchImpact = self.currChosenCardsScore = -MISMATCH_PENALTY * self.matchMode; //for choosing mismatchng cards
@@ -115,8 +124,6 @@ static const int COST_TO_CHOOSE = 1;
                 //notify
                 [requestor selectionImpactOfCard:card chosen:YES otherChosenCards:prevChosenCards impact:cardMatchImpact];
                 self.currChosenCardsScore = 0; //reset chosen cards score
-
-                if(card.matched) [requestor cardsMatched:[prevChosenCards arrayByAddingObject:card]];
             }
         }
     }
@@ -126,7 +133,7 @@ static const int COST_TO_CHOOSE = 1;
 - (NSArray *)currentChosenCards
 {
     NSMutableArray *chosenCards = [[NSMutableArray alloc] init];
-    for (Card * otherCard in self.cards) {
+    for (Card * otherCard in self.internalCards) {
         if (!otherCard.isMatched && otherCard.isChosen) {
             [chosenCards addObject:otherCard];
         }
@@ -152,7 +159,7 @@ static const int COST_TO_CHOOSE = 1;
     return score;
 }
 
-//helper fucntion match a Card to previously chosen cards and return match score including weights
+//helper function match a Card to previously chosen cards and return match score including weights
 - (int)weightedMatchCard:(Card *)card toOtherCards:(NSArray *)otherCards
 {
     int matchScore = [card match:otherCards];
@@ -160,11 +167,34 @@ static const int COST_TO_CHOOSE = 1;
     return matchScore;
 }
 
-//Helper fucntion - mark cards as not chosen
+//Helper function - mark cards as not chosen
 - (void)markCardsAsNotChosen:(NSArray *)cards
 {
     for (Card * card in cards) {
         card.chosen = NO;
+    }
+}
+
+- (uint)drawAdditionalCards:(uint)cardCount {
+    uint addedCardCount = 0;  NSMutableArray * addedCards = [NSMutableArray arrayWithCapacity:cardCount];
+    for( addedCardCount=0; addedCardCount < cardCount; addedCardCount++) {
+        Card * card = [self.deck drawRandomCard];
+        if(card) {
+            [self.internalCards addObject:card];
+        } else
+            break;
+    }
+    if (addedCardCount > 0 && self.notificationsDelegate) {
+        [self.notificationsDelegate cardsAdded:addedCards];
+    }
+    return addedCardCount;
+}
+
+- (void)removeCards:(NSArray *)cardsToRemove {
+    [self.internalCards removeObjectsInArray:cardsToRemove];
+
+    if(self.notificationsDelegate) {
+        [self.notificationsDelegate cardsRemoved:cardsToRemove];
     }
 }
 

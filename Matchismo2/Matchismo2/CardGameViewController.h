@@ -16,7 +16,7 @@
 @property (nonatomic, readonly) uint numberOfCardsToDeal; //abstract to be implemented by subclasses
 @property (nonatomic, readonly) CGFloat cellAspectRatio; //abstract to be implemented by subclasses
 
-@property (nonatomic, readonly) BOOL matchStarted;
+@property (nonatomic, readonly) BOOL matchActionStarted;
 @property (nonatomic, readonly) uint selectedMatchModeIndex;
 
 + (NSArray *)matchModeTitles;

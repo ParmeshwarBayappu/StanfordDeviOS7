@@ -176,7 +176,7 @@ static NSString *BACKGROUND_IMAGE_NAME = nil;
         if (colorForOverlayStroke) {
             CGRect boundaryRect = CGRectInset(self.bounds, 4, 4);
             UIBezierPath * roundedRect = [UIBezierPath bezierPathWithRoundedRect:boundaryRect cornerRadius:[self cornerRadius]];
-            [roundedRect setLineWidth:-8.0];
+            [roundedRect setLineWidth:+8.0];
 
             [[self backgroundColorForStroke] setStroke];
             [roundedRect stroke];

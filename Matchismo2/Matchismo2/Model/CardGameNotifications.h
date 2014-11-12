@@ -13,5 +13,8 @@
 
 -(void)selectionImpactOfCard:(Card *)card chosen:(BOOL)isChosen otherChosenCards:(NSArray *)otherChosenCards impact:(NSInteger)chosenCardsScoreImpact;
 -(void)cardsMatched:(NSArray *)matchedCards;
+-(void)cardsAdded:(NSArray *)addedCards;
+-(void)cardsRemoved:(NSArray *)removedCards;
+
 
 @end
