@@ -20,10 +20,9 @@
 @property(weak, nonatomic) IBOutlet UIButton *redealButton;
 @property(weak, nonatomic) IBOutlet GridView *cardsBoundaryView;
 @property(weak, nonatomic) IBOutlet UILabel *scoreLabel;
-@property (weak, nonatomic) IBOutlet UIButton *moreCardsButton;
+@property(weak, nonatomic) IBOutlet UIButton *moreCardsButton;
 
 @property(strong, nonatomic) CardMatchingGame *game;
-//@property (nonatomic, readonly) uint matchMode;
 
 @property(nonatomic, readwrite) BOOL matchActionStarted; //Tracks if any action started in game - to determine options that should be enabled/disabled
 @property(nonatomic, readonly) NSInteger score;
@@ -109,7 +108,6 @@
 
 //Cleanup current game and start new game
 - (void)startNewGame {
-
     if (self.matchActionStarted) {
         //Perform any last minute activities on old game - like save high scores, releasing existing
     }
@@ -127,7 +125,12 @@
     self.matchActionStarted = false;  // no action yet
 
     [self updateScore];
-    [self cardsAdded:[self.game cards]];
+    //[UIView transitionWithView:self.cardsBoundaryView duration:1.0 options:UIViewAnimationOptionTransitionFlipFromRight
+    //                animations:^{
+                        [self cardsAdded:[self.game cards]];
+    //                }
+    //                completion:^(BOOL finished){}
+    //];
 }
 
 #pragma  mark -- Dictionary Card<-->CardView
@@ -213,13 +216,6 @@
     //[self animateViewTransitionByFlip:cardSwiped animations:nil];
 }
 
-////No longer used - experimental stuff. Works but not recommended approach due to un-managed pointers
-//- (Card *)cardFromTag: (NSInteger)tag {
-//    void *card1 =  (void*)tag;
-//    __unsafe_unretained Card * card = (__bridge id) card1;
-//    return card;
-//}
-
 - (void)updateUI {
     [self updateCardViewsState];
     [self updateScore];
@@ -238,7 +234,6 @@
         CardView *cardView = [self viewForCard:card];
         cardView.cardState = [self getCardViewState:card];
     }
-
 }
 
 - (void)updateScore {
@@ -273,7 +268,7 @@
     }];
 }
 
-- (void)animateViewByScaling:(NSArray *)iViews animations:(void (^)())animations onCompletion:(void (^)())completionBlock {
++ (void)animateViewByScaling:(NSArray *)iViews animations:(void (^)())animations onCompletion:(void (^)())completionBlock {
     //scale up and down
     UIView *firstView = [iViews firstObject];
     CGSize currBoundsSize = firstView.bounds.size;
@@ -299,16 +294,17 @@
 }
 
 - (void)animateRemovingCards:(NSArray *)cardViewsToRemove onCompletion:(void (^)(BOOL finished))completionBlock {
-    [UIView animateWithDuration:1.0 delay:0.0 options:0 animations:^{
-                //TODO: This animation was previously moving cards out of the visible view thru animation - but is doing the reverse
-                // now - unexpected. Compare with previous code. Now it is working again. A mystery!
-                //TODO: Checkout implode option too
-                for (UIView *aView in cardViewsToRemove) {
-                    int x = (arc4random() % (int) (self.view.bounds.size.width * 5)) - (int) self.view.bounds.size.width * 2;
-                    int y = self.view.bounds.size.height;
-                    aView.center = CGPointMake(x, -y);
-                }
-            }
+    [UIView animateWithDuration:1.0 delay:0.0 options:0
+                     animations:^{
+                         //TODO: This animation was previously moving cards out of the visible view thru animation - but is doing the reverse
+                         // now - unexpected. Compare with previous code. Now it is working again. A mystery!
+                         //TODO: Checkout implode option too
+                         for (UIView *aView in cardViewsToRemove) {
+                             int x = (arc4random() % (int) (self.view.bounds.size.width * 5)) - (int) self.view.bounds.size.width * 2;
+                             int y = self.view.bounds.size.height;
+                             aView.center = CGPointMake(x, -y);
+                         }
+                     }
                      completion:^(BOOL finished) {
                          [cardViewsToRemove enumerateObjectsUsingBlock:^(CardView *cardViewToRemove, NSUInteger idx, BOOL *stop) {
                              [self unLinkCardFromCardView:cardViewToRemove];
@@ -322,7 +318,6 @@
 #pragma mark -- CardGameNotifications
 
 - (void)selectionImpactOfCard:(Card *)card chosen:(BOOL)isChosen otherChosenCards:(NSArray *)otherChosenCards impact:(NSInteger)chosenCardsScoreImpact {
-
     if (!card.isMatched) {
         if (isChosen && chosenCardsScoreImpact > 0) {
             NSMutableArray *selectedCardViews = [NSMutableArray new];
@@ -331,9 +326,9 @@
             for (Card *otherChosenCard in otherChosenCards) {
                 [selectedCardViews addObject:[self viewForCard:otherChosenCard]];
             }
-            [self animateViewByScaling:selectedCardViews animations:^{
+            [self.class animateViewByScaling:selectedCardViews animations:^{
                 [self updateUI];
-            }             onCompletion:nil];
+            }                   onCompletion:nil];
         } else {
             [self animateViewTransitionByFlip:[self viewForCard:card] animations:^{
                 [self updateUI];
@@ -349,9 +344,9 @@
         CardView *cardView = (CardView *) [self.cardsBoundaryView viewWithTag:(NSInteger) card];
         [cardViewsForMatchedCards addObject:cardView];
     }
-    [self animateViewByScaling:cardViewsForMatchedCards animations:^{
+    [self.class animateViewByScaling:cardViewsForMatchedCards animations:^{
         [self updateUI];
-    }             onCompletion:nil/*^{[self animateRemovingCards:cardViewsForMatchedCards];}*/];
+    }                   onCompletion:nil/*^{[self animateRemovingCards:cardViewsForMatchedCards];}*/];
 }
 
 - (void)cardsRemoved:(NSArray *)removedCards {
@@ -360,9 +355,9 @@
 
 - (void)cardsRemoved:(NSArray *)removedCards onCompletion:(void (^)())completionBlock {
     NSArray *cardViewsForRemovedCards = [self cardViewsForCards:removedCards];
-    [self animateViewByScaling:cardViewsForRemovedCards animations:^{
+    [self.class animateViewByScaling:cardViewsForRemovedCards animations:^{
         [self updateUI];
-    }             onCompletion:^{
+    }                   onCompletion:^{
         [self animateRemovingCards:cardViewsForRemovedCards onCompletion:^(BOOL completed) {
             if (completionBlock) completionBlock();
         }];
@@ -371,20 +366,28 @@
 }
 
 - (void)cardsAdded:(NSArray *)addedCards {
+
     //Deal the added cards
     for (Card *card in addedCards) {
         CardView *cardView = [self createCardViewWith:card];
         cardView.cardState = [self getCardViewState:card];
         [self linkCard:card toCardView:cardView];
         [self.cardsBoundaryView addSubview:cardView];
-
         //TODO: Could this result in a self -reference? or does the implementation use a weak ref?
         [cardView addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:cardView action:@selector(pinch:)]];
         [cardView addGestureRecognizer:[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeCard:)]];
 
         [cardView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapCard:)]];
+
+        [UIView animateWithDuration:2.0 delay:0.0 options:0
+                         animations:^{
+                             int x = arc4random_uniform(self.cardsBoundaryView.bounds.size.width);//(arc4random() % (int) (self.view.bounds.size.width * 5)) - (int) self.view.bounds.size.width * 2;
+                             int y = -self.cardsBoundaryView.bounds.size.height;//self.view.bounds.size.height;
+                             cardView.center = CGPointMake(x, y);
+                         }
+                         completion:nil];
     }
-    
+
     [self.moreCardsButton setEnabled:self.game.additionalCardsAvailable];
 }
 

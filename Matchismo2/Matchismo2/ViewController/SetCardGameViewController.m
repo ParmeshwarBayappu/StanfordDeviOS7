@@ -29,7 +29,7 @@
 
 // override base class abstract impl
 - (uint)numberOfCardsToDeal {
-    return 17;
+    return 12;
 }
 
 // override base class abstract impl
