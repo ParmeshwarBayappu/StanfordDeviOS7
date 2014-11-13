@@ -28,4 +28,5 @@
 @property (nonatomic, readonly) NSInteger score;
 @property (nonatomic) NSUInteger matchMode;
 @property (nonatomic, weak) id<CardGameNotifications> notificationsDelegate;
+@property (nonatomic, readonly) BOOL additionalCardsAvailable;
 @end

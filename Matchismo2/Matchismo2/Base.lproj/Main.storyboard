@@ -47,11 +47,27 @@
                                 <rect key="frame" x="16" y="64" width="568" height="479"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FuA-Cq-19X">
+                                <rect key="frame" x="503" y="513" width="81" height="30"/>
+                                <state key="normal" title="More Cards">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="disabled" title="No More Cards">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="onTouchMoreCards:" destination="eHv-Eg-qtH" eventType="touchUpInside" id="IaD-Dy-gf6"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Hk9-hW-4yc" firstAttribute="top" secondItem="uDQ-B8-HJ2" secondAttribute="bottom" constant="8" symbolic="YES" id="0zR-F2-gT1"/>
+                            <constraint firstItem="JfD-IW-Cx4" firstAttribute="top" secondItem="FuA-Cq-19X" secondAttribute="bottom" constant="8" symbolic="YES" id="12M-eO-JBg"/>
                             <constraint firstAttribute="centerX" secondItem="aBh-nk-Diw" secondAttribute="centerX" constant="20" id="6nQ-ua-6dP"/>
+                            <constraint firstItem="FuA-Cq-19X" firstAttribute="trailing" secondItem="Hk9-hW-4yc" secondAttribute="trailing" id="AJz-sc-pnR"/>
                             <constraint firstItem="NSX-kl-IQ9" firstAttribute="trailing" secondItem="Hk9-hW-4yc" secondAttribute="trailing" id="BhD-sR-tyI"/>
                             <constraint firstItem="uDQ-B8-HJ2" firstAttribute="leading" secondItem="hfL-0W-egC" secondAttribute="leadingMargin" id="Ckw-R8-h0h"/>
                             <constraint firstItem="JfD-IW-Cx4" firstAttribute="top" secondItem="Hk9-hW-4yc" secondAttribute="bottom" constant="8" symbolic="YES" id="Iss-wk-WYx"/>
@@ -66,6 +82,7 @@
                     <connections>
                         <outlet property="cardsBoundaryView" destination="Hk9-hW-4yc" id="073-ky-rxZ"/>
                         <outlet property="matchModeSegControl" destination="NSX-kl-IQ9" id="qhq-JN-kQY"/>
+                        <outlet property="moreCardsButton" destination="FuA-Cq-19X" id="RJ8-AK-Gw6"/>
                         <outlet property="redealButton" destination="uDQ-B8-HJ2" id="bb4-xH-H9r"/>
                         <outlet property="scoreLabel" destination="aBh-nk-Diw" id="hvl-KR-4kL"/>
                     </connections>
@@ -135,10 +152,25 @@
                                 <rect key="frame" x="16" y="64" width="568" height="479"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l8L-Hi-52i">
+                                <rect key="frame" x="503" y="513" width="81" height="30"/>
+                                <state key="normal" title="More Cards">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="disabled" title="No More Cards">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="onTouchMoreCards:" destination="DWb-vg-W38" eventType="touchUpInside" id="RJI-hj-yx1"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="I5g-aa-Vfl" firstAttribute="top" secondItem="sQm-kp-b01" secondAttribute="bottom" constant="8" symbolic="YES" id="8GU-am-AoY"/>
+                            <constraint firstItem="Qqc-Wd-TYF" firstAttribute="top" secondItem="l8L-Hi-52i" secondAttribute="bottom" constant="8" symbolic="YES" id="8r4-qP-IPI"/>
                             <constraint firstItem="jca-J5-Dpg" firstAttribute="baseline" secondItem="sQm-kp-b01" secondAttribute="baseline" id="QWh-2a-gsm"/>
                             <constraint firstItem="sQm-kp-b01" firstAttribute="leading" secondItem="Y03-a1-Gh6" secondAttribute="leadingMargin" id="QvL-Yp-ROo"/>
                             <constraint firstAttribute="centerX" secondItem="jca-J5-Dpg" secondAttribute="centerX" constant="20" id="a4W-BD-2Mm"/>
@@ -148,12 +180,14 @@
                             <constraint firstItem="Qqc-Wd-TYF" firstAttribute="top" secondItem="I5g-aa-Vfl" secondAttribute="bottom" constant="8" symbolic="YES" id="qtk-Ec-RjW"/>
                             <constraint firstItem="VgT-T9-G7l" firstAttribute="bottom" secondItem="jca-J5-Dpg" secondAttribute="bottom" id="yZE-sb-GFE"/>
                             <constraint firstItem="VgT-T9-G7l" firstAttribute="trailing" secondItem="Y03-a1-Gh6" secondAttribute="trailingMargin" id="yrh-xT-J7r"/>
+                            <constraint firstItem="l8L-Hi-52i" firstAttribute="trailing" secondItem="I5g-aa-Vfl" secondAttribute="trailing" id="zE0-ha-i2p"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Set Card" id="gMV-10-7Oz"/>
                     <connections>
                         <outlet property="cardsBoundaryView" destination="I5g-aa-Vfl" id="bUR-ug-Cus"/>
                         <outlet property="matchModeSegControl" destination="VgT-T9-G7l" id="5Lh-yP-mTH"/>
+                        <outlet property="moreCardsButton" destination="l8L-Hi-52i" id="n1U-0k-vmX"/>
                         <outlet property="redealButton" destination="sQm-kp-b01" id="XaR-VO-VwF"/>
                         <outlet property="scoreLabel" destination="jca-J5-Dpg" id="CVh-wk-CCg"/>
                     </connections>

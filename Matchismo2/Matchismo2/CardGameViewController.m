@@ -20,6 +20,7 @@
 @property(weak, nonatomic) IBOutlet UIButton *redealButton;
 @property(weak, nonatomic) IBOutlet GridView *cardsBoundaryView;
 @property(weak, nonatomic) IBOutlet UILabel *scoreLabel;
+@property (weak, nonatomic) IBOutlet UIButton *moreCardsButton;
 
 @property(strong, nonatomic) CardMatchingGame *game;
 //@property (nonatomic, readonly) uint matchMode;
@@ -163,6 +164,11 @@
 
 - (IBAction)onTouchRedeal:(UIButton *)sender {
     [self startNewGame];
+}
+
+- (IBAction)onTouchMoreCards:(UIButton *)sender {
+    uint const addlCardsDrawn = [self.game drawAdditionalCards:self.numberOfCardsToMatch];
+    assert(addlCardsDrawn > 0);
 }
 
 - (void)viewDidLoad {
@@ -368,6 +374,7 @@
     //Deal the added cards
     for (Card *card in addedCards) {
         CardView *cardView = [self createCardViewWith:card];
+        cardView.cardState = [self getCardViewState:card];
         [self linkCard:card toCardView:cardView];
         [self.cardsBoundaryView addSubview:cardView];
 
@@ -377,6 +384,8 @@
 
         [cardView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapCard:)]];
     }
+    
+    [self.moreCardsButton setEnabled:self.game.additionalCardsAvailable];
 }
 
 - (NSArray *)cardViewsForCards:(NSArray *)cards {

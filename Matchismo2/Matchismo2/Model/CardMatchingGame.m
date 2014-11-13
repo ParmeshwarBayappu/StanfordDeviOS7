@@ -30,7 +30,12 @@
     return [self.internalCards copy];
 }
 
- -(BOOL)persistLastChosenCard {
+- (BOOL)additionalCardsAvailable {
+    return self.deck.cardCount;
+}
+
+
+-(BOOL)persistLastChosenCard {
      return true;
  }
 
@@ -77,6 +82,8 @@ static const int COST_TO_CHOOSE = 1;
     [self chooseCard:card withNotification:requestor];
 }
 
+//TODO: With the removal of matched cards we no longer need to check if a card is matched or the other option would be
+// to not remove the matched cards and return an array of cards not yet matched for the "cards" property.
 - (void)chooseCard:(Card *)card withNotification:(id<CardGameNotifications>) requestor
 {
     if (!card.isMatched) {
@@ -181,6 +188,7 @@ static const int COST_TO_CHOOSE = 1;
         Card * card = [self.deck drawRandomCard];
         if(card) {
             [self.internalCards addObject:card];
+            [addedCards addObject:card];
         } else
             break;
     }
