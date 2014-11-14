@@ -11,7 +11,7 @@
 #import "CardView.h"
 #import "CardGameNotifications.h"
 
-@interface CardGameViewController : UIViewController <CardGameNotifications>
+@interface CardGameViewController : UIViewController <CardGameNotifications, UIDynamicAnimatorDelegate>
 
 @property (nonatomic, readonly) uint numberOfCardsToDeal; //abstract to be implemented by subclasses
 @property (nonatomic, readonly) CGFloat cellAspectRatio; //abstract to be implemented by subclasses

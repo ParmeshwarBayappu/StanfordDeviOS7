@@ -12,4 +12,5 @@
 
 @property (nonatomic) CGFloat cellAspectRatio;
 
+- (void)setupSubViewFrames;  //Created to expose behaviour directly for animation purpose in controller
 @end

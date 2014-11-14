@@ -28,6 +28,10 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
+    [self setupSubViewFrames];
+}
+
+- (void)setupSubViewFrames {
     NSArray *subViews = [self subviews];
 
     self.grid.size = self.bounds.size;

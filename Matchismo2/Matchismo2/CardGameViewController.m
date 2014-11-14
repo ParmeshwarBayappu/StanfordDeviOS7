@@ -30,6 +30,12 @@
 @property(nonatomic) NSMutableDictionary *dictionaryOfCardsWithAddressAsKey;
 @property(strong, nonatomic) PlayingCardDeck *playingCardDeck;
 @property(strong, nonatomic) SetCardDeck *setCardDeck;
+@property (strong, nonatomic) UIDynamicAnimator *animator;
+@property (strong, nonatomic) UIPushBehavior *pushBehavior;
+@property (strong, nonatomic) UICollisionBehavior *collisionBehavior;
+@property (strong, nonatomic) UIAttachmentBehavior *attachmentBehavior;
+@property(strong, nonatomic)  UIPanGestureRecognizer *panGestureRecognizer;
+@property(nonatomic) BOOL panGestureEnabled;
 
 @end
 
@@ -63,6 +69,32 @@
     return _dictionaryOfCardsWithAddressAsKey;
 }
 
+- (UIDynamicAnimator *)animator {
+    if(!_animator) {
+        _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.cardsBoundaryView];
+        _animator.delegate = self;
+    }
+    return _animator;
+}
+
+- (UIPushBehavior *)pushBehavior {
+    if(!_pushBehavior) {
+        _pushBehavior = [[UIPushBehavior alloc] initWithItems:nil mode:UIPushBehaviorModeInstantaneous];
+        [self.animator addBehavior:_pushBehavior];
+    }
+    return _pushBehavior;
+}
+
+- (UICollisionBehavior *)collisionBehavior {
+    if(!_collisionBehavior) {
+        _collisionBehavior = [[UICollisionBehavior alloc] init];
+        _collisionBehavior.collisionMode = UICollisionBehaviorModeBoundaries;
+        [self.animator addBehavior:_collisionBehavior];
+        [_collisionBehavior setTranslatesReferenceBoundsIntoBoundary:TRUE];
+    }
+    return _collisionBehavior;
+}
+
 - (uint)selectedMatchModeIndex {
     assert(self.matchModeSegControl.selectedSegmentIndex >= 0);
     return (uint) self.matchModeSegControl.selectedSegmentIndex;
@@ -82,6 +114,21 @@
     _matchActionStarted = matchActionStarted;
 }
 
+- (UIPanGestureRecognizer *)panGestureRecognizer {
+    if( !_panGestureRecognizer) {
+        _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panCards:)];
+    }
+    return _panGestureRecognizer;
+}
+
+- (void)setPanGestureEnabled:(BOOL)panGestureEnabled {
+    if(panGestureEnabled) {
+        [self.cardsBoundaryView addGestureRecognizer:self.panGestureRecognizer];
+    } else {
+        [self.cardsBoundaryView removeGestureRecognizer:self.panGestureRecognizer];
+    }
+    _panGestureEnabled = panGestureEnabled;
+}
 
 #pragma mark -- Abstract
 
@@ -181,7 +228,127 @@
     for (int titleIndex = 0; titleIndex < matchModeTitles.count; ++titleIndex) {
         [self.matchModeSegControl setTitle:matchModeTitles[titleIndex] forSegmentAtIndex:titleIndex];
     }
+    //add pinch gesture recognizer to initiate piling together cards
+    [self.cardsBoundaryView addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)]];
+
     [self startNewGame];
+}
+
+- (IBAction)panCards:(UIPanGestureRecognizer *)sender {
+    CGPoint gesturePoint = [sender locationInView:self.cardsBoundaryView];
+
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        [self attachCardsToPoint:gesturePoint];
+    } else if (sender.state == UIGestureRecognizerStateChanged) {
+        self.attachmentBehavior.anchorPoint = gesturePoint;
+    } else if (sender.state == UIGestureRecognizerStateEnded) {
+        [self.animator removeAllBehaviors];
+    }
+}
+
+- (void)attachCardsToPoint:(CGPoint)anchorPoint {
+    NSArray *cardViews = self.cardsBoundaryView.subviews;
+    assert(cardViews.count>0);    // Convert to if
+
+    UIView * firstView = [cardViews firstObject];
+    //Create an attachment behaviour for the first card
+    self.attachmentBehavior = [[UIAttachmentBehavior alloc] initWithItem:firstView attachedToAnchor:anchorPoint];
+    [self.animator addBehavior:self.attachmentBehavior];
+
+    //Attach the other cards
+    for(UIView *cardView in self.cardsBoundaryView.subviews) {
+        if( cardView != firstView) {
+            UIAttachmentBehavior *attachmentBehavior = [[UIAttachmentBehavior alloc] initWithItem:firstView attachedToItem:cardView];
+            [self.animator addBehavior:attachmentBehavior];
+        }
+    }
+}
+
+- (void)pinch:(UIPinchGestureRecognizer *)gestureRecognizer {
+    [self pinch1:gestureRecognizer];
+}
+
+// Moves the cards closer to the center of the pinch and at the end of the pinch enables the pan gesture
+- (void)pinch1:(UIPinchGestureRecognizer *)gestureRecognizer {
+    if( gestureRecognizer.state == UIGestureRecognizerStateChanged) {
+        CGFloat scale = gestureRecognizer.scale;
+        CGPoint gestureCenter =  [gestureRecognizer locationInView:self.cardsBoundaryView];
+        //CGSize boundsSize = self.cardsBoundaryView.bounds.size;
+
+        NSArray *cardViews = self.cardsBoundaryView.subviews;
+        for(CardView *cardView in cardViews) {
+            CGPoint viewCurrCenter = cardView.center;
+            CGFloat viewX = gestureCenter.x+(viewCurrCenter.x - gestureCenter.x)*scale;
+            CGFloat viewY = gestureCenter.y+(viewCurrCenter.y - gestureCenter.y)*scale;
+
+            //viewX = MIN(MAX(0, viewX), boundsSize.width);
+            //viewY = MIN(MAX(0, viewY), boundsSize.height);
+
+            cardView.center = CGPointMake(viewX, viewY);
+        }
+        gestureRecognizer.scale = 1;
+
+    } else if( gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        //Enable pan gesture
+        self.panGestureEnabled = true;
+    } else if (gestureRecognizer.state == UIGestureRecognizerStateCancelled) {
+        [self.cardsBoundaryView setNeedsLayout];
+    }
+}
+
+// All cards moved to the center of the enclosing view
+- (void)pinch2:(UIPinchGestureRecognizer *)gestureRecognizer {
+    if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        [UIView animateWithDuration:3.0
+                         animations:^{
+                             CGPoint superViewCenter = CGPointMake(self.cardsBoundaryView.bounds.size.width/2, self.cardsBoundaryView.bounds.size.height/2);
+                             NSArray *cardViews = self.cardsBoundaryView.subviews;
+                             for(CardView *cardView in cardViews) {
+                                cardView.center = superViewCenter;
+                             }
+                         }
+        ];
+        //Enable pan gesture
+        self.panGestureEnabled = true;
+    }
+}
+
+// The idea was to get each card to get an individual push force towards the center of the pinch - but this has not
+// worked well so far
+- (void)pinch3:(UIPinchGestureRecognizer *)gestureRecognizer {
+      self.scoreLabel.text = @"pinch recog";
+    if (/*(gestureRecognizer.state == UIGestureRecognizerStateChanged) ||*/
+            (gestureRecognizer.state == UIGestureRecognizerStateEnded)) {
+
+        //CardView *cardView = [self viewForCard:[self.dictionaryOfCardsWithAddressAsKey allValues][0]];
+        //Identify amount and direction of push
+        //CGPoint gestureCenter = [gestureRecognizer locationInView:self.cardsBoundaryView];
+        //CGPoint cardViewCenter = cardView.center;
+        //CGFloat gestureSlopeSum =  ABS(gestureCenter.x - cardViewCenter.x) + ABS( gestureCenter.y - cardViewCenter.y);
+        //[self.pushBehavior setAngle:M_PI_4 magnitude:0.1];
+        //[self.pushBehavior setMagnitude:1];
+        //[self.pushBehavior setPushDirection:CGVectorMake(gestureCenter.x - cardViewCenter.x, gestureCenter.y - cardViewCenter.y)];
+
+        CGFloat velocity = [gestureRecognizer velocity];
+        CGFloat magnitude = velocity/35;
+        //pushBehavior.pushDirection = CGVectorMake((velocity.x / 10) , (velocity.y / 10));
+        self.pushBehavior.magnitude = magnitude;
+
+        [self.pushBehavior setPushDirection:CGVectorMake(-1.0, -1.0)];
+
+        for(CardView *cardView in [self cardViewsForCards:[self.dictionaryOfCardsWithAddressAsKey allValues]]) {
+
+            [self.collisionBehavior addItem:cardView];
+            [self.pushBehavior addItem:cardView];
+
+            //[self.animator updateItemUsingCurrentState:cardView];
+        }
+        [self.animator addBehavior:self.collisionBehavior];
+        [self.animator addBehavior:self.pushBehavior];
+        self.pushBehavior.active = true;
+        //Enable pan gesture
+        self.panGestureEnabled = true;
+    }
 }
 
 - (void)loadView {
@@ -196,7 +363,26 @@
     //cardSwiped.contentScaleFactor = 3.5; //TODO: Experimenting  - what impact this has?
 }
 
+-(void)animateCardViewsRestoration {
+    [UIView animateWithDuration:2.0 delay:0.0 options:UIViewAnimationOptionCurveLinear /*UIViewAnimationOptionAutoreverse*/
+                     animations:^{
+                         //[self.cardsBoundaryView setNeedsLayout];
+                         [self.cardsBoundaryView setupSubViewFrames];
+                     }
+                     completion:^(BOOL finished) {
+                     }
+    ];
+
+}
+
 - (void)tapCard:(UITapGestureRecognizer *)gestureRecognizer {
+    
+    if(self.panGestureEnabled){
+        self.panGestureEnabled = false;
+        [self animateCardViewsRestoration];
+        return;
+    }
+    
     SetCardView *cardSwiped = (SetCardView *) gestureRecognizer.view;
 
     if (!self.matchActionStarted) { //Once a card is selected - disable options available at start such as match mode
@@ -315,6 +501,19 @@
                      }];
 }
 
+ -(void)dynamicAnimatorDidPause:(UIDynamicAnimator *)animator {
+
+     NSArray *cardViews = [self.pushBehavior items];
+     for(UIView * cardView in cardViews) [self.pushBehavior removeItem:cardView];
+     self.pushBehavior.active = false;
+
+     NSArray *cardViews1 = [self.collisionBehavior items];
+     for(UIView * cardView in cardViews1) [self.collisionBehavior removeItem:cardView];
+
+     self.panGestureEnabled = true;
+
+ }
+
 #pragma mark -- CardGameNotifications
 
 - (void)selectionImpactOfCard:(Card *)card chosen:(BOOL)isChosen otherChosenCards:(NSArray *)otherChosenCards impact:(NSInteger)chosenCardsScoreImpact {
@@ -374,7 +573,7 @@
         [self linkCard:card toCardView:cardView];
         [self.cardsBoundaryView addSubview:cardView];
         //TODO: Could this result in a self -reference? or does the implementation use a weak ref?
-        [cardView addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:cardView action:@selector(pinch:)]];
+        //[cardView addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:cardView action:@selector(pinch:)]];
         [cardView addGestureRecognizer:[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeCard:)]];
 
         [cardView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapCard:)]];
