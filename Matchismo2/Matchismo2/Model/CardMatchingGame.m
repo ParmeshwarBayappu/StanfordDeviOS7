@@ -206,4 +206,52 @@ static const int COST_TO_CHOOSE = 1;
     }
 }
 
+- (NSArray *) notMatchedCards {
+    NSPredicate *notMatchedPredicate = [NSPredicate predicateWithBlock:^BOOL(Card * evaluatedCard, NSDictionary *bindings) {
+        return !evaluatedCard.isMatched;
+    }];
+    return [self.internalCards filteredArrayUsingPredicate:notMatchedPredicate];
+}
+
+// Algorithm for finding matching sets. Not yet in use. TODO: Provide Hints
+- (NSArray *)matchingSets {
+    NSArray *matchedSets = [self matchingSetsOf:self.matchMode selectedCards:[NSArray new] withCards:[self notMatchedCards]];
+    return matchedSets;
+}
+
+- (NSArray *)matchingSetsOf: (NSUInteger)setSize inCards: (NSArray *)cards {
+   NSArray *matchedSets = [self matchingSetsOf:setSize selectedCards:[NSArray new] withCards:cards];
+    return matchedSets;
+}
+
+- (NSArray *)matchingSetsOf: (NSUInteger)setSize selectedCards: (NSArray *)selectedCards withCards: (NSArray *)withCards {
+    NSMutableArray *matchedSets = [NSMutableArray new];
+
+    int selCardsCount = selectedCards.count;
+
+    if(withCards.count<=0) { // not enough cardsto match
+        return matchedSets;
+    }
+
+    if(selCardsCount>=setSize) {
+        assert(false);// unexpected error case
+    } else if(selCardsCount== setSize-1) {
+        for (Card *card in withCards) {
+            if([card match:selectedCards]) {
+                [matchedSets addObject:[selectedCards arrayByAddingObject:card]];
+            }
+        }
+    } else { // selCardsCount < setSize-1
+        NSMutableArray * withCardsMutable = [withCards mutableCopy];
+        for (Card *card in withCards) {
+            NSArray *newSelectedCards = [selectedCards arrayByAddingObject:card];
+            [withCardsMutable removeObject:card];
+            NSArray *newWithCards = [withCardsMutable copy];
+            NSArray *matchedSets1 = [self matchingSetsOf:setSize selectedCards:newSelectedCards withCards:newWithCards];
+            [matchedSets addObjectsFromArray:matchedSets1];
+        }
+    }
+    return matchedSets;
+}
+
 @end
