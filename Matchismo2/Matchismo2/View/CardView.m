@@ -101,22 +101,22 @@ static NSString *BACKGROUND_IMAGE_NAME = nil;
 }
 
  - (UIColor *)backgroundColorForFill {
-     UIColor *backgroundColorForFill = nil;
+//     UIColor *backgroundColorForFill = nil;
      return [UIColor whiteColor];
-     switch (self.cardState)
-     {
-         case CardStateFaceDown:
-             break;
-         case CardStateNormal:
-             backgroundColorForFill = [[UIColor yellowColor] colorWithAlphaComponent:1.0];
-             break;
-         case CardStateHighlighted:
-             backgroundColorForFill = [[UIColor redColor] colorWithAlphaComponent:1.0];
-             break;
-         case CardStateDisabled:
-             backgroundColorForFill = [[UIColor whiteColor] colorWithAlphaComponent:1.0];
-     }
-     return backgroundColorForFill;
+//     switch (self.cardState)
+//     {
+//         case CardStateFaceDown:
+//             break;
+//         case CardStateNormal:
+//             backgroundColorForFill = [[UIColor yellowColor] colorWithAlphaComponent:1.0];
+//             break;
+//         case CardStateHighlighted:
+//             backgroundColorForFill = [[UIColor redColor] colorWithAlphaComponent:1.0];
+//             break;
+//         case CardStateDisabled:
+//             backgroundColorForFill = [[UIColor whiteColor] colorWithAlphaComponent:1.0];
+//     }
+//     return backgroundColorForFill;
  }
 
 - (UIColor *)backgroundColorForStroke {

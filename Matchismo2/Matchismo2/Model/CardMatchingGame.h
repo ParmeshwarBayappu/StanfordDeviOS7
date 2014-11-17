@@ -22,7 +22,7 @@
 - (Card *)cardAtIndex:(NSUInteger)index;
 - (NSArray *)currentChosenCards;
 //- (int) currentChosenCardsScore;
-- (int)indexOfCard:(Card *)card;
+- (NSUInteger)indexOfCard:(Card *)card;
 
 @property (nonatomic, readonly) NSArray *cards; //Of Card
 @property (nonatomic, readonly) NSInteger score;
