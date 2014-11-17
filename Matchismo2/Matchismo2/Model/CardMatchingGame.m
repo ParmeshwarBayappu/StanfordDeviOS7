@@ -73,7 +73,7 @@ static const int COST_TO_CHOOSE = 1;
     [self chooseCardAtIndex:index withNotification:nil];
 }
 
-- (int)indexOfCard:(Card *)card {
+- (NSUInteger)indexOfCard:(Card *)card {
     return [self.internalCards indexOfObject:card];
 }
 
@@ -227,7 +227,7 @@ static const int COST_TO_CHOOSE = 1;
 - (NSArray *)matchingSetsOf: (NSUInteger)setSize selectedCards: (NSArray *)selectedCards withCards: (NSArray *)withCards {
     NSMutableArray *matchedSets = [NSMutableArray new];
 
-    int selCardsCount = selectedCards.count;
+    int selCardsCount = (int)selectedCards.count;
 
     if(withCards.count<=0) { // not enough cardsto match
         return matchedSets;
